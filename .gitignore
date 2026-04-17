@@ -1,0 +1,17 @@
+*.mp3
+*.env
+git rm -r --cached .
+.venv/
+
+venv/
+bin/
+lib/
+
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+*.wav
+*.mp3
+
+
