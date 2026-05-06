@@ -43,9 +43,10 @@ TARGET_CLASSES = {
     "crash":      ["Vehicle collision, crash", "Crash"],
 }
 
-DATA_DIR   = Path("./data")
-MODEL_DIR  = Path("./models")
-RESULT_DIR = Path("./results")
+BASE_DIR   = Path(__file__).parent        # hyeonwoo/PANNs/
+DATA_DIR   = BASE_DIR.parent / "data"    # hyeonwoo/data  ✓
+MODEL_DIR  = BASE_DIR.parent / "models"  # hyeonwoo/models  ✓
+RESULT_DIR = BASE_DIR / "results"        # hyeonwoo/PANNs/results  ✓
 
 for d in [DATA_DIR, MODEL_DIR, RESULT_DIR]:
     d.mkdir(exist_ok=True)
