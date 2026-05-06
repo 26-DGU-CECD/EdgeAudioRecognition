@@ -15,3 +15,5 @@ lib/
 *.mp3
 
 
+/playground/hyeonwoo/data/
+/playground/hyeonwoo/models/
