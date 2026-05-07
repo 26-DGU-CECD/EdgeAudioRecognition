@@ -1,17 +1,13 @@
 """
 EfficientAT (MobileNetV3) + ESC-50 Inference Pipeline
 ------------------------------------------------------
-EfficientAT 공식 레포(fschmid56/EfficientAT)의 torch.hub를 통해
+EfficientAT 공식 레포(fschmid56/EfficientAT)의 모델을 직접 임포트하여
 mn10_as 사전학습 모델을 로드하고 ESC-50으로 추론합니다.
-
-설치 필요 패키지:
-    pip install torch torchaudio librosa soundfile pandas tqdm requests
 """
 
 import os
 import sys
 import zipfile
-import urllib.request
 import numpy as np
 import pandas as pd
 import torch
@@ -19,34 +15,37 @@ import torch.nn.functional as F
 import librosa
 from pathlib import Path
 from tqdm import tqdm
+from contextlib import nullcontext
+from torch import autocast
 
 # ─────────────────────────────────────────────
 # 0. 설정 상수
 # ─────────────────────────────────────────────
 SAMPLE_RATE   = 32000
-CLIP_DURATION = 10.0       # EfficientAT 은 10초 기준 학습
+CLIP_DURATION = 10.0
 WINDOW_SIZE   = 800
 HOP_SIZE      = 320
-MEL_BINS      = 128        # EfficientAT 기본값
+MEL_BINS      = 128
 FMIN          = 0
-FMAX          = None       # None → sr/2
+FMAX          = None
 CLASSES_NUM   = 527
 
-MODEL_NAME    = "mn10_as"  # 선택 가능: mn10_as / mn20_as / mn40_as / dymn10_as
-N_SAMPLES     = 50         # ESC-50에서 추론할 샘플 수
+MODEL_NAME    = "mn10_as"
+N_SAMPLES     = 50
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# 파일 구조 (PANNs_test.py 와 동일한 방식)
 BASE_DIR   = Path(__file__).parent
 DATA_DIR   = BASE_DIR.parent / "data"
 MODEL_DIR  = BASE_DIR.parent / "models"
 RESULT_DIR = BASE_DIR / "results"
 
+# EfficientAT 레포 경로 (torch hub 캐시)
+REPO_DIR = Path.home() / ".cache" / "torch" / "hub" / "fschmid56_EfficientAT_main"
+
 for d in [DATA_DIR, MODEL_DIR, RESULT_DIR]:
     d.mkdir(parents=True, exist_ok=True)
 
-# 타겟 위험음 클래스
 TARGET_CLASSES = {
     "car_horn":  ["Car horn", "Vehicle horn, car horn, honking"],
     "siren":     ["Siren", "Civil defense siren", "Ambulance (siren)"],
@@ -55,9 +54,14 @@ TARGET_CLASSES = {
     "crash":     ["Vehicle collision, crash", "Crash"],
 }
 
+OUTPUT_COLUMNS = [
+    "filename", "esc50_category", "top1_audioset", "top1_prob",
+    "score_car_horn", "score_siren", "score_alarm", "score_screaming", "score_crash",
+]
+
 
 # ─────────────────────────────────────────────
-# 1. ESC-50 다운로드 (PANNs 코드와 동일)
+# 1. ESC-50 다운로드
 # ─────────────────────────────────────────────
 def download_esc50():
     esc_dir = DATA_DIR / "ESC-50-master"
@@ -106,47 +110,77 @@ def load_esc50_metadata(esc_dir: Path) -> pd.DataFrame:
 
 
 # ─────────────────────────────────────────────
-# 2. EfficientAT 모델 로드 (torch.hub)
+# 2. EfficientAT 레포 경로를 sys.path에 추가
+# ─────────────────────────────────────────────
+def setup_efficientat_path():
+    """REPO_DIR을 sys.path에 추가하고, 작업 디렉토리를 레포로 변경"""
+    repo_str = str(REPO_DIR)
+    if not REPO_DIR.exists():
+        raise FileNotFoundError(
+            f"EfficientAT 레포를 찾을 수 없습니다: {REPO_DIR}\n"
+        )
+    if repo_str not in sys.path:
+        sys.path.insert(0, repo_str)
+    
+    # ★ 핵심 수정: helpers/utils.py가 'metadata/...' 상대경로를 쓰므로
+    #   작업 디렉토리를 레포 루트로 변경해야 함
+    os.chdir(REPO_DIR)
+    
+    print(f"[✓] EfficientAT 레포 경로 등록: {REPO_DIR}")
+    print(f"[✓] 작업 디렉토리 변경: {REPO_DIR}")
+
+
+# ─────────────────────────────────────────────
+# 3. EfficientAT 모델 로드 (직접 임포트 방식)
 # ─────────────────────────────────────────────
 def load_efficientat_model(model_name: str = MODEL_NAME):
-    import zipfile, shutil
+    setup_efficientat_path()
 
-    hub_dir     = Path.home() / ".cache" / "torch" / "hub"
-    repo_dir    = hub_dir / "fschmid56_EfficientAT_main"
-    zip_path    = hub_dir / "main.zip"
-
-    # zip은 있는데 폴더가 없으면 직접 해제
-    if zip_path.exists() and not repo_dir.exists():
-        print("[→] hub 캐시 zip 압축 해제 중...")
-        with zipfile.ZipFile(zip_path, "r") as zf:
-            zf.extractall(hub_dir)
-        # GitHub zip은 내부 폴더명이 'EfficientAT-main' 으로 나옴
-        extracted = hub_dir / "EfficientAT-main"
-        if extracted.exists():
-            shutil.move(str(extracted), str(repo_dir))
-        zip_path.unlink(missing_ok=True)
-        print("[✓] 압축 해제 완료")
+    # inference.py와 동일한 방식으로 직접 임포트
+    from models.mn.model import get_model as get_mobilenet
+    from models.preprocess import AugmentMelSTFT
+    from helpers.utils import NAME_TO_WIDTH
 
     print(f"[↓] EfficientAT 모델 로드 중: {model_name}")
 
-    model = torch.hub.load(
-        str(repo_dir),          # 로컬 경로로 직접 지정
-        model_name,
-        pretrained=True,
-        source="local",         # 로컬 레포 사용
+    # 모델 로드
+    model = get_mobilenet(
+        width_mult=NAME_TO_WIDTH(model_name),
+        pretrained_name=model_name,
+        strides=[2, 2, 2, 2],
+        head_type="mlp",
     )
     model = model.to(DEVICE)
     model.eval()
 
+    # 전처리기 (AugmentMelSTFT) — inference.py와 동일하게 사용
+    mel_transform = AugmentMelSTFT(
+        n_mels=MEL_BINS,
+        sr=SAMPLE_RATE,
+        win_length=WINDOW_SIZE,
+        hopsize=HOP_SIZE,
+    )
+    mel_transform = mel_transform.to(DEVICE)
+    mel_transform.eval()
+
     total_params = sum(p.numel() for p in model.parameters())
     print(f"[✓] {model_name} 로드 완료 — 파라미터: {total_params/1e6:.2f}M, device: {DEVICE}")
-    return model
+    return model, mel_transform
 
 
 # ─────────────────────────────────────────────
-# 3. AudioSet 레이블 로드
+# 4. AudioSet 레이블 로드
 # ─────────────────────────────────────────────
 def load_audioset_labels() -> list:
+    """helpers.utils.labels를 우선 사용, 없으면 CSV 폴백"""
+    # EfficientAT 레포의 내장 레이블 사용 (setup 후 호출)
+    try:
+        from helpers.utils import labels as _labels
+        print(f"[✓] AudioSet 레이블 로드 (EfficientAT 내장): {len(_labels)}개")
+        return list(_labels)
+    except Exception:
+        pass
+
     labels_path = MODEL_DIR / "class_labels_indices.csv"
     labels_url  = (
         "https://raw.githubusercontent.com/qiuqiangkong/"
@@ -163,86 +197,47 @@ def load_audioset_labels() -> list:
                 f.write(r.text)
             print("[✓] 레이블 저장 완료")
         except Exception as e:
-            print(f"[!] 레이블 다운로드 실패: {e} → 인덱스 기반 더미 레이블 사용")
+            print(f"[!] 레이블 다운로드 실패: {e} → 더미 레이블 사용")
             dummy = [
                 {"index": i, "mid": f"/m/{i:05d}", "display_name": f"AudioSet_class_{i}"}
                 for i in range(CLASSES_NUM)
             ]
-            known = {
-                48: "Car horn", 49: "Vehicle horn, car horn, honking",
-                77: "Siren", 78: "Civil defense siren", 79: "Ambulance (siren)",
-                388: "Alarm", 389: "Fire alarm",
-                390: "Smoke detector, smoke alarm", 391: "Alarm clock",
-                20: "Screaming", 21: "Shout",
-                473: "Vehicle collision, crash", 474: "Crash",
-            }
-            for idx, name in known.items():
-                if idx < CLASSES_NUM:
-                    dummy[idx]["display_name"] = name
             pd.DataFrame(dummy).to_csv(labels_path, index=False)
 
-    df     = pd.read_csv(labels_path)
+    df = pd.read_csv(labels_path)
     labels = df["display_name"].tolist()
-    print(f"[✓] AudioSet 레이블 로드: {len(labels)}개")
+    print(f"[✓] AudioSet 레이블 로드 (CSV): {len(labels)}개")
     return labels
 
 
 # ─────────────────────────────────────────────
-# 4. 오디오 전처리
+# 5. 단일 파일 추론 (AugmentMelSTFT 사용)
 # ─────────────────────────────────────────────
-def audio_to_logmel(filepath: str) -> np.ndarray:
-    """
-    오디오 → log-mel spectrogram (time_steps, mel_bins)
-    EfficientAT 기본 설정: 128 mel bands, hop 320, window 800
-    """
-    waveform, sr = librosa.load(filepath, sr=SAMPLE_RATE, mono=True)
+def infer_single(model, mel_transform, filepath: str, labels: list, top_k: int = 5) -> dict:
+    # inference.py와 동일한 로드 방식
+    waveform, _ = librosa.core.load(filepath, sr=SAMPLE_RATE, mono=True)
 
+    # 길이 맞추기 (10초)
     target_len = int(SAMPLE_RATE * CLIP_DURATION)
     if len(waveform) < target_len:
-        # 짧은 경우 반복 패딩
         repeats = int(np.ceil(target_len / len(waveform)))
         waveform = np.tile(waveform, repeats)[:target_len]
     else:
         waveform = waveform[:target_len]
 
-    mel_spec = librosa.feature.melspectrogram(
-        y=waveform,
-        sr=SAMPLE_RATE,
-        n_fft=WINDOW_SIZE,
-        hop_length=HOP_SIZE,
-        n_mels=MEL_BINS,
-        fmin=FMIN,
-        fmax=FMAX,
-        power=2.0,
-    )
-    log_mel = librosa.power_to_db(mel_spec, ref=np.max)
-    return log_mel.T.astype(np.float32)   # (time_steps, mel_bins)
+    waveform_tensor = torch.from_numpy(waveform[None, :]).to(DEVICE)
 
+    # inference.py와 동일: autocast는 cuda일 때만
+    ctx = autocast(device_type=DEVICE.type) if DEVICE.type == "cuda" else nullcontext()
+    with torch.no_grad(), ctx:
+        spec = mel_transform(waveform_tensor)          # (1, n_mels, T)
+        preds, features = model(spec.unsqueeze(0))     # (1, 1, n_mels, T)
 
-# ─────────────────────────────────────────────
-# 5. 단일 파일 추론
-# ─────────────────────────────────────────────
-def infer_single(model, filepath: str, labels: list, top_k: int = 5) -> dict:
-    log_mel = audio_to_logmel(filepath)
-    # EfficientAT 입력: (batch, time, mel) → 모델 내부에서 처리
-    tensor  = torch.from_numpy(log_mel).unsqueeze(0).to(DEVICE)
+    probs = torch.sigmoid(preds.float()).squeeze().cpu().numpy()
 
-    with torch.no_grad():
-        output = model(tensor)
-
-    # EfficientAT 출력 형태 처리 (tuple or tensor)
-    if isinstance(output, (tuple, list)):
-        logits = output[0]
-    else:
-        logits = output
-
-    probs = torch.sigmoid(logits).squeeze(0).cpu().numpy()   # (527,)
-
-    # Top-K
     top_indices = np.argsort(probs)[::-1][:top_k]
     top_preds   = [(labels[i], float(probs[i])) for i in top_indices]
 
-    # 위험음 타겟 점수
     target_scores = {}
     for cls_name, audioset_names in TARGET_CLASSES.items():
         score = 0.0
@@ -263,7 +258,7 @@ def infer_single(model, filepath: str, labels: list, top_k: int = 5) -> dict:
 # ─────────────────────────────────────────────
 # 6. ESC-50 배치 추론
 # ─────────────────────────────────────────────
-def run_esc50_inference(model, df: pd.DataFrame, labels: list,
+def run_esc50_inference(model, mel_transform, df: pd.DataFrame, labels: list,
                         n_samples: int = N_SAMPLES) -> pd.DataFrame:
     danger_cats = ["car_horn", "siren", "engine", "dog", "crying_baby",
                    "crackling_fire", "fireworks", "clapping"]
@@ -282,20 +277,25 @@ def run_esc50_inference(model, df: pd.DataFrame, labels: list,
 
     for _, row in tqdm(sample_df.iterrows(), total=len(sample_df), ncols=70):
         try:
-            result = infer_single(model, row["filepath"], labels, top_k=3)
+            result = infer_single(model, mel_transform, row["filepath"], labels, top_k=1)
             top1_label, top1_prob = result["top_k"][0]
+            ts = result["target_scores"]
+
             records.append({
-                "filename":       row["filename"],
-                "esc50_category": row["category"],
-                "top1_audioset":  top1_label,
-                "top1_prob":      round(top1_prob, 4),
-                **{f"score_{k}": round(v, 4)
-                   for k, v in result["target_scores"].items()},
+                "filename":        row["filename"],
+                "esc50_category":  row["category"],
+                "top1_audioset":   top1_label,
+                "top1_prob":       round(top1_prob, 4),
+                "score_car_horn":  round(ts.get("car_horn",  0.0), 4),
+                "score_siren":     round(ts.get("siren",     0.0), 4),
+                "score_alarm":     round(ts.get("alarm",     0.0), 4),
+                "score_screaming": round(ts.get("screaming", 0.0), 4),
+                "score_crash":     round(ts.get("crash",     0.0), 4),
             })
         except Exception as e:
             print(f"  [!] 오류 {row['filename']}: {e}")
 
-    return pd.DataFrame(records)
+    return pd.DataFrame(records, columns=OUTPUT_COLUMNS)
 
 
 # ─────────────────────────────────────────────
@@ -306,7 +306,7 @@ def print_results(results_df: pd.DataFrame):
     print(f"  EfficientAT ({MODEL_NAME}) — ESC-50 추론 결과")
     print("=" * 70)
 
-    score_cols = [c for c in results_df.columns if c.startswith("score_")]
+    score_cols = [c for c in OUTPUT_COLUMNS if c.startswith("score_")]
     print("\n[위험음 클래스별 평균 confidence score]")
     print(f"  {'클래스':<15} {'평균 score':>12}")
     print("  " + "-" * 30)
@@ -340,32 +340,29 @@ def main():
     print(f"  Device: {DEVICE}")
     print("=" * 70)
 
-    # 1) ESC-50
     esc_dir = download_esc50()
     df      = load_esc50_metadata(esc_dir)
 
-    # 2) AudioSet 레이블
+    # 모델 로드 (레포 경로 등록 포함)
+    model, mel_transform = load_efficientat_model(MODEL_NAME)
+
+    # 레이블 로드 (레포 등록 후 내장 labels 사용 가능)
     labels = load_audioset_labels()
 
-    # 3) 모델 로드
-    model = load_efficientat_model(MODEL_NAME)
-
-    # 4) 단일 파일 예시
+    # 단일 파일 예시
     sample_file = df.iloc[0]["filepath"]
     print(f"\n[→] 단일 파일 추론 예시: {Path(sample_file).name}")
-    result = infer_single(model, sample_file, labels, top_k=5)
+    result = infer_single(model, mel_transform, sample_file, labels, top_k=5)
     print(f"  카테고리: {df.iloc[0]['category']}")
     print(f"  Top-5 예측:")
     for rank, (lbl, prob) in enumerate(result["top_k"], 1):
         print(f"    {rank}. {lbl:<40} {prob:.4f}")
     print(f"  위험음 scores: {result['target_scores']}")
 
-    # 5) 배치 추론
-    results_df = run_esc50_inference(model, df, labels, n_samples=N_SAMPLES)
+    # 배치 추론
+    results_df = run_esc50_inference(model, mel_transform, df, labels, n_samples=N_SAMPLES)
 
-    # 6) 결과 출력
     print_results(results_df)
-
     print("\n[완료] EfficientAT inference 파이프라인 실행 성공!")
 
 
