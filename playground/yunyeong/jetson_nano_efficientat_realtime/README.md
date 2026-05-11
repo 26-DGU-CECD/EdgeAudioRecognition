@@ -28,8 +28,4 @@ sudo docker run --runtime nvidia -it --rm \
   -v /dev/bus/usb:/dev/bus/usb \
   -v "$HOME/efficientat_ws:/workspace" \
   nvcr.io/nvidia/l4t-pytorch:r32.7.1-pth1.10-py3
-
-:wq
-wq
-exit
-;
+```
