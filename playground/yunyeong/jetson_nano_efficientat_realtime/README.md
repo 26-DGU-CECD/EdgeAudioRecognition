@@ -1,31 +1,20 @@
 # Jetson Nano EfficientAT Realtime Test
 
+Jetson Nano + reSpeaker Mic Array v3.0 환경에서 EfficientAT pretrained 모델의 온디바이스 실시간 추론 가능성을 테스트한 코드입니다.
+
 ## 목적
 
-Jetson Nano + reSpeaker Mic Array v3.0 환경에서 EfficientAT pretrained 모델의 온디바이스 실시간 추론 가능성을 테스트한다.
+- Jetson Nano에서 EfficientAT inference 가능 여부 확인
+- reSpeaker Mic Array v3.0으로 실시간 오디오 입력 수집
+- `mn04_as`, `mn05_as`, `mn10_as` 모델별 추론 시간 비교
+- Jetson Nano에서는 학습하지 않고, 녹음/전처리/inference/classification만 수행
 
-## 모델
+## 현재 Jetson 파일 구조
 
-- mn04_as: Jetson Nano 실시간 테스트용 우선 후보
-- mn05_as: mn04_as보다 약간 무겁지만 성능 보완 후보
-- mn10_as: 기존 테스트 모델이나 Jetson Nano에서 느려 실시간 테스트에서는 후순위
-
-## 실행 환경
-
-- Jetson Nano
-- Docker: nvcr.io/nvidia/l4t-pytorch:r32.7.1-pth1.10-py3
-- reSpeaker Mic Array v3.0
-- PyTorch CUDA inference
-
-## Docker 실행 예시
+Host 기준:
 
 ```bash
-sudo docker run --runtime nvidia -it --rm \
-  --network=host \
-  --ipc=host \
-  --privileged \
-  -v /dev/snd:/dev/snd \
-  -v /dev/bus/usb:/dev/bus/usb \
-  -v "$HOME/efficientat_ws:/workspace" \
-  nvcr.io/nvidia/l4t-pytorch:r32.7.1-pth1.10-py3
-```
+~/efficientat_ws/
+├── EfficientAT
+├── audio
+└── edge_audio_run
