@@ -18,6 +18,7 @@ import csv
 import json
 import math
 import random
+import warnings
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any
@@ -49,7 +50,7 @@ TARGET_CLASS_MAPPING: dict[str, list[str]] = {
     "appliances": ["washing_machine", "vacuum_cleaner"],
     "baby_cry": ["crying_baby"],
     "animal_cry": ["dog", "cat"],
-    "glass_shatter": ["glass_shattering"],
+    "glass_shatter": ["glass_breaking"],
 }
 
 CLASS_NAMES = list(TARGET_CLASS_MAPPING.keys())
@@ -144,7 +145,23 @@ def fix_audio_length(waveform: torch.Tensor, target_samples: int) -> torch.Tenso
 
 def load_audio(path: Path, config: AudioConfig) -> torch.Tensor:
     torchaudio = require_torchaudio()
-    waveform, sample_rate = torchaudio.load(str(path))
+    try:
+        waveform, sample_rate = torchaudio.load(str(path))
+    except ImportError as exc:
+        if "TorchCodec" not in str(exc) and "torchcodec" not in str(exc):
+            raise
+        try:
+            import soundfile as sf
+        except ImportError as sf_exc:
+            raise ImportError(
+                "torchaudio.load requires torchcodec in this environment, and the "
+                "soundfile fallback is not installed. Install one of them:\n"
+                "  pip install torchcodec\n"
+                "or\n"
+                "  pip install soundfile"
+            ) from sf_exc
+        samples, sample_rate = sf.read(str(path), dtype="float32", always_2d=True)
+        waveform = torch.from_numpy(samples.T)
     waveform = waveform.mean(dim=0)
     if sample_rate != config.sample_rate:
         waveform = torchaudio.functional.resample(waveform, sample_rate, config.sample_rate)
@@ -190,6 +207,28 @@ def read_filtered_metadata(esc50_root: Path, val_fold: int) -> tuple[list[dict[s
     return train_rows, val_rows
 
 
+def summarize_target_counts(rows: list[dict[str, Any]]) -> dict[str, int]:
+    counts = {class_name: 0 for class_name in CLASS_NAMES}
+    for row in rows:
+        counts[row["target_class"]] += 1
+    return counts
+
+
+def warn_missing_target_classes(train_rows: list[dict[str, Any]], val_rows: list[dict[str, Any]]) -> None:
+    train_counts = summarize_target_counts(train_rows)
+    val_counts = summarize_target_counts(val_rows)
+    missing_train = [class_name for class_name, count in train_counts.items() if count == 0]
+    missing_val = [class_name for class_name, count in val_counts.items() if count == 0]
+
+    if missing_train or missing_val:
+        print("WARNING: Some target classes have no ESC-50 samples in this split.")
+        if missing_train:
+            print(f"  Missing from train: {', '.join(missing_train)}")
+        if missing_val:
+            print(f"  Missing from val/test: {', '.join(missing_val)}")
+        print("  A classifier cannot learn or evaluate classes with zero samples.")
+
+
 class ESC50SubsetDataset(Dataset):
     def __init__(self, rows: list[dict[str, Any]], audio_config: AudioConfig, train: bool):
         self.rows = rows
@@ -226,10 +265,22 @@ class ESC50SubsetDataset(Dataset):
 # 3. Lightweight Model Architecture (For Jetson Orin Nano)
 # =============================================================================
 
-def build_model(num_classes: int) -> nn.Module:
-    model = torchvision.models.mobilenet_v3_small(weights=None)
+def build_model(num_classes: int, pretrained: bool = False) -> nn.Module:
+    weights = torchvision.models.MobileNet_V3_Small_Weights.IMAGENET1K_V1 if pretrained else None
+    try:
+        model = torchvision.models.mobilenet_v3_small(weights=weights)
+    except Exception as exc:
+        if not pretrained:
+            raise
+        warnings.warn(
+            f"Could not load pretrained MobileNetV3 weights ({exc}). "
+            "Training will continue from random initialization.",
+            RuntimeWarning,
+        )
+        model = torchvision.models.mobilenet_v3_small(weights=None)
 
     first_conv = model.features[0][0]
+    first_conv_weight = first_conv.weight.detach().clone() if pretrained else None
     model.features[0][0] = nn.Conv2d(
         in_channels=1,
         out_channels=first_conv.out_channels,
@@ -241,6 +292,10 @@ def build_model(num_classes: int) -> nn.Module:
         bias=first_conv.bias is not None,
         padding_mode=first_conv.padding_mode,
     )
+    if first_conv_weight is not None:
+        model.features[0][0].weight.data.copy_(first_conv_weight.mean(dim=1, keepdim=True))
+        if first_conv.bias is not None:
+            model.features[0][0].bias.data.copy_(first_conv.bias.data)
 
     in_features = model.classifier[-1].in_features
     model.classifier[-1] = nn.Linear(in_features, num_classes)
@@ -273,6 +328,7 @@ class TrainConfig:
     val_fold: int = 5
     seed: int = 42
     fp32: bool = False
+    pretrained: bool = False
 
 
 def train_one_epoch(
@@ -342,6 +398,80 @@ def evaluate(
     return total_loss / total, correct / total
 
 
+@torch.inference_mode()
+def collect_predictions(
+    model: nn.Module,
+    loader: DataLoader,
+    rows: list[dict[str, Any]],
+    class_names: list[str],
+    device: torch.device,
+    use_amp: bool,
+) -> tuple[list[dict[str, Any]], torch.Tensor]:
+    model.eval()
+    predictions: list[dict[str, Any]] = []
+    confusion = torch.zeros(len(class_names), len(class_names), dtype=torch.long)
+    row_offset = 0
+
+    for features, labels in loader:
+        features = features.to(device, non_blocking=True)
+        labels = labels.to(device, non_blocking=True)
+        with torch.amp.autocast("cuda", enabled=use_amp):
+            logits = model(features)
+        probabilities = torch.softmax(logits.float(), dim=1)
+        scores, predicted = torch.max(probabilities, dim=1)
+
+        for batch_index in range(labels.size(0)):
+            row = rows[row_offset + batch_index]
+            true_index = int(labels[batch_index].item())
+            pred_index = int(predicted[batch_index].item())
+            confusion[true_index, pred_index] += 1
+            predictions.append(
+                {
+                    "audio_path": str(row["audio_path"]),
+                    "esc50_category": row["esc50_category"],
+                    "fold": row["fold"],
+                    "true_label": class_names[true_index],
+                    "pred_label": class_names[pred_index],
+                    "pred_score": float(scores[batch_index].item()),
+                    "correct": true_index == pred_index,
+                }
+            )
+        row_offset += labels.size(0)
+
+    return predictions, confusion
+
+
+def print_test_report(predictions: list[dict[str, Any]], confusion: torch.Tensor, class_names: list[str]) -> None:
+    correct = sum(1 for row in predictions if row["correct"])
+    total = len(predictions)
+    accuracy = correct / total if total else 0.0
+
+    print(f"Test rows: {total}")
+    print(f"Accuracy: {accuracy:.4f} ({correct}/{total})")
+    print("\nPer-class accuracy:")
+    for index, class_name in enumerate(class_names):
+        class_total = int(confusion[index].sum().item())
+        class_correct = int(confusion[index, index].item())
+        class_acc = class_correct / class_total if class_total else 0.0
+        print(f"  {class_name}: {class_acc:.4f} ({class_correct}/{class_total})")
+
+    print("\nConfusion matrix: rows=true, cols=pred")
+    header = "true\\pred," + ",".join(class_names)
+    print(header)
+    for index, class_name in enumerate(class_names):
+        counts = ",".join(str(int(value)) for value in confusion[index].tolist())
+        print(f"{class_name},{counts}")
+
+
+def write_predictions_csv(path: Path, predictions: list[dict[str, Any]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = ["audio_path", "esc50_category", "fold", "true_label", "pred_label", "pred_score", "correct"]
+    with path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(predictions)
+
+
 def run_train(args: argparse.Namespace) -> None:
     workspace = ensure_inside_workspace(Path(args.workspace), Path(args.workspace))
     checkpoint_path = ensure_inside_workspace(Path(args.checkpoint_path), workspace)
@@ -362,6 +492,7 @@ def run_train(args: argparse.Namespace) -> None:
         val_fold=args.val_fold,
         seed=args.seed,
         fp32=args.fp32,
+        pretrained=args.pretrained,
     )
     audio_config = AudioConfig(
         sample_rate=args.sample_rate,
@@ -376,6 +507,7 @@ def run_train(args: argparse.Namespace) -> None:
     use_amp = device.type == "cuda" and not train_config.fp32
 
     train_rows, val_rows = read_filtered_metadata(train_config.esc50_root, train_config.val_fold)
+    warn_missing_target_classes(train_rows, val_rows)
     train_dataset = ESC50SubsetDataset(train_rows, audio_config, train=True)
     val_dataset = ESC50SubsetDataset(val_rows, audio_config, train=False)
     train_loader = DataLoader(
@@ -395,7 +527,7 @@ def run_train(args: argparse.Namespace) -> None:
         drop_last=False,
     )
 
-    model = build_model(num_classes=len(CLASS_NAMES)).to(device)
+    model = build_model(num_classes=len(CLASS_NAMES), pretrained=train_config.pretrained).to(device)
     optimizer = torch.optim.AdamW(model.parameters(), lr=train_config.lr, weight_decay=train_config.weight_decay)
     criterion = nn.CrossEntropyLoss()
     scaler = torch.amp.GradScaler("cuda", enabled=use_amp)
@@ -505,7 +637,70 @@ def run_export(args: argparse.Namespace) -> None:
 
 
 # =============================================================================
-# 6. Edge Inference Script (Jetson Orin Nano)
+# 6. PyTorch Checkpoint Test Script
+# =============================================================================
+
+def get_rows_for_split(esc50_root: Path, val_fold: int, split: str) -> list[dict[str, Any]]:
+    train_rows, val_rows = read_filtered_metadata(esc50_root, val_fold)
+    if split == "train":
+        return train_rows
+    if split == "val":
+        return val_rows
+    if split == "all":
+        return train_rows + val_rows
+    raise ValueError(f"Unsupported split: {split}")
+
+
+def run_test(args: argparse.Namespace) -> None:
+    workspace = Path(args.workspace).expanduser().resolve()
+    checkpoint_path = ensure_inside_workspace(Path(args.checkpoint_path), workspace)
+    predictions_csv = (
+        ensure_inside_workspace(Path(args.predictions_csv), workspace)
+        if args.predictions_csv is not None
+        else None
+    )
+
+    device = torch.device("cuda" if torch.cuda.is_available() and not args.cpu else "cpu")
+    checkpoint = torch.load(checkpoint_path, map_location=device)
+    class_names = checkpoint.get("class_names", CLASS_NAMES)
+    audio_config = AudioConfig(**checkpoint.get("audio_config", asdict(AudioConfig())))
+    checkpoint_train_config = checkpoint.get("train_config", {})
+    val_fold = args.val_fold if args.val_fold is not None else int(checkpoint_train_config.get("val_fold", 5))
+    use_amp = device.type == "cuda" and not args.fp32
+
+    model = build_model(num_classes=len(class_names))
+    model.load_state_dict(checkpoint["model_state_dict"])
+    model.to(device).eval()
+
+    rows = get_rows_for_split(Path(args.esc50_root), val_fold, args.split)
+    train_rows, val_rows = read_filtered_metadata(Path(args.esc50_root), val_fold)
+    warn_missing_target_classes(train_rows, val_rows)
+    dataset = ESC50SubsetDataset(rows, audio_config, train=False)
+    loader = DataLoader(
+        dataset,
+        batch_size=args.batch_size,
+        shuffle=False,
+        num_workers=args.num_workers,
+        pin_memory=device.type == "cuda",
+        drop_last=False,
+    )
+
+    print(f"Device: {device}")
+    print(f"Checkpoint: {checkpoint_path}")
+    print(f"Checkpoint best_val_acc: {checkpoint.get('best_val_acc', 'unknown')}")
+    print(f"Checkpoint epoch: {checkpoint.get('epoch', 'unknown')}")
+    print(f"ESC-50 split: {args.split} | val_fold: {val_fold}")
+
+    predictions, confusion = collect_predictions(model, loader, rows, class_names, device, use_amp)
+    print_test_report(predictions, confusion, class_names)
+
+    if predictions_csv is not None:
+        write_predictions_csv(predictions_csv, predictions)
+        print(f"\nSaved predictions CSV: {predictions_csv}")
+
+
+# =============================================================================
+# 7. Edge Inference Script (Jetson Orin Nano)
 # =============================================================================
 
 def get_onnx_providers() -> list[str]:
@@ -582,6 +777,11 @@ def build_parser() -> argparse.ArgumentParser:
     train.add_argument("--val-fold", type=int, default=5, choices=[1, 2, 3, 4, 5])
     train.add_argument("--seed", type=int, default=42)
     train.add_argument("--fp32", action="store_true", help="Disable CUDA AMP mixed precision.")
+    train.add_argument(
+        "--pretrained",
+        action="store_true",
+        help="Initialize MobileNetV3-small from ImageNet weights and adapt the first conv to 1-channel log-mel input.",
+    )
     train.add_argument("--sample-rate", type=int, default=16_000)
     train.add_argument("--duration-sec", type=float, default=5.0)
     train.add_argument("--n-fft", type=int, default=1024)
@@ -595,6 +795,25 @@ def build_parser() -> argparse.ArgumentParser:
     export.add_argument("--onnx-path", type=Path, default=ONNX_PATH)
     export.add_argument("--opset", type=int, default=17)
     export.set_defaults(func=run_export)
+
+    test = subparsers.add_parser("test", help="Evaluate best_model.pth on an ESC-50 fold split.")
+    test.add_argument("--workspace", type=Path, default=WORKSPACE)
+    test.add_argument("--esc50-root", type=Path, default=ESC50_ROOT)
+    test.add_argument("--checkpoint-path", type=Path, default=CHECKPOINT_PATH)
+    test.add_argument("--split", choices=["val", "train", "all"], default="val")
+    test.add_argument(
+        "--val-fold",
+        type=int,
+        choices=[1, 2, 3, 4, 5],
+        default=None,
+        help="Fold to evaluate as validation/test. Defaults to the fold saved in the checkpoint.",
+    )
+    test.add_argument("--batch-size", type=int, default=32)
+    test.add_argument("--num-workers", type=int, default=2)
+    test.add_argument("--predictions-csv", type=Path, default=WORKSPACE / "test_predictions.csv")
+    test.add_argument("--cpu", action="store_true", help="Force CPU evaluation.")
+    test.add_argument("--fp32", action="store_true", help="Disable CUDA AMP mixed precision.")
+    test.set_defaults(func=run_test)
 
     infer = subparsers.add_parser("infer", help="Run ONNX inference on one raw 5-second WAV file.")
     infer.add_argument("--workspace", type=Path, default=WORKSPACE)
