@@ -30,3 +30,7 @@ __pycache__/
 
 # OS files
 .DS_Store
+*.pb
+*.h5
+dataset/
+yamnet_class_map.csv
