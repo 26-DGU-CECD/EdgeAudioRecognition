@@ -18,3 +18,21 @@ Host 기준:
 ├── EfficientAT
 ├── audio
 └── edge_audio_run
+```
+
+실행 명령어
+```
+python3 -u jetson_wifi_bridge_doa.py \
+  --port 8765 \
+  --log /workspace/audio/wifi_bridge_mn04_as_doa.txt \
+  -- \
+  python3 -u jetson_live.py \
+    --device plughw:2,0 \
+    --model_name mn04_as \
+    --rate 16000 \
+    --channels 6 \
+    --channel-index 0 \
+    --seconds 2 \
+    --topk 5 \
+    --threshold 0.10
+```
