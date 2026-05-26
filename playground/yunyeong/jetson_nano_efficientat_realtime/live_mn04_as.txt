@@ -373,20 +373,41 @@ MN(
   )
 )
 Warning: FMAX is None setting to 15000 
-[11:26:09] infer=8.196s total=17.445s | White noise 0.143 / Silence 0.101
-[11:26:21] infer=0.057s total=11.431s | Music 0.306 / Musical instrument 0.153 / Harmonica 0.144
-[11:26:23] infer=0.058s total=2.329s | Wind instrument, woodwind instrument 0.224 / Harmonica 0.186 / Music 0.181
-[11:26:26] infer=0.060s total=2.329s | Vehicle horn, car horn, honking 0.575 / Vehicle 0.396 / Toot 0.260 / Car 0.185 / Car alarm 0.131
-[11:26:28] infer=0.061s total=2.370s | Vehicle horn, car horn, honking 0.688 / Vehicle 0.492 / Toot 0.245 / Car 0.243 / Outside, urban or manmade 0.102
-[11:26:30] infer=0.068s total=2.361s | Vehicle horn, car horn, honking 0.628 / Vehicle 0.361 / Toot 0.229 / Car 0.145 / Air horn, truck horn 0.112
-[11:26:33] infer=0.066s total=2.355s | Vehicle horn, car horn, honking 0.767 / Vehicle 0.491 / Car 0.260 / Toot 0.243 / Air horn, truck horn 0.118
-[11:26:35] infer=0.066s total=2.367s | Vehicle horn, car horn, honking 0.635 / Vehicle 0.333 / Toot 0.184 / Air horn, truck horn 0.180 / Car 0.105
-[11:26:37] infer=0.064s total=2.352s | Vehicle horn, car horn, honking 0.515 / Vehicle 0.417 / Car 0.222 / Toot 0.217 / Car alarm 0.101
-[11:26:40] infer=0.069s total=2.347s | Vehicle horn, car horn, honking 0.783 / Vehicle 0.721 / Car 0.462 / Toot 0.235 / Outside, urban or manmade 0.188
-[11:26:42] infer=0.057s total=2.345s | Vehicle horn, car horn, honking 0.680 / Vehicle 0.513 / Car 0.310 / Toot 0.263 / Car alarm 0.123
-[11:26:44] infer=0.055s total=2.377s | Harmonica 0.477 / Music 0.243 / Wind instrument, woodwind instrument 0.164 / Musical instrument 0.153
-[11:26:47] infer=0.060s total=2.317s | Vehicle horn, car horn, honking 0.573 / Vehicle 0.217 / Toot 0.199 / Air horn, truck horn 0.117
-[11:26:49] infer=0.053s total=2.316s | Vehicle horn, car horn, honking 0.517 / Vehicle 0.433 / Toot 0.284 / Car 0.157
-[11:26:51] infer=0.054s total=2.365s | Vehicle horn, car horn, honking 0.718 / Vehicle 0.675 / Car 0.519 / Toot 0.344 / Outside, urban or manmade 0.131
-[11:26:54] infer=0.062s total=2.324s | Vehicle horn, car horn, honking 0.720 / Vehicle 0.409 / Toot 0.367 / Car 0.212 / Air horn, truck horn 0.112
-[11:26:56] infer=0.062s total=2.329s | Vehicle horn, car horn, honking 0.712 / Toot 0.417 / Vehicle 0.343 / Car 0.201 / Air horn, truck horn 0.104
+[06:00:51] infer=2.467s total=15.271s | Speech 0.896 / Male speech, man speaking 0.350 / Narration, monologue 0.237
+[06:00:55] infer=0.075s total=3.351s | Speech 0.845 / Female speech, woman speaking 0.209 / Narration, monologue 0.203 / Male speech, man speaking 0.151
+[06:00:57] infer=0.079s total=2.343s | Speech 0.824 / Computer keyboard 0.122 / Typing 0.114
+[06:00:59] infer=0.073s total=2.324s | Speech 0.915 / Narration, monologue 0.694 / Male speech, man speaking 0.667 / Speech synthesizer 0.125
+[06:01:02] infer=0.081s total=2.344s | Speech 0.759 / Music 0.732 / Musical instrument 0.102
+[06:01:04] infer=0.060s total=2.331s | Music 0.692 / Speech 0.145
+[06:01:06] infer=0.058s total=2.324s | Music 0.272
+[06:01:09] infer=0.062s total=2.316s | Speech 0.506
+[06:01:11] infer=0.077s total=2.330s | Music 0.347 / Speech 0.169
+[06:01:13] infer=0.057s total=2.312s | Speech 0.828 / Music 0.145
+[06:01:16] infer=0.078s total=2.329s | Speech 0.821
+[06:01:18] infer=0.082s total=2.362s | Speech 0.820 / Male speech, man speaking 0.120
+[06:01:21] infer=0.079s total=2.505s | Speech 0.797 / Car alarm 0.201 / Buzzer 0.149 / Vehicle 0.132 / Toot 0.125
+[06:01:23] infer=0.087s total=2.337s | Speech 0.626 / Narration, monologue 0.167 / Male speech, man speaking 0.149
+[06:01:25] infer=0.077s total=2.325s | Speech 0.790 / Music 0.253 / Printer 0.175
+[06:01:28] infer=0.079s total=2.321s | Speech 0.758 / Female speech, woman speaking 0.412 / Narration, monologue 0.167 / Music 0.113
+[06:01:30] infer=0.059s total=2.326s | Speech 0.770 / Music 0.387 / Buzzer 0.128
+[06:01:32] infer=0.101s total=2.344s | Speech 0.736 / Music 0.581
+[06:01:35] infer=0.097s total=2.360s | Speech 0.744 / Animal 0.155 / Bird 0.127
+[06:01:37] infer=0.080s total=2.340s | Music 0.754 / Musical instrument 0.465 / Plucked string instrument 0.454 / Guitar 0.454 / Strum 0.249
+[06:01:47] infer=0.082s total=10.172s | Speech 0.891 / Narration, monologue 0.351 / Male speech, man speaking 0.284
+[06:01:56] infer=0.094s total=9.290s | Speech 0.765 / Male speech, man speaking 0.198 / Narration, monologue 0.159
+[06:01:59] infer=0.076s total=2.327s | Speech 0.831 / Male speech, man speaking 0.147 / Narration, monologue 0.111
+[06:02:01] infer=0.073s total=2.316s | Ambulance (siren) 0.578 / Emergency vehicle 0.457 / Siren 0.439 / Speech 0.366 / Police car (siren) 0.248
+[06:02:03] infer=0.089s total=2.331s | Ambulance (siren) 0.608 / Emergency vehicle 0.510 / Siren 0.465 / Speech 0.392 / Police car (siren) 0.338
+[06:02:06] infer=0.079s total=2.340s | Ambulance (siren) 0.601 / Emergency vehicle 0.581 / Siren 0.544 / Police car (siren) 0.533 / Speech 0.307
+[06:02:08] infer=0.087s total=2.358s | Emergency vehicle 0.514 / Siren 0.466 / Ambulance (siren) 0.437 / Police car (siren) 0.359 / Speech 0.220
+[06:02:10] infer=0.089s total=2.338s | Siren 0.560 / Emergency vehicle 0.551 / Police car (siren) 0.514 / Ambulance (siren) 0.463 / Speech 0.335
+[06:02:13] infer=0.085s total=2.339s | Speech 0.812 / Female speech, woman speaking 0.313 / Narration, monologue 0.237
+[06:02:15] infer=0.084s total=2.343s | Speech 0.876 / Female speech, woman speaking 0.434 / Conversation 0.423
+[06:02:17] infer=0.097s total=2.344s | Speech 0.825 / Female speech, woman speaking 0.431 / Conversation 0.157 / Narration, monologue 0.113
+[06:02:20] infer=0.082s total=2.329s | Speech 0.913 / Male speech, man speaking 0.670 / Narration, monologue 0.520
+[06:02:22] infer=0.083s total=2.336s | Speech 0.937 / Narration, monologue 0.769 / Male speech, man speaking 0.574 / Female speech, woman speaking 0.282
+[06:02:24] infer=0.078s total=2.333s | Speech 0.883 / Animal 0.116
+[06:02:27] infer=0.085s total=2.334s | Speech 0.793 / Pigeon, dove 0.134 / Male speech, man speaking 0.107 / Bird 0.103
+[06:02:29] infer=0.074s total=2.316s | Speech 0.859 / Female speech, woman speaking 0.453 / Narration, monologue 0.174 / Conversation 0.110
+[06:02:31] infer=0.078s total=2.322s | Speech 0.891 / Narration, monologue 0.396 / Female speech, woman speaking 0.293 / Male speech, man speaking 0.193
+[06:02:34] infer=0.083s total=2.329s | Speech 0.870 / Female speech, woman speaking 0.132 / Narration, monologue 0.101
