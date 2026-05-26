@@ -274,7 +274,7 @@ def main():
     parser.add_argument("--seconds", type=int, default=2, help="recording length per realtime decision")
     parser.add_argument("--clip-seconds", type=float, default=None, help="model input length; default from checkpoint, usually 10")
     parser.add_argument("--topk", type=int, default=5)
-    parser.add_argument("--threshold", type=float, default=0.70, help="softmax score threshold")
+    parser.add_argument("--threshold", type=float, default=0.30, help="softmax score threshold")
     parser.add_argument("--min-db", type=float, default=45.0, help="skip inference below this display dB")
     parser.add_argument("--db-offset", type=float, default=DEFAULT_DB_OFFSET, help="display_dB = dBFS + offset")
     parser.add_argument("--db-threshold", type=float, default=None, help="legacy dBFS threshold; use --min-db instead")
@@ -336,15 +336,9 @@ def main():
 
         dbfs = calc_dbfs(audio)
         display_db = dbfs_to_display_db(dbfs, args.db_offset)
-        if display_db <= min_db:
-            total_time = time.time() - loop_start
-            # UI needs a fresh event so it does not keep showing the previous class.
-            print(
-                "[%s] infer=0.000s total=%.3fs db=%.1fdB | listening 0.000" % (
-                    time.strftime("%H:%M:%S"), total_time, display_db
-                ),
-                flush=True,
-            )
+        if display_db < min_db:
+            if args.print_skipped:
+                print("[%s] db=%.1fdB below %.1fdB, skipped" % (time.strftime("%H:%M:%S"), display_db, min_db), flush=True)
             continue
 
         clip = prepare_clip(audio, sample_rate, clip_seconds, normalize=(not args.no_normalize))
@@ -358,8 +352,8 @@ def main():
             if score >= args.threshold:
                 shown.append("%s %.3f" % (labels[idx], score))
         if len(shown) == 0:
-            # Do not expose a class below the UI confidence threshold.
-            shown.append("listening 0.000")
+            idx = int(sorted_idx[0])
+            shown.append("%s %.3f" % (labels[idx], float(scores[idx])))
 
         print(
             "[%s] infer=%.3fs total=%.3fs db=%.1fdB | %s" % (

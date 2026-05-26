@@ -182,6 +182,7 @@ def parse_line_with_doa(line):
 
     if angle is None or direction is None:
         parsed["doa_status"] = status or "not_ready"
+        parsed["direction_text"] = ""
         parsed["raw"] = "%s | DOA unavailable:%s" % (parsed.get("raw", line.strip()), parsed["doa_status"])
         return bridge.apply_display_fields(parsed)
 
