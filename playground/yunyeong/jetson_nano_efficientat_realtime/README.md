@@ -1,3 +1,9 @@
+# Jetson Nano 실시간 추론 및 시각화 실행 코드
+```
+cd ~/efficientat_ws
+./run_wifi_bridge_finetuned_from_host.sh plughw:2,0 8765
+```
+
 # Jetson Nano EfficientAT Realtime Test
 
 Jetson Nano + reSpeaker Mic Array v3.0 환경에서 EfficientAT pretrained 모델의 온디바이스 실시간 추론 가능성을 테스트한 코드입니다.
