@@ -1,0 +1,5 @@
+.venv/
+EfficientAT/
+ESC-50/
+__pycache__/
+*.py[cod]
