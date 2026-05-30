@@ -468,7 +468,7 @@ Android 9는 BLE scan이 위치 권한/위치 기능에 묶여 있습니다. 위
 PowerShell에서:
 
 ```powershell
-cd C:\Users\Gamzadole\OneDrive\Desktop\EdgeAudioRecognition\bluetooth_flutter
+cd C:\Users\Gamzadole\OneDrive\Desktop\EdgeAudioRecognition\connection_test\bluetooth_flutter
 
 $env:JAVA_HOME='C:\Program Files\Android\Android Studio\jbr'
 $env:Path="$env:JAVA_HOME\bin;$env:LOCALAPPDATA\Android\Sdk\platform-tools;$env:Path"
@@ -548,7 +548,7 @@ enum class ConnectionState {
 
 ```text
 이 프로젝트는 Flutter가 아니라 Kotlin Jetpack Compose Android 앱이다.
-파일은 bluetooth_flutter/app/src/main/java/com/example/bluetoothtest/MainActivity.kt 하나에 BLE 로직과 UI가 같이 있다.
+파일은 connection_test/bluetooth_flutter/app/src/main/java/com/example/bluetoothtest/MainActivity.kt 하나에 BLE 로직과 UI가 같이 있다.
 JetsonBleClient 클래스의 BLE 로직은 건드리지 말고, BleApp composable 내부 UI만 수정해라.
 목표는 BLE 테스트 앱처럼 보이게 하는 것이다.
 Status, Scan/Stop/Disconnect 버튼, Nearby Jetson devices 목록, Latest message, History 섹션은 유지해라.
