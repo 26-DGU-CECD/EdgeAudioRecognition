@@ -104,6 +104,7 @@ class HelloCharacteristic(dbus.service.Object):
         self.flags = ["read", "notify"]
         self.message = message
         self.repeat_seconds = repeat_seconds
+        self.notify_count = 0
         self.notifying = False
         self.timer_id = None
         super().__init__(bus, self.path)
@@ -120,17 +121,19 @@ class HelloCharacteristic(dbus.service.Object):
             }
         }
 
-    def encoded_message(self):
-        return self.message.encode("utf-8")
+    def encoded_message(self, message=None):
+        return (message if message is not None else self.message).encode("utf-8")
 
     def send_notification(self):
-        value = byte_array(self.encoded_message())
+        self.notify_count += 1
+        message = f"{self.message} {self.notify_count}"
+        value = byte_array(self.encoded_message(message))
         self.PropertiesChanged(
             GATT_CHRC_IFACE,
             dbus.Dictionary({"Value": value}, signature="sv"),
             dbus.Array([], signature="s"),
         )
-        print(f"sent notification: {self.message}", flush=True)
+        print(f"sent notification: {message}", flush=True)
 
     def notify_tick(self):
         if not self.notifying:
@@ -154,6 +157,7 @@ class HelloCharacteristic(dbus.service.Object):
         if self.notifying:
             return
         self.notifying = True
+        self.notify_count = 0
         print("client subscribed; sending hello", flush=True)
         self.send_notification()
         if self.repeat_seconds > 0:

@@ -1,3 +1,32 @@
+## 2026-05-30 iOS BLE Client Progress
+
+Added a native SwiftUI/CoreBluetooth iPhone client under `ios_ble_client`.
+
+Files:
+
+- `ios_ble_client/JetsonBleClient.xcodeproj`
+- `ios_ble_client/JetsonBleClient/Info.plist`
+- `ios_ble_client/JetsonBleClient/JetsonBleClientApp.swift`
+- `ios_ble_client/JetsonBleClient/ContentView.swift`
+- `ios_ble_client/JetsonBleClient/BleCentral.swift`
+- `ios_ble_client/README.md`
+
+Behavior:
+
+- Requests iOS Bluetooth permission with `NSBluetoothAlwaysUsageDescription`.
+- Scans BLE peripherals from a physical iPhone.
+- Prioritizes devices named `JHello` or advertising service UUID `12345678-1234-5678-1234-56789abcdef0`.
+- Connects to the Jetson BLE peripheral.
+- Discovers characteristic UUID `12345678-1234-5678-1234-56789abcdef1`.
+- Reads the current value and subscribes to notify.
+- Displays latest message and message history.
+
+Important:
+
+- iOS Simulator cannot scan/connect to external Jetson BLE devices.
+- The app must be opened/built on macOS with Xcode and run on a physical iPhone.
+- Select an Apple developer team in Xcode `Signing & Capabilities` before running on the iPhone.
+
 # Session Handoff
 
 ## Project Goal

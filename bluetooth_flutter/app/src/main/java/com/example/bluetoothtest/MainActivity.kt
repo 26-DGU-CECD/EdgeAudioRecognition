@@ -12,7 +12,6 @@ import android.bluetooth.BluetoothGattService
 import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothProfile
 import android.bluetooth.le.ScanCallback
-import android.bluetooth.le.ScanFilter
 import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
@@ -20,7 +19,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.ParcelUuid
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -210,17 +208,12 @@ class JetsonBleClient(private val context: Context) {
         }
         stopScan()
         devices.clear()
-        val filters = listOf(
-            ScanFilter.Builder()
-                .setServiceUuid(ParcelUuid(JetsonServiceUuid))
-                .build(),
-        )
         val settings = ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
             .build()
-        activeScanner.startScan(filters, settings, scanCallback)
+        activeScanner.startScan(null, settings, scanCallback)
         isScanning = true
-        status = "Scanning for JHello"
+        status = "Scanning for BLE devices"
     }
 
     @SuppressLint("MissingPermission")
@@ -363,7 +356,7 @@ fun BleApp(bleClient: JetsonBleClient) {
                     }
                 }
 
-                Text("Nearby Jetson devices", style = MaterialTheme.typography.titleMedium)
+                Text("Nearby BLE devices", style = MaterialTheme.typography.titleMedium)
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
