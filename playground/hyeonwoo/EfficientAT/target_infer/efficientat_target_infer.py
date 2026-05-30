@@ -22,15 +22,52 @@ from contextlib import nullcontext, redirect_stdout
 from pathlib import Path
 from typing import Any
 
-import librosa
 import numpy as np
 import torch
-from torch import autocast
+
+try:
+    from torch import autocast
+except ImportError:
+    autocast = None
 
 
 WORKSPACE = Path(__file__).resolve().parent
-REPO_ROOT = WORKSPACE.parents[1]
-EFFICIENTAT_ROOT = REPO_ROOT / "playground" / "ywkim" / "EfficientAT"
+
+
+def _is_efficientat_root(path: Path) -> bool:
+    return (path / "models").is_dir() and (path / "helpers").is_dir() and (path / "metadata").is_dir()
+
+
+def resolve_efficientat_root() -> Path:
+    """Find the EfficientAT source tree in local checkout or Jetson workspace layouts."""
+    candidates: list[Path] = []
+    env_root = os.environ.get("EFFICIENTAT_ROOT")
+    if env_root:
+        candidates.append(Path(env_root).expanduser())
+
+    for parent in [WORKSPACE, *WORKSPACE.parents]:
+        candidates.extend(
+            [
+                parent,
+                parent / "EfficientAT",
+                parent / "playground" / "ywkim" / "EfficientAT",
+                parent / "efficientat_ws" / "EfficientAT",
+            ]
+        )
+    candidates.append(Path("/workspace/EfficientAT"))
+
+    seen: set[Path] = set()
+    for candidate in candidates:
+        resolved = candidate.expanduser().resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        if _is_efficientat_root(resolved):
+            return resolved
+    return candidates[0].expanduser().resolve() if candidates else Path("/workspace/EfficientAT")
+
+
+EFFICIENTAT_ROOT = resolve_efficientat_root()
 
 TARGET_AUDIOSET_MAPPING: dict[str, list[str]] = {
     "construction": ["Jackhammer", "Drill"],
@@ -145,6 +182,8 @@ def load_model(args: argparse.Namespace, device: torch.device):
 
 
 def load_waveform(path: Path, sample_rate: int, duration_sec: float | None) -> torch.Tensor:
+    import librosa
+
     waveform, _ = librosa.core.load(path, sr=sample_rate, mono=True)
     if duration_sec is not None:
         target_len = int(sample_rate * duration_sec)
@@ -164,7 +203,7 @@ def predict_audio(
     args: argparse.Namespace,
 ) -> np.ndarray:
     waveform = load_waveform(path, args.sample_rate, args.duration_sec).to(device)
-    ctx = autocast(device_type=device.type) if device.type == "cuda" else nullcontext()
+    ctx = autocast(device_type=device.type) if device.type == "cuda" and autocast is not None else nullcontext()
     with ctx:
         spec = mel(waveform)
         logits, _ = model(spec.unsqueeze(0))
