@@ -12,13 +12,16 @@ import android.bluetooth.BluetoothGattService
 import android.bluetooth.BluetoothManager
 import android.bluetooth.BluetoothProfile
 import android.bluetooth.le.ScanCallback
+import android.bluetooth.le.ScanFilter
 import android.bluetooth.le.ScanResult
 import android.bluetooth.le.ScanSettings
 import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.ParcelUuid
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -115,6 +118,10 @@ class JetsonBleClient(private val context: Context) {
         override fun onScanResult(callbackType: Int, result: ScanResult) {
             val device = result.device
             val name = result.scanRecord?.deviceName ?: device.name ?: "Unknown"
+            val serviceUuids = result.scanRecord?.serviceUuids.orEmpty()
+            if (name != "JHello" && !serviceUuids.contains(ParcelUuid(JetsonServiceUuid))) {
+                return
+            }
             val item = BleDeviceItem(name = name, address = device.address, rssi = result.rssi)
             onMain {
                 val index = devices.indexOfFirst { it.address == item.address }
@@ -176,6 +183,17 @@ class JetsonBleClient(private val context: Context) {
             }
         }
 
+        @Suppress("DEPRECATION")
+        override fun onCharacteristicRead(
+            gatt: BluetoothGatt,
+            characteristic: BluetoothGattCharacteristic,
+            statusCode: Int,
+        ) {
+            if (statusCode == BluetoothGatt.GATT_SUCCESS) {
+                acceptMessage(characteristic.value)
+            }
+        }
+
         override fun onCharacteristicChanged(
             gatt: BluetoothGatt,
             characteristic: BluetoothGattCharacteristic,
@@ -183,17 +201,30 @@ class JetsonBleClient(private val context: Context) {
         ) {
             acceptMessage(value)
         }
+
+        @Suppress("DEPRECATION")
+        override fun onCharacteristicChanged(
+            gatt: BluetoothGatt,
+            characteristic: BluetoothGattCharacteristic,
+        ) {
+            acceptMessage(characteristic.value)
+        }
     }
 
     fun hasPermissions(): Boolean =
-        ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.BLUETOOTH_SCAN,
-        ) == PackageManager.PERMISSION_GRANTED &&
-            ContextCompat.checkSelfPermission(
-                context,
+        requiredPermissions().all { permission ->
+            ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+        }
+
+    fun requiredPermissions(): Array<String> =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+                Manifest.permission.BLUETOOTH_SCAN,
                 Manifest.permission.BLUETOOTH_CONNECT,
-            ) == PackageManager.PERMISSION_GRANTED
+            )
+        } else {
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
 
     @SuppressLint("MissingPermission")
     fun startScan() {
@@ -211,9 +242,17 @@ class JetsonBleClient(private val context: Context) {
         val settings = ScanSettings.Builder()
             .setScanMode(ScanSettings.SCAN_MODE_LOW_LATENCY)
             .build()
-        activeScanner.startScan(null, settings, scanCallback)
+        val filters = listOf(
+            ScanFilter.Builder()
+                .setDeviceName("JHello")
+                .build(),
+            ScanFilter.Builder()
+                .setServiceUuid(ParcelUuid(JetsonServiceUuid))
+                .build(),
+        )
+        activeScanner.startScan(filters, settings, scanCallback)
         isScanning = true
-        status = "Scanning for BLE devices"
+        status = "Scanning for JHello"
     }
 
     @SuppressLint("MissingPermission")
@@ -266,7 +305,14 @@ class JetsonBleClient(private val context: Context) {
     ) {
         gatt.setCharacteristicNotification(characteristic, true)
         val descriptor = characteristic.getDescriptor(ClientCharacteristicConfigUuid) ?: return
-        gatt.writeDescriptor(descriptor, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            gatt.writeDescriptor(descriptor, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)
+        } else {
+            @Suppress("DEPRECATION")
+            descriptor.value = BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+            @Suppress("DEPRECATION")
+            gatt.writeDescriptor(descriptor)
+        }
     }
 
     private fun acceptMessage(value: ByteArray) {
@@ -303,12 +349,7 @@ fun BleApp(bleClient: JetsonBleClient) {
 
     LaunchedEffect(Unit) {
         if (!bleClient.hasPermissions()) {
-            permissionLauncher.launch(
-                arrayOf(
-                    Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_CONNECT,
-                ),
-            )
+            permissionLauncher.launch(bleClient.requiredPermissions())
         }
     }
 
@@ -337,12 +378,7 @@ fun BleApp(bleClient: JetsonBleClient) {
                             if (bleClient.hasPermissions()) {
                                 bleClient.startScan()
                             } else {
-                                permissionLauncher.launch(
-                                    arrayOf(
-                                        Manifest.permission.BLUETOOTH_SCAN,
-                                        Manifest.permission.BLUETOOTH_CONNECT,
-                                    ),
-                                )
+                                permissionLauncher.launch(bleClient.requiredPermissions())
                             }
                         },
                     ) {
@@ -356,7 +392,7 @@ fun BleApp(bleClient: JetsonBleClient) {
                     }
                 }
 
-                Text("Nearby BLE devices", style = MaterialTheme.typography.titleMedium)
+                Text("Nearby Jetson devices", style = MaterialTheme.typography.titleMedium)
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
