@@ -1,25 +1,33 @@
 #!/usr/bin/env python3
-"""Realtime microphone inference for EfficientAT target labels on Jetson.
+"""Realtime microphone inference for EfficientAT target labels.
 
-The script records short ALSA chunks with arecord, skips quiet chunks, and runs
-the same target-label aggregation used by efficientat_target_infer.py.
+The script records short microphone chunks, skips quiet chunks, and runs the
+same target-label aggregation used by efficientat_target_infer.py. The default
+backend is platform aware: sounddevice on Windows, arecord on Linux/Jetson when
+available.
 
 Example:
-    python3 -u jetson_realtime_target_infer.py
+    python -u realtime_infer.py
 
-For a 6-channel ReSpeaker-style mic array:
+For a 6-channel ReSpeaker-style mic array on Jetson:
     python3 -u jetson_realtime_target_infer.py \
-      --device auto --channels 6 --channel-index 0
+      --backend arecord --device auto --channels 6 --channel-index 0
 """
 
 from __future__ import annotations
 
 import argparse
+import importlib.util
+import os
+import platform
 import re
+import shutil
 import subprocess
+import tempfile
 import time
 import wave
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import torch
@@ -30,12 +38,34 @@ import efficientat_target_infer as target_infer
 DBFS_FLOOR = -120.0
 DEFAULT_DB_OFFSET = 80.0
 ARECORD_LIST_TIMEOUT = 3.0
+BACKEND_AUTO = "auto"
+BACKEND_ARECORD = "arecord"
+BACKEND_SOUNDDEVICE = "sounddevice"
 
 
 ARECORD_DEVICE_RE = re.compile(
     r"card\s+(?P<card>\d+):\s+(?P<card_name>[^[]+)\[[^\]]+\],\s+"
     r"device\s+(?P<device>\d+):\s+(?P<device_name>.+)"
 )
+
+
+def default_tmp_wav() -> Path:
+    return Path(tempfile.gettempdir()) / "efficientat_target_live.wav"
+
+
+def sounddevice_available() -> bool:
+    return importlib.util.find_spec("sounddevice") is not None
+
+
+def import_sounddevice() -> Any:
+    try:
+        import sounddevice as sd
+    except ImportError as exc:
+        raise RuntimeError(
+            "The Windows realtime backend needs the 'sounddevice' package. "
+            "Install it with: python -m pip install sounddevice"
+        ) from exc
+    return sd
 
 
 class NullContext:
@@ -149,6 +179,127 @@ def format_capture_devices(devices: list[dict[str, str]]) -> str:
     )
 
 
+def resolve_recording_backend(requested: str) -> str:
+    requested = requested.lower()
+    if requested not in {BACKEND_AUTO, BACKEND_ARECORD, BACKEND_SOUNDDEVICE}:
+        raise RuntimeError(f"Unsupported backend {requested!r}. Use auto, arecord, or sounddevice.")
+
+    if requested == BACKEND_ARECORD:
+        if shutil.which("arecord") is None:
+            raise RuntimeError("arecord backend requested, but 'arecord' was not found in PATH.")
+        return BACKEND_ARECORD
+
+    if requested == BACKEND_SOUNDDEVICE:
+        import_sounddevice()
+        return BACKEND_SOUNDDEVICE
+
+    if os.name == "nt" or platform.system().lower() == "windows":
+        import_sounddevice()
+        return BACKEND_SOUNDDEVICE
+
+    if shutil.which("arecord") is not None:
+        return BACKEND_ARECORD
+
+    if sounddevice_available():
+        return BACKEND_SOUNDDEVICE
+
+    raise RuntimeError(
+        "No realtime audio backend found. On Jetson/Linux install alsa-utils for arecord, "
+        "or install sounddevice with: python -m pip install sounddevice"
+    )
+
+
+def default_sounddevice_input_index(sd: Any) -> int | None:
+    try:
+        default_device = sd.default.device
+        index = default_device[0] if isinstance(default_device, (list, tuple)) else default_device
+        if index is None or int(index) < 0:
+            return None
+        return int(index)
+    except Exception:
+        return None
+
+
+def list_sounddevice_capture_devices() -> list[dict[str, Any]]:
+    sd = import_sounddevice()
+    devices = sd.query_devices()
+    hostapis = sd.query_hostapis()
+    default_index = default_sounddevice_input_index(sd)
+
+    capture_devices: list[dict[str, Any]] = []
+    for index, device in enumerate(devices):
+        max_input_channels = int(device.get("max_input_channels", 0))
+        if max_input_channels <= 0:
+            continue
+        hostapi_index = int(device.get("hostapi", -1))
+        hostapi_name = ""
+        if 0 <= hostapi_index < len(hostapis):
+            hostapi_name = str(hostapis[hostapi_index].get("name", ""))
+        capture_devices.append(
+            {
+                "index": index,
+                "name": str(device.get("name", "")),
+                "channels": max_input_channels,
+                "sample_rate": float(device.get("default_samplerate", 0.0)),
+                "hostapi": hostapi_name,
+                "is_default": index == default_index,
+            }
+        )
+    return capture_devices
+
+
+def format_sounddevice_capture_devices(devices: list[dict[str, Any]]) -> str:
+    if not devices:
+        return "  none"
+    lines = []
+    for device in devices:
+        marker = "*" if device["is_default"] else " "
+        lines.append(
+            f"{marker} {device['index']}: {device['name']}  "
+            f"channels={device['channels']} sr={device['sample_rate']:.0f} hostapi={device['hostapi']}"
+        )
+    return "\n".join(lines)
+
+
+def resolve_sounddevice_device(requested: str) -> int | None:
+    if requested in {"auto", "default", ""}:
+        return None
+
+    devices = list_sounddevice_capture_devices()
+    try:
+        requested_index = int(requested)
+    except ValueError:
+        requested_index = None
+
+    if requested_index is not None:
+        for device in devices:
+            if int(device["index"]) == requested_index:
+                return requested_index
+        raise RuntimeError(
+            f"sounddevice input index {requested_index} was not found.\n"
+            f"Available input devices:\n{format_sounddevice_capture_devices(devices)}"
+        )
+
+    lowered = requested.lower()
+    matches = [device for device in devices if lowered in str(device["name"]).lower()]
+    if matches:
+        return int(matches[0]["index"])
+
+    raise RuntimeError(
+        f"sounddevice input device {requested!r} was not found.\n"
+        f"Available input devices:\n{format_sounddevice_capture_devices(devices)}"
+    )
+
+
+def describe_sounddevice_device(device_index: int | None) -> str:
+    if device_index is None:
+        return "default"
+    for device in list_sounddevice_capture_devices():
+        if int(device["index"]) == device_index:
+            return f"{device_index}: {device['name']}"
+    return str(device_index)
+
+
 def device_requested_card_device(device_name: str) -> tuple[str, str] | None:
     match = re.fullmatch(r"(?:plug)?hw:(\d+),(\d+)", device_name)
     if not match:
@@ -223,6 +374,49 @@ def record_chunk(args: argparse.Namespace, wav_path: Path) -> int:
     return subprocess.call(cmd)
 
 
+def record_sounddevice_chunk(args: argparse.Namespace) -> tuple[np.ndarray, int, int]:
+    sd = import_sounddevice()
+    frames = int(round(float(args.rate) * float(args.seconds)))
+    if frames <= 0:
+        raise RuntimeError("--seconds must produce at least one audio frame.")
+
+    try:
+        recording = sd.rec(
+            frames,
+            samplerate=args.rate,
+            channels=args.channels,
+            dtype="float32",
+            device=args.resolved_device,
+        )
+        sd.wait()
+    except Exception as exc:
+        raise RuntimeError(f"sounddevice recording failed: {exc}") from exc
+
+    audio = np.asarray(recording, dtype=np.float32)
+    detected_channels = 1 if audio.ndim == 1 else int(audio.shape[1])
+    if audio.ndim > 1:
+        if args.channel_index == -1:
+            audio = audio.mean(axis=1)
+        else:
+            if args.channel_index < 0 or args.channel_index >= detected_channels:
+                raise RuntimeError(
+                    f"channel-index {args.channel_index} is out of range for {detected_channels} channels"
+                )
+            audio = audio[:, args.channel_index]
+
+    return audio.reshape(-1).astype(np.float32), args.rate, detected_channels
+
+
+def record_audio_chunk(args: argparse.Namespace) -> tuple[np.ndarray, int, int]:
+    if args.backend == BACKEND_SOUNDDEVICE:
+        return record_sounddevice_chunk(args)
+
+    rc = record_chunk(args, args.tmp_wav)
+    if rc != 0:
+        raise RuntimeError("arecord failed. Check --device, --rate, and --channels.")
+    return read_wav_select_channel(args.tmp_wav, args.channel_index)
+
+
 def predict_targets(
     model: torch.nn.Module,
     mel: torch.nn.Module,
@@ -273,9 +467,19 @@ def format_predictions(ordered: list[tuple[str, dict]], topk: int, threshold: fl
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Run realtime Jetson microphone inference for target labels.")
-    parser.add_argument("--device", default="auto", help="ALSA input device, e.g. auto, default, or plughw:1,0")
-    parser.add_argument("--list-devices", action="store_true", help="Print ALSA capture devices and exit.")
+    parser = argparse.ArgumentParser(description="Run realtime microphone inference for target labels.")
+    parser.add_argument(
+        "--backend",
+        choices=[BACKEND_AUTO, BACKEND_ARECORD, BACKEND_SOUNDDEVICE],
+        default=BACKEND_AUTO,
+        help="Recording backend. auto uses sounddevice on Windows and arecord on Linux/Jetson when available.",
+    )
+    parser.add_argument(
+        "--device",
+        default="auto",
+        help="Input device. arecord: auto/default/plughw:1,0. sounddevice: auto/default/index/name substring.",
+    )
+    parser.add_argument("--list-devices", action="store_true", help="Print capture devices for the selected backend and exit.")
     parser.add_argument("--efficientat-dir", type=Path, default=None, help="EfficientAT source dir. Default: auto-detect.")
     parser.add_argument("--target-mapping", type=Path, default=None, help="Optional JSON: target_label -> AudioSet labels.")
 
@@ -300,7 +504,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--aggregate", choices=["max", "mean"], default="max")
     parser.add_argument("--topk", type=int, default=3)
     parser.add_argument("--threshold", type=float, default=0.0, help="Only print labels with target score >= threshold.")
-    parser.add_argument("--tmp-wav", type=Path, default=Path("/tmp/efficientat_target_live.wav"))
+    parser.add_argument("--tmp-wav", type=Path, default=default_tmp_wav(), help="Temporary WAV path used by arecord backend.")
     parser.add_argument("--print-skipped", action="store_true")
     parser.add_argument("--cpu", action="store_true")
     parser.add_argument("--amp", action="store_true", help="Enable CUDA AMP. Leave off if Jetson is unstable.")
@@ -314,11 +518,25 @@ def main() -> None:
     if args.target_mapping is not None:
         args.target_mapping = args.target_mapping.expanduser().resolve()
 
-    if args.list_devices:
-        print(format_capture_devices(list_capture_devices()))
-        return
+    try:
+        args.backend = resolve_recording_backend(args.backend)
 
-    args.device = resolve_recording_device(args.device)
+        if args.list_devices:
+            if args.backend == BACKEND_ARECORD:
+                print(format_capture_devices(list_capture_devices()))
+            else:
+                print(format_sounddevice_capture_devices(list_sounddevice_capture_devices()))
+            return
+
+        if args.backend == BACKEND_ARECORD:
+            args.device = resolve_recording_device(args.device)
+            args.resolved_device = args.device
+            audio_device_text = args.device
+        else:
+            args.resolved_device = resolve_sounddevice_device(args.device)
+            audio_device_text = describe_sounddevice_device(args.resolved_device)
+    except RuntimeError as exc:
+        raise SystemExit(str(exc)) from None
 
     use_cuda = (not args.cpu) and torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
@@ -333,7 +551,8 @@ def main() -> None:
     print("device:", device)
     print("EfficientAT:", target_infer.EFFICIENTAT_ROOT)
     print("model:", args.model_name)
-    print("audio device:", args.device)
+    print("recording backend:", args.backend)
+    print("audio device:", audio_device_text)
     print(f"record: {args.rate}Hz, {args.channels}ch, {args.seconds}s, channel-index={args.channel_index}")
     print(f"model input: {args.sample_rate}Hz, {args.duration_sec:.2f}s")
     print(f"min-db: {args.min_db:.1f} dB; display_dB = dBFS + {args.db_offset:.1f}")
@@ -342,13 +561,13 @@ def main() -> None:
 
     while True:
         loop_start = time.time()
-        rc = record_chunk(args, args.tmp_wav)
-        if rc != 0:
-            print("arecord failed. Check --device, --rate, and --channels.", flush=True)
+        try:
+            audio, src_sr, detected_channels = record_audio_chunk(args)
+        except RuntimeError as exc:
+            print(str(exc), flush=True)
             time.sleep(1.0)
             continue
 
-        audio, src_sr, detected_channels = read_wav_select_channel(args.tmp_wav, args.channel_index)
         audio = resample_linear(audio, src_sr, args.sample_rate)
 
         dbfs = calc_dbfs(audio)

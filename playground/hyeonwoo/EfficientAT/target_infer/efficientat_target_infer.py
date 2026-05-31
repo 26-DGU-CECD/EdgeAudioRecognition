@@ -50,11 +50,22 @@ def resolve_efficientat_root() -> Path:
             [
                 parent,
                 parent / "EfficientAT",
+                parent / "ywkim" / "EfficientAT",
+                parent / "yunyeong" / "efficientat_ws" / "EfficientAT",
                 parent / "playground" / "ywkim" / "EfficientAT",
+                parent / "playground" / "yunyeong" / "efficientat_ws" / "EfficientAT",
                 parent / "efficientat_ws" / "EfficientAT",
             ]
         )
-    candidates.append(Path("/workspace/EfficientAT"))
+    candidates.extend(
+        [
+            Path("/workspace/EfficientAT"),
+            Path("/plyground/ywkim/EfficientAT"),
+            Path("/plyground/yunyeong/efficientat_ws/EfficientAT"),
+            Path("/playground/ywkim/EfficientAT"),
+            Path("/playground/yunyeong/efficientat_ws/EfficientAT"),
+        ]
+    )
 
     seen: set[Path] = set()
     for candidate in candidates:
@@ -344,9 +355,12 @@ def run_evaluate_csv(args: argparse.Namespace) -> None:
 
 
 def run_infer(args: argparse.Namespace) -> None:
+    global EFFICIENTAT_ROOT
     original_cwd = Path.cwd()
     output_csv = resolve_input_path(args.output_csv, original_cwd) if args.output_csv else None
     device = torch.device("cuda" if args.cuda and torch.cuda.is_available() else "cpu")
+    if args.efficientat_dir is not None:
+        EFFICIENTAT_ROOT = args.efficientat_dir.expanduser().resolve()
     target_mapping = load_target_mapping(args.target_mapping)
     model, mel, audioset_labels = load_model(args, device)
     target_indexes = build_label_indexes(target_mapping, audioset_labels)
@@ -390,6 +404,7 @@ def build_parser() -> argparse.ArgumentParser:
     infer.add_argument("--audio-dir", type=Path, help="Directory of audio files to infer recursively.")
     infer.add_argument("--output-csv", type=Path, help="Optional CSV path for batch results.")
     infer.add_argument("--target-mapping", type=Path, help="Optional JSON mapping: target_label -> AudioSet labels.")
+    infer.add_argument("--efficientat-dir", type=Path, help="EfficientAT source dir. Default: auto-detect.")
     infer.add_argument("--aggregate", choices=["max", "mean"], default="max")
     infer.add_argument("--topk", type=int, default=10)
     infer.add_argument("--model-name", type=str, default="mn10_as")
