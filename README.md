@@ -54,10 +54,22 @@ pip install sounddevice numpy pandas scikit-learn seaborn matplotlib librosa tqd
 python realtime_inference.py
 ```
 
+기본값은 2초 청크의 RMS 레벨이 `-30 dBFS`보다 작으면 추론하지 않고 무시합니다. `30 dB` 이상으로 들어온 소리만 추론한다는 의미로 `--min-db 30`이 기본 적용되어 있습니다.
+
+게이트를 통과한 청크는 모델 입력 전에 expander 방식으로 왜곡/강조합니다. 작은 진폭의 노이즈는 `-18 dB` 줄이고, 큰 진폭의 메인 소리는 `+8 dB` 키워서 노이즈와 이벤트의 차이를 벌립니다.
+
+출력 점수는 EfficientAT의 527개 AudioSet logit에 sigmoid를 적용한 값입니다. 커스텀 클래스가 여러 AudioSet 라벨을 묶는 경우, 해당 라벨들의 sigmoid 점수 중 가장 큰 값을 표시합니다. 이 값들은 multi-label confidence라서 전체 합이 100%가 되지 않습니다.
+
+기본 `--min-score 0.05`가 적용되어 최고 커스텀 점수가 5% 미만이면 출력하지 않습니다. 매핑한 소리가 아닌 배경음이 들어왔을 때 아무 클래스나 억지로 출력하지 않기 위한 컷입니다.
+
+```bash
+python realtime_inference.py --min-db 30 --min-score 0.05 --enhance-threshold-db 35 --noise-reduction-db 18 --main-gain-db 8
+```
+
 매 2초마다 다음 형식으로 출력됩니다.
 
 ```text
-[HH:MM:SS] 예측: construction (72.3%) | 전체: construction=0.72, gunshot=0.03, ...
+[HH:MM:SS] 예측: construction (72.3%) | level=-22.4 dBFS | enhanced=-15.1 dBFS | quiet_gain=0.13x loud_gain=2.51x | 전체: construction=72.3%, gunshot=3.1%, ...
 ```
 
 디바이스명이 자동 탐색되지 않으면 입력 디바이스 목록을 확인한 뒤 index를 직접 지정할 수 있습니다.

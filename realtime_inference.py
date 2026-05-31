@@ -27,6 +27,13 @@ REQUIRED_INPUT_CHANNELS = 6
 MIC_CHANNEL_INDEX = 0
 MODEL_NAME = "mn10_as"
 AUDIOSET_CLASS_COUNT = 527
+DB_EPSILON = 1e-12
+DEFAULT_MIN_DB = 30.0
+DEFAULT_ENHANCE_THRESHOLD_DB = 35.0
+DEFAULT_NOISE_REDUCTION_DB = 18.0
+DEFAULT_MAIN_GAIN_DB = 8.0
+DEFAULT_ENHANCE_SHARPNESS = 2.0
+DEFAULT_MIN_SCORE = 0.05
 
 # EfficientAT AudioSet pretrained models use the official 32 kHz frontend.
 N_MELS = 128
@@ -37,11 +44,24 @@ N_FFT = 1024
 MIC_NAME_KEYWORDS = ("respeaker", "re speaker", "seeed", "array v3")
 
 LABEL_MAPPING = {
-    "construction": ["Jackhammer", "Drill"],
+    "construction": ["Tools", "Power tool", "Jackhammer", "Drill", "Chainsaw", "Hammer", "Sawing"],
     "gunshot":      ["Gunshot, gunfire"],
     "alarm_siren":  ["Siren", "Alarm", "Alarm clock"],
     "horn":         ["Vehicle horn, car horn, honking"],
-    "water":        ["Rain", "Raindrop", "Water tap, faucet", "Pour"],
+    "water":        [
+        "Water",
+        "Rain",
+        "Raindrop",
+        "Rain on surface",
+        "Stream",
+        "Waterfall",
+        "Gurgling",
+        "Water tap, faucet",
+        "Sink (filling or washing)",
+        "Liquid",
+        "Splash, splatter",
+        "Pour",
+    ],
     "knock":        ["Knock"],
     "appliances":   ["Vacuum cleaner"],
     "baby_cry":     ["Baby cry, infant cry"],
@@ -82,7 +102,56 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--debug",
         action="store_true",
-        help="Print waveform, mel, logits, and top AudioSet probabilities for each chunk.",
+        help="Print waveform, mel, logits, and top AudioSet sigmoid scores for each chunk.",
+    )
+    parser.add_argument(
+        "--min-db",
+        type=float,
+        default=DEFAULT_MIN_DB,
+        help=(
+            "Ignore chunks quieter than this level. Positive values are treated as "
+            "dB below full scale, so 30 means -30 dBFS. Use 0 or a negative value "
+            "to pass an explicit dBFS threshold."
+        ),
+    )
+    parser.add_argument(
+        "--enhance-threshold-db",
+        type=float,
+        default=DEFAULT_ENHANCE_THRESHOLD_DB,
+        help=(
+            "Sample-level enhancement threshold. Positive values are treated as "
+            "dB below full scale, so 35 means -35 dBFS."
+        ),
+    )
+    parser.add_argument(
+        "--noise-reduction-db",
+        type=float,
+        default=DEFAULT_NOISE_REDUCTION_DB,
+        help="Reduce quieter waveform parts by this many dB before inference.",
+    )
+    parser.add_argument(
+        "--main-gain-db",
+        type=float,
+        default=DEFAULT_MAIN_GAIN_DB,
+        help="Boost louder waveform parts by this many dB before inference.",
+    )
+    parser.add_argument(
+        "--gain-db",
+        type=float,
+        dest="main_gain_db",
+        help=argparse.SUPPRESS,
+    )
+    parser.add_argument(
+        "--enhance-sharpness",
+        type=float,
+        default=DEFAULT_ENHANCE_SHARPNESS,
+        help="Higher values separate quiet noise and loud events more aggressively.",
+    )
+    parser.add_argument(
+        "--min-score",
+        type=float,
+        default=DEFAULT_MIN_SCORE,
+        help="Only print predictions whose best custom sigmoid score is at least this value.",
     )
     return parser.parse_args()
 
@@ -287,8 +356,49 @@ def predict_chunk(
     return best_label, scores[best_label], scores
 
 
+def rms_dbfs(waveform: np.ndarray) -> float:
+    waveform = np.asarray(waveform, dtype=np.float32)
+    rms = float(np.sqrt(np.mean(np.square(waveform))))
+    return 20.0 * np.log10(max(rms, DB_EPSILON))
+
+
+def db_gate_threshold(min_db: float) -> float:
+    if min_db > 0:
+        return -min_db
+    return min_db
+
+
+def enhance_threshold_amplitude(enhance_threshold_db: float) -> float:
+    dbfs = db_gate_threshold(enhance_threshold_db)
+    return float(10.0 ** (dbfs / 20.0))
+
+
+def enhance_chunk(
+    waveform: np.ndarray,
+    enhance_threshold_db: float,
+    noise_reduction_db: float,
+    main_gain_db: float,
+    enhance_sharpness: float,
+) -> Tuple[np.ndarray, bool, float, float]:
+    waveform = np.asarray(waveform, dtype=np.float32)
+    threshold = enhance_threshold_amplitude(enhance_threshold_db)
+    quiet_gain = float(10.0 ** (-abs(noise_reduction_db) / 20.0))
+    loud_gain = float(10.0 ** (main_gain_db / 20.0))
+    sharpness = max(float(enhance_sharpness), 0.1)
+
+    relative_level = np.abs(waveform) / max(threshold, DB_EPSILON)
+    loud_weight = np.power(relative_level, sharpness)
+    loud_weight = loud_weight / (1.0 + loud_weight)
+    gain = quiet_gain + (loud_gain - quiet_gain) * loud_weight
+
+    enhanced = waveform * gain.astype(np.float32, copy=False)
+    clipped = bool(np.any(np.abs(enhanced) > 1.0))
+    enhanced = np.clip(enhanced, -1.0, 1.0).astype(np.float32, copy=False)
+    return enhanced, clipped, quiet_gain, loud_gain
+
+
 def format_scores(scores: Dict[str, float]) -> str:
-    return ", ".join(f"{label}={probability:.2f}" for label, probability in scores.items())
+    return ", ".join(f"{label}={probability:.1%}" for label, probability in scores.items())
 
 
 def run_stream(
@@ -303,6 +413,12 @@ def run_stream(
     audioset_labels: Sequence[str],
     device: torch.device,
     debug: bool,
+    min_db: float,
+    enhance_threshold_db: float,
+    noise_reduction_db: float,
+    main_gain_db: float,
+    enhance_sharpness: float,
+    min_score: float,
 ) -> None:
     audio_queue: "queue.Queue[np.ndarray]" = queue.Queue()
 
@@ -328,7 +444,11 @@ def run_stream(
         f"입력 디바이스: [{device_index}] {device_info.get('name')} | "
         f"channels={stream_channels}, mic_sr={SAMPLE_RATE}, "
         f"model_sr={MODEL_SAMPLE_RATE}, chunk={CHUNK_SECONDS}s, "
-        f"model_input={MODEL_INPUT_SECONDS}s, channel={channel_index}"
+        f"model_input={MODEL_INPUT_SECONDS}s, channel={channel_index}, "
+        f"min_dbfs={db_gate_threshold(min_db):+.1f}, "
+        f"enhance_threshold_dbfs={db_gate_threshold(enhance_threshold_db):+.1f}, "
+        f"noise_reduction_db={noise_reduction_db:.1f}, main_gain_db={main_gain_db:+.1f}, "
+        f"min_score={min_score:.1%}"
     )
     print("Ctrl+C로 종료합니다.")
 
@@ -357,10 +477,29 @@ def run_stream(
                 chunk = joined[offset: offset + CHUNK_SAMPLES]
                 offset += CHUNK_SAMPLES
                 timestamp = datetime.now().strftime("%H:%M:%S")
+                chunk_dbfs = rms_dbfs(chunk)
+                min_dbfs = db_gate_threshold(min_db)
+
+                if chunk_dbfs < min_dbfs:
+                    if debug:
+                        print(
+                            f"[{timestamp}] skip: level={chunk_dbfs:+.1f} dBFS "
+                            f"< gate={min_dbfs:+.1f} dBFS",
+                            flush=True,
+                        )
+                    continue
+
+                inference_chunk, clipped, quiet_gain, loud_gain = enhance_chunk(
+                    chunk,
+                    enhance_threshold_db,
+                    noise_reduction_db,
+                    main_gain_db,
+                    enhance_sharpness,
+                )
 
                 try:
                     best_label, best_probability, scores = predict_chunk(
-                        chunk,
+                        inference_chunk,
                         model,
                         mel,
                         resampler,
@@ -376,9 +515,22 @@ def run_stream(
                     )
                     continue
 
+                if best_probability < min_score:
+                    if debug:
+                        print(
+                            f"[{timestamp}] ignore: best={best_label} "
+                            f"({best_probability:.1%}) < min_score={min_score:.1%} | "
+                            f"전체: {format_scores(scores)}",
+                            flush=True,
+                        )
+                    continue
+
                 print(
                     f"[{timestamp}] 예측: {best_label} ({best_probability:.1%}) | "
-                    f"전체: {format_scores(scores)}",
+                    f"level={chunk_dbfs:+.1f} dBFS | "
+                    f"enhanced={rms_dbfs(inference_chunk):+.1f} dBFS | "
+                    f"quiet_gain={quiet_gain:.2f}x loud_gain={loud_gain:.2f}x"
+                    f"{' clipped' if clipped else ''} | 전체: {format_scores(scores)}",
                     flush=True,
                 )
 
@@ -430,6 +582,12 @@ def main() -> int:
             audioset_labels=audioset_labels,
             device=device,
             debug=args.debug,
+            min_db=args.min_db,
+            enhance_threshold_db=args.enhance_threshold_db,
+            noise_reduction_db=args.noise_reduction_db,
+            main_gain_db=args.main_gain_db,
+            enhance_sharpness=args.enhance_sharpness,
+            min_score=args.min_score,
         )
     except KeyboardInterrupt:
         print("\n종료합니다.")
