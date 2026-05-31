@@ -13,7 +13,7 @@ bash install.sh
 `install.sh`는 다음 작업을 수행합니다.
 
 - `git clone https://github.com/fschmid56/EfficientAT.git`
-- `pip install torch torchaudio sounddevice numpy`
+- `pip install torch torchaudio sounddevice "numpy<2"`
 - EfficientAT 모델 import에 필요한 `torchvision` 설치
 
 첫 실행 시 `mn10_as` pretrained weight가 EfficientAT GitHub Release에서 자동 다운로드됩니다.
@@ -45,7 +45,7 @@ which pip
 Jetson에서는 `torch`, `torchaudio`, `torchvision`을 일반 `pip install`로 설치하면 JetPack/CUDA 버전과 맞지 않을 수 있습니다. 이 경우 NVIDIA가 제공하는 JetPack 버전별 PyTorch wheel을 먼저 설치한 뒤, 나머지 패키지만 설치하세요.
 
 ```bash
-pip install sounddevice numpy pandas scikit-learn seaborn matplotlib librosa tqdm
+pip install sounddevice "numpy<2" pandas scikit-learn seaborn matplotlib librosa tqdm
 ```
 
 ## 실행
@@ -54,13 +54,13 @@ pip install sounddevice numpy pandas scikit-learn seaborn matplotlib librosa tqd
 python realtime_inference.py
 ```
 
-기본값은 2초 청크의 RMS 레벨이 `-30 dBFS`보다 작으면 추론하지 않고 무시합니다. `30 dB` 이상으로 들어온 소리만 추론한다는 의미로 `--min-db 30`이 기본 적용되어 있습니다.
+기본값은 2초 청크마다 항상 추론 결과를 출력합니다. `--min-db 30`은 `-30 dBFS`보다 작은 입력을 빨간색 `status=낮음(소리작음 ...)`으로 표시하는 기준입니다.
 
-게이트를 통과한 청크는 모델 입력 전에 expander 방식으로 왜곡/강조합니다. 작은 진폭의 노이즈는 `-18 dB` 줄이고, 큰 진폭의 메인 소리는 `+8 dB` 키워서 노이즈와 이벤트의 차이를 벌립니다.
+각 청크는 모델 입력 전에 expander 방식으로 왜곡/강조합니다. 작은 진폭의 노이즈는 `-18 dB` 줄이고, 큰 진폭의 메인 소리는 `+8 dB` 키워서 노이즈와 이벤트의 차이를 벌립니다.
 
 출력 점수는 EfficientAT의 527개 AudioSet logit에 sigmoid를 적용한 값입니다. 커스텀 클래스가 여러 AudioSet 라벨을 묶는 경우, 해당 라벨들의 sigmoid 점수 중 가장 큰 값을 표시합니다. 이 값들은 multi-label confidence라서 전체 합이 100%가 되지 않습니다.
 
-기본 `--min-score 0.05`가 적용되어 최고 커스텀 점수가 5% 미만이면 출력하지 않습니다. 매핑한 소리가 아닌 배경음이 들어왔을 때 아무 클래스나 억지로 출력하지 않기 위한 컷입니다.
+기본 `--min-score 0.05`가 적용되어 최고 커스텀 점수가 5% 미만이면 빨간색 `status=낮음(점수낮음 ...)`으로 표시합니다. 입력 레벨과 점수가 모두 기준을 넘으면 초록색 `status=감지`로 표시됩니다.
 
 ```bash
 python realtime_inference.py --min-db 30 --min-score 0.05 --enhance-threshold-db 35 --noise-reduction-db 18 --main-gain-db 8
@@ -69,7 +69,7 @@ python realtime_inference.py --min-db 30 --min-score 0.05 --enhance-threshold-db
 매 2초마다 다음 형식으로 출력됩니다.
 
 ```text
-[HH:MM:SS] 예측: construction (72.3%) | level=-22.4 dBFS | enhanced=-15.1 dBFS | quiet_gain=0.13x loud_gain=2.51x | 전체: construction=72.3%, gunshot=3.1%, ...
+[HH:MM:SS] 예측: construction (72.3%) | status=감지 | level=-22.4 dBFS | enhanced=-15.1 dBFS | quiet_gain=0.13x loud_gain=2.51x | 전체: construction=72.3%, gunshot=3.1%, ...
 ```
 
 디바이스명이 자동 탐색되지 않으면 입력 디바이스 목록을 확인한 뒤 index를 직접 지정할 수 있습니다.
@@ -99,7 +99,8 @@ python -m sounddevice
 - CUDA가 없을 때: 스크립트가 자동으로 CPU를 사용합니다. CPU에서는 추론이 느릴 수 있지만 별도 설정은 필요 없습니다.
 - EfficientAT 저장소가 없을 때: `bash install.sh`를 먼저 실행하거나 `--efficientat-dir`로 clone된 경로를 지정하세요.
 - 모델 로딩 중 `torchvision` 오류가 날 때: `pip install torchvision`을 실행하세요.
-- Jetson에서 PyTorch 설치가 실패할 때: JetPack/CUDA 버전에 맞는 NVIDIA 제공 PyTorch, torchaudio wheel을 먼저 설치한 뒤 `pip install sounddevice numpy torchvision`을 실행하세요.
+- Jetson에서 PyTorch 설치가 실패할 때: JetPack/CUDA 버전에 맞는 NVIDIA 제공 PyTorch, torchaudio wheel을 먼저 설치한 뒤 `pip install sounddevice "numpy<2" torchvision`을 실행하세요.
+- `Numpy is not available` 또는 `compiled using NumPy 1.x cannot be run in NumPy 2.x`가 뜰 때: 현재 PyTorch/확장 모듈이 NumPy 2.x와 맞지 않는 상태입니다. 가상환경에서 `python -m pip install --force-reinstall "numpy<2"`를 실행한 뒤 다시 시작하세요.
 
 ## ESC-50 평가
 
