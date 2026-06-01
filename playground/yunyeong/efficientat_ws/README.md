@@ -2,13 +2,14 @@
 
 현재 `efficientat_ws` 루트에는 크게 `EfficientAT/`, `audio/`, `edge_audio_run/`, 그리고 Host 실행 스크립트 2개가 있음. 
 
-
+```
 efficientat_ws/
-├── [run_wifi_bridge_finetuned_from_host.sh](https://github.com/26-DGU-CECD/EdgeAudioRecognition/blob/playground/playground/yunyeong/efficientat_ws/run_wifi_bridge_finetuned_from_host.sh)   # 최종 실행용
-├── [run_wifi_bridge_from_host.sh](https://github.com/26-DGU-CECD/EdgeAudioRecognition/blob/playground/playground/yunyeong/efficientat_ws/run_wifi_bridge_from_host.sh)             # pretrained 비교용
+├── run_wifi_bridge_finetuned_from_host.sh   # 최종 실행용
+├── run_wifi_bridge_from_host.sh           # pretrained 비교용
 ├── EfficientAT/                             # 모델/추론/UI 코드
 ├── audio/                                   # 실행 로그 저장
 └── edge_audio_run/                          # 이전 실험 코드
+```
 
 
 ## 최종 시연에 필요한 파일
