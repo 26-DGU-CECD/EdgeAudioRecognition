@@ -2,14 +2,12 @@ from __future__ import annotations
 
 import numpy as np
 
-from audio_doa_estimator import AudioDOAEstimator
-from doa_reader import DOAReader
+from doa_audio_estimator import AudioDOAEstimator
 from doa_reading import DOAReading
+from doa_usb_reader import DOAReader
 
 
 class DOASelector:
-    """auto/audio/usb 정책에 따라 사용할 DOA 결과를 선택."""
-
     def __init__(self, *, doa_source: str, usb_reader: DOAReader, audio_estimator: AudioDOAEstimator) -> None:
         self.doa_source = doa_source
         self.usb_reader = usb_reader

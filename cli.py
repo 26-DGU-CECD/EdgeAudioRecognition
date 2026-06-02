@@ -46,12 +46,7 @@ def parse_args() -> argparse.Namespace:
         help="Path to cloned fschmid56/EfficientAT repository.",
     )
     parser.add_argument("--device-index", type=int, default=None)
-    parser.add_argument(
-        "--channel-index",
-        type=int,
-        default=MIC_CHANNEL_INDEX,
-        help="Input channel to use. ReSpeaker 4 Mic Array usually ch0=processed, ch1-4=raw.",
-    )
+    parser.add_argument("--channel-index", type=int, default=MIC_CHANNEL_INDEX)
     parser.add_argument("--list-devices", action="store_true")
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("--min-db", type=float, default=DEFAULT_MIN_DB)
@@ -71,4 +66,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--audio-doa-window-ms", type=float, default=250.0)
     parser.add_argument("--db-offset", type=float, default=80.0)
     parser.add_argument("--full-packet", action="store_true")
+    parser.add_argument(
+        "--skip-inference-below-threshold",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Skip model inference when chunk dBFS is below --min-db. Default: true.",
+    )
     return parser.parse_args()

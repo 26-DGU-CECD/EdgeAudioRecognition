@@ -10,14 +10,12 @@ from doa_reading import DOAReading
 
 
 class DOAReader:
-    """ReSpeaker USB DSP에서 계산된 DOA 각도를 읽는 객체."""
-
     def __init__(
         self,
         enabled: bool = True,
         poll_interval: float = 0.1,
         disabled_reason: str = "disabled",
-    ) -> None:
+    ):
         self.ok = False
         self.tuning = None
         self.status = "disabled"
@@ -92,7 +90,8 @@ class DOAReader:
         try:
             with self._lock:
                 angle, voice = self._read_device_locked()
-            self._last_read_at = time.monotonic()
+            now = time.monotonic()
+            self._last_read_at = now
             self._last_voice = voice
             if angle is not None:
                 self._last_angle = angle
@@ -105,9 +104,6 @@ class DOAReader:
     def _poll_loop(self) -> None:
         while not self._stop_event.wait(self.poll_interval):
             self._poll_once()
-
-    def read_angle(self) -> int | None:
-        return self.snapshot().raw_angle
 
     def snapshot(self) -> DOAReading:
         if not self.ok:

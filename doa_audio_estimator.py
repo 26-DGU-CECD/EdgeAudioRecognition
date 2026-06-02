@@ -8,8 +8,6 @@ from realtime_inference import db_gate_threshold, rms_dbfs
 
 
 class AudioDOAEstimator:
-    """raw mic 4채널의 TDOA를 이용해 오디오 기반 DOA를 추정."""
-
     def __init__(
         self,
         *,
@@ -18,7 +16,7 @@ class AudioDOAEstimator:
         sample_rate: int,
         min_db: float | None,
         window_ms: float,
-    ) -> None:
+    ):
         self.enabled = enabled
         self.stream_channels = stream_channels
         self.sample_rate = sample_rate
@@ -58,14 +56,7 @@ class AudioDOAEstimator:
             result <<= 1
         return result
 
-    def _gcc_phat(
-        self,
-        sig: np.ndarray,
-        refsig: np.ndarray,
-        *,
-        max_tau: float,
-        interp: int = 16,
-    ) -> float | None:
+    def _gcc_phat(self, sig: np.ndarray, refsig: np.ndarray, *, max_tau: float, interp: int = 16) -> float | None:
         n = self._next_power_of_two(sig.size + refsig.size)
         sig_fft = np.fft.rfft(sig, n=n)
         ref_fft = np.fft.rfft(refsig, n=n)
@@ -128,10 +119,7 @@ class AudioDOAEstimator:
         for pair_index, (left, right) in enumerate(self.pairs):
             if not (usable_channels[left] and usable_channels[right]):
                 continue
-            max_tau = (
-                float(np.linalg.norm(self.mic_positions[left] - self.mic_positions[right]))
-                / SPEED_OF_SOUND_M_S
-            )
+            max_tau = float(np.linalg.norm(self.mic_positions[left] - self.mic_positions[right])) / SPEED_OF_SOUND_M_S
             tau = self._gcc_phat(raw[:, left], raw[:, right], max_tau=max_tau)
             if tau is None:
                 continue

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Dict
 
-from angle_utils import angle_to_cardinal, corrected_angle
 from constants import CARDINAL_SUFFIX, CAUTION_LABELS, DANGER_LABELS
+from direction_utils import angle_to_cardinal, corrected_angle
 
 
 def risk_level(label: str) -> str:
@@ -20,8 +20,6 @@ def app_db_from_dbfs(dbfs: float, offset: float) -> float:
 
 
 class AppSoundPacketBuilder:
-    """추론 결과, dB, DOA 정보를 앱 전송용 JSON dict로 구성."""
-
     def __init__(self, *, north_offset: float, db_offset: float, full_packet: bool) -> None:
         self.north_offset = float(north_offset)
         self.db_offset = float(db_offset)
