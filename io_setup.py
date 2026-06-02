@@ -12,6 +12,7 @@ def configure_utf8_stdio() -> None:
             errors="replace",
             line_buffering=True,
         )
+
     if hasattr(sys.stderr, "buffer"):
         sys.stderr = io.TextIOWrapper(
             sys.stderr.buffer,

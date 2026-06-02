@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import sys
+from types import TracebackType
+from typing import Callable
+
 import numpy as np
-import realtime_inference_ble as ble
+import sounddevice as sd
 
 from audio_queue import AudioQueue
-from realtime_inference import REQUIRED_INPUT_CHANNELS, SAMPLE_RATE, find_respeaker_device
+from constants import REQUIRED_INPUT_CHANNELS, SAMPLE_RATE
 
 
 class MicrophoneModule:
@@ -17,55 +20,63 @@ class MicrophoneModule:
         stream_channels: int,
         channel_index: int,
         audio_queue: AudioQueue,
+        sample_rate: int = SAMPLE_RATE,
     ) -> None:
         self.device_index = device_index
         self.device_info = device_info
-        self.stream_channels = int(stream_channels)
-        self.channel_index = int(channel_index)
+        self.stream_channels = stream_channels
+        self.channel_index = channel_index
         self.audio_queue = audio_queue
-        self.sample_rate = SAMPLE_RATE
-        self._stream = None
-        self._validate()
+        self.sample_rate = sample_rate
+        self._stream: sd.InputStream | None = None
 
-    @classmethod
-    def auto_detect(cls, *, device_index: int | None, channel_index: int, audio_queue: AudioQueue) -> "MicrophoneModule":
-        found_device_index, device_info, stream_channels = find_respeaker_device(device_index)
-        return cls(
-            device_index=found_device_index,
-            device_info=device_info,
-            stream_channels=stream_channels,
-            channel_index=channel_index,
-            audio_queue=audio_queue,
-        )
-
-    def _validate(self) -> None:
+    def validate(self) -> None:
         if self.channel_index < 0 or self.channel_index >= self.stream_channels:
             raise RuntimeError(
-                f"Selected channel index is out of range: channel={self.channel_index}, "
-                f"available=0..{self.stream_channels - 1}"
+                f"선택한 채널 index가 범위를 벗어났습니다: "
+                f"channel={self.channel_index}, available=0..{self.stream_channels - 1}"
             )
+
         if self.stream_channels < REQUIRED_INPUT_CHANNELS:
             print(
-                f"Warning: selected input device reports only {self.stream_channels} input channels. "
-                "Continuing with the available channel.",
+                f"경고: 선택한 디바이스가 {self.stream_channels}개 입력 채널만 보고합니다. "
+                "사용 가능한 채널로 계속 진행합니다.",
                 file=sys.stderr,
-                flush=True,
             )
 
     def _callback(self, indata, frames, time_info, status) -> None:  # noqa: ANN001
         if status:
-            print(f"Audio input status: {status}", file=sys.stderr, flush=True)
-        self.audio_queue.push(indata.copy())
+            print(f"오디오 입력 상태: {status}", file=sys.stderr)
+        self.audio_queue.push(indata)
 
-    def open(self):
-        self._stream = ble.sd.InputStream(
+    def open(self) -> None:
+        self.validate()
+        self._stream = sd.InputStream(
             device=self.device_index,
-            samplerate=SAMPLE_RATE,
+            samplerate=self.sample_rate,
             channels=self.stream_channels,
             dtype="float32",
             callback=self._callback,
         )
-        return self._stream
+        self._stream.start()
 
-    def select_model_channel(self, chunk_multi: np.ndarray) -> np.ndarray:
-        return chunk_multi[:, self.channel_index].astype(np.float32, copy=True)
+    def close(self) -> None:
+        if self._stream is not None:
+            self._stream.stop()
+            self._stream.close()
+            self._stream = None
+
+    def __enter__(self) -> "MicrophoneModule":
+        self.open()
+        return self
+
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        tb: TracebackType | None,
+    ) -> None:
+        self.close()
+
+    def extract_mono(self, block: np.ndarray) -> np.ndarray:
+        return block[:, self.channel_index].astype(np.float32, copy=True)
