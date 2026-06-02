@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 
+import signal
 import sys
 from pathlib import Path
 
@@ -41,6 +42,18 @@ def main() -> int:
         device_finder.print_input_devices()
         return 1
 
+    ble_server = None
+    if not args.no_ble:
+        try:
+            # Import here so console-only mode can run on machines without python-dbus/BlueZ.
+            from ble_inference_server import BleInferenceServer
+
+            ble_server = BleInferenceServer(args.ble_name, args.ble_chunk_bytes)
+            ble_server.start()
+        except Exception as exc:
+            print(f"BLE 초기화 오류: {exc}", file=sys.stderr)
+            return 1
+
     torch_device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"추론 디바이스: {torch_device}")
 
@@ -59,6 +72,8 @@ def main() -> int:
         custom_indices = CustomLabelMapper().build_indices(audioset_labels)
     except Exception as exc:
         print(f"모델 초기화 오류: {exc}", file=sys.stderr)
+        if ble_server is not None:
+            ble_server.stop()
         return 1
 
     audio_queue = AudioQueue()
@@ -95,7 +110,18 @@ def main() -> int:
         inference_engine=inference_engine,
         min_score=args.min_score,
         skip_low_db=args.skip_low_db,
+        publisher=ble_server,
     )
+
+    stop_requested = False
+
+    def stop(_signum, _frame) -> None:  # noqa: ANN001
+        nonlocal stop_requested
+        stop_requested = True
+        raise KeyboardInterrupt
+
+    signal.signal(signal.SIGINT, stop)
+    signal.signal(signal.SIGTERM, stop)
 
     try:
         controller.run()
@@ -105,6 +131,11 @@ def main() -> int:
     except Exception as exc:
         print(f"오디오 스트림 오류: {exc}", file=sys.stderr)
         return 1
+    finally:
+        if stop_requested and ble_server is not None:
+            print("Stopping BLE server...", flush=True)
+        if ble_server is not None:
+            ble_server.stop()
 
 
 if __name__ == "__main__":

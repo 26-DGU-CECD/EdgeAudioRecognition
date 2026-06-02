@@ -7,6 +7,7 @@ from audio_buffer import AudioBuffer
 from audio_level_meter import AudioLevelMeter
 from audio_math import colorize, format_scores
 from audio_preprocessor import AudioPreprocessor
+from ble_result_builder import build_ble_result, build_skip_result
 from audio_queue import AudioQueue
 from constants import (
     ANSI_GREEN,
@@ -19,6 +20,10 @@ from constants import (
 from db_threshold_gate import DbThresholdGate
 from microphone_module import MicrophoneModule
 from model_inference import ModelInferenceEngine
+
+
+class InferencePublisher:
+    def publish(self, data: dict) -> None: ...
 
 
 class AudioStreamController:
@@ -34,6 +39,7 @@ class AudioStreamController:
         inference_engine: ModelInferenceEngine,
         min_score: float,
         skip_low_db: bool,
+        publisher: InferencePublisher | None = None,
     ) -> None:
         self.microphone = microphone
         self.audio_queue = audio_queue
@@ -44,6 +50,7 @@ class AudioStreamController:
         self.inference_engine = inference_engine
         self.min_score = float(min_score)
         self.skip_low_db = bool(skip_low_db)
+        self.publisher = publisher
 
     def print_startup_info(self) -> None:
         print(
@@ -55,7 +62,8 @@ class AudioStreamController:
             f"enhance_threshold_dbfs={self.preprocessor.enhance_threshold_db:+.1f}, "
             f"noise_reduction_db={self.preprocessor.noise_reduction_db:.1f}, "
             f"main_gain_db={self.preprocessor.main_gain_db:+.1f}, "
-            f"min_score={self.min_score:.1%}, skip_low_db={self.skip_low_db}"
+            f"min_score={self.min_score:.1%}, skip_low_db={self.skip_low_db}, "
+            f"ble={self.publisher is not None}"
         )
         print("Ctrl+C로 종료합니다.")
 
@@ -81,6 +89,12 @@ class AudioStreamController:
                 f"level={chunk_dbfs:+.1f} dBFS < {self.threshold_gate.min_dbfs:+.1f} dBFS"
             )
             print(colorize(line, ANSI_RED), flush=True)
+            self._publish(build_skip_result(
+                timestamp=timestamp,
+                chunk_dbfs=chunk_dbfs,
+                threshold_dbfs=self.threshold_gate.min_dbfs,
+                raw_line=line,
+            ))
             return
 
         preprocess_result = self.preprocessor.enhance(chunk)
@@ -101,9 +115,11 @@ class AudioStreamController:
 
         if status_reasons:
             status = "낮음(" + ", ".join(status_reasons) + ")"
+            status_key = "low_signal" if not over_threshold else "low_score"
             line_color = ANSI_RED
         else:
             status = "감지"
+            status_key = "detected"
             line_color = ANSI_GREEN
 
         line = (
@@ -117,3 +133,21 @@ class AudioStreamController:
             f"전체: {format_scores(prediction.scores)}"
         )
         print(colorize(line, line_color), flush=True)
+        self._publish(build_ble_result(
+            timestamp=timestamp,
+            best_label=prediction.best_label,
+            best_probability=prediction.best_probability,
+            scores=prediction.scores,
+            status_key=status_key,
+            status_text=status,
+            chunk_dbfs=chunk_dbfs,
+            enhanced_dbfs=preprocess_result.enhanced_dbfs,
+            quiet_gain=preprocess_result.quiet_gain,
+            loud_gain=preprocess_result.loud_gain,
+            clipped=preprocess_result.clipped,
+            raw_line=line,
+        ))
+
+    def _publish(self, data: dict) -> None:
+        if self.publisher is not None:
+            self.publisher.publish(data)

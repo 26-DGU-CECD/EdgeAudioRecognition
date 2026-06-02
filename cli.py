@@ -97,4 +97,20 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Skip model inference when chunk dBFS is below --min-db threshold.",
     )
+    parser.add_argument(
+        "--no-ble",
+        action="store_true",
+        help="Run console inference only without opening the BLE GATT server.",
+    )
+    parser.add_argument(
+        "--ble-name",
+        default="JHello",
+        help="BLE advertising name. Keep JHello to match the Flutter scanner.",
+    )
+    parser.add_argument(
+        "--ble-chunk-bytes",
+        type=int,
+        default=180,
+        help="Maximum bytes per BLE notification frame. Flutter usually requests MTU 247; 180 is safe.",
+    )
     return parser.parse_args()
