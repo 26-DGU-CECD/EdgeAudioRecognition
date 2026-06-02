@@ -18,8 +18,8 @@ import numpy as np
 import torch
 import torchaudio
 
-import realtime_inference_ble as ble
-from realtime_inference import (
+import jetson_ef.realtime_demo.realtime_inference_ble as ble
+from jetson_ef.realtime_demo.realtime_inference import (
     ANSI_GREEN,
     ANSI_RED,
     CHUNK_SAMPLES,

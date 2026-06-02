@@ -28,7 +28,7 @@ from gi.repository import GLib
 # Import the existing inference helpers instead of changing the core inference
 # file. This keeps model loading, preprocessing, label mapping, and prediction
 # behavior aligned with realtime_inference.py.
-from realtime_inference import (  # noqa: E402
+from jetson_ef.realtime_demo.realtime_inference import (  # noqa: E402
     ANSI_GREEN,
     ANSI_RED,
     AUDIOSET_CLASS_COUNT,
