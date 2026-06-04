@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'ble/ble_sound_service.dart';
-import 'device_status.dart';
-import 'home_page.dart';
-import 'log_page.dart';
-import 'settings_page.dart';
-import 'sound_packet.dart';
+import 'models/device_status.dart';
+import 'pages/home_page.dart';
+import 'pages/log_page.dart';
+import 'pages/settings_page.dart';
+import 'models/sound_packet.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key, required this.title});
@@ -73,7 +73,8 @@ class _MainPageState extends State<MainPage> {
     logs.insert(0, packet);
 
     final isMuted = mutedLabels.contains(packet.displayLabel);
-    currentPacket = packet.isDisplayable && !isMuted ? packet : null;
+    currentPacket = (!isMuted) ? packet : null;
+    // currentPacket = packet.isDisplayable && !isMuted ? packet : null;
   }
 
   void receivePacket(Map<String, dynamic> json) {
