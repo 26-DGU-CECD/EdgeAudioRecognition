@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'ble_constants.dart';
 import 'ble_connection_store.dart';
-import 'package:untitled/device_status.dart';
-import 'package:untitled/sound_packet.dart';
+import 'package:untitled/models/device_status.dart';
+import 'package:untitled/models/sound_packet.dart';
 
 /// BLE 연결, notify 구독, json 파싱
 class BleSoundService {
