@@ -1,6 +1,5 @@
 *.mp3
 *.env
-git rm -r --cached .
 .venv/
 
 venv/
@@ -18,6 +17,14 @@ lib/
 
 *.wav
 *.mp3
+
+# Android / Gradle generated files
+**/.gradle/
+**/.kotlin/
+**/build/
+**/local.properties
+**/.idea/workspace.xml
+**/.idea/caches/
 
 
 /playground/hyeonwoo/data/
