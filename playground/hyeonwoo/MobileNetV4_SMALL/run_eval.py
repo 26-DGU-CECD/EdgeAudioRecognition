@@ -26,7 +26,18 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--esc50-root", type=Path, default=DEFAULT_ESC50_ROOT)
     parser.add_argument("--metadata-csv", type=Path, default=None)
-    parser.add_argument("--fold", type=int, choices=[1, 2, 3, 4, 5], default=None)
+    parser.add_argument(
+        "--fold",
+        type=int,
+        choices=[1, 2, 3, 4, 5],
+        default=5,
+        help="ESC-50 fold to evaluate. Defaults to fold 5, matching train.py's held-out fold.",
+    )
+    parser.add_argument(
+        "--all-folds",
+        action="store_true",
+        help="Evaluate all ESC-50 folds instead of a single held-out fold.",
+    )
     parser.add_argument("--checkpoint", type=Path, default=None)
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument(
@@ -141,10 +152,11 @@ def evaluate(args: argparse.Namespace) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     plots_dir.mkdir(parents=True, exist_ok=True)
 
+    eval_fold = None if args.all_folds else args.fold
     metadata_bundle = load_esc50_metadata(
         esc50_root=args.esc50_root,
         metadata_csv=args.metadata_csv,
-        fold=args.fold,
+        fold=eval_fold,
     )
     audio_config = AudioConfig()
     dataset = ESC50LogMelDataset(
@@ -179,7 +191,7 @@ def evaluate(args: argparse.Namespace) -> None:
     print(f"Device: {device}")
     print(f"ESC-50 root: {metadata_bundle.esc50_root}")
     print(f"Metadata: {metadata_bundle.metadata_path}")
-    print(f"Rows: {len(dataset)} | Classes: {len(metadata_bundle.class_names)} | Fold: {args.fold or 'all'}")
+    print(f"Rows: {len(dataset)} | Classes: {len(metadata_bundle.class_names)} | Fold: {eval_fold or 'all'}")
     print(f"Checkpoint: {checkpoint_info['checkpoint_path'] if checkpoint_info else 'none'}")
     print(f"Parameters: {count_parameters(model):,}")
 

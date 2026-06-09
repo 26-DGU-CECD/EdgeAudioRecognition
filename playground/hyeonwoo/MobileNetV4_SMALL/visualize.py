@@ -234,7 +234,12 @@ def format_score(value: object) -> str:
     return f"{float(value):.3f}"
 
 
-def df_to_html_table(df: pd.DataFrame, percent_columns: set[str] | None = None) -> str:
+def df_to_html_table(
+    df: pd.DataFrame,
+    percent_columns: set[str] | None = None,
+    table_id: str | None = None,
+    sortable: bool = False,
+) -> str:
     percent_columns = percent_columns or set()
     display_df = df.copy()
     for column in display_df.columns:
@@ -242,7 +247,16 @@ def df_to_html_table(df: pd.DataFrame, percent_columns: set[str] | None = None) 
             display_df[column] = display_df[column].map(format_percent)
         elif pd.api.types.is_float_dtype(display_df[column]):
             display_df[column] = display_df[column].map(format_score)
-    return display_df.to_html(index=False, classes="data-table", escape=False)
+
+    classes = ["data-table"]
+    if sortable:
+        classes.append("sortable-table")
+    return display_df.to_html(
+        index=False,
+        classes=" ".join(classes),
+        table_id=table_id,
+        escape=False,
+    )
 
 
 def build_report_html(
@@ -378,6 +392,22 @@ def build_report_html(
     .data-table th {{
       background: #eef2f7;
     }}
+    .sortable-table th {{
+      cursor: pointer;
+      padding-right: 24px;
+      position: relative;
+      user-select: none;
+      white-space: nowrap;
+    }}
+    .sortable-table th:focus {{
+      outline: 2px solid #3b82f6;
+      outline-offset: -2px;
+    }}
+    .sort-indicator {{
+      color: #627d98;
+      font-size: 11px;
+      margin-left: 6px;
+    }}
     .note {{
       padding: 14px 16px;
       background: #fff8e6;
@@ -386,6 +416,90 @@ def build_report_html(
       color: #594214;
     }}
   </style>
+  <script>
+    function parseSortValue(text) {{
+      var cleaned = text.trim().replace(/,/g, "");
+      if (cleaned.endsWith("%")) {{
+        cleaned = cleaned.slice(0, -1);
+      }}
+      if (cleaned !== "" && !Number.isNaN(Number(cleaned))) {{
+        return Number(cleaned);
+      }}
+      return text.trim().toLowerCase();
+    }}
+
+    function sortTable(table, columnIndex, direction) {{
+      var tbody = table.tBodies[0];
+      var rows = Array.from(tbody.rows).map(function(row, index) {{
+        return {{
+          row: row,
+          index: index,
+          value: parseSortValue(row.cells[columnIndex].textContent)
+        }};
+      }});
+      var numeric = rows.every(function(item) {{
+        return typeof item.value === "number";
+      }});
+
+      rows.sort(function(left, right) {{
+        var comparison;
+        if (numeric) {{
+          comparison = left.value - right.value;
+        }} else {{
+          comparison = String(left.value).localeCompare(String(right.value), undefined, {{
+            numeric: true,
+            sensitivity: "base"
+          }});
+        }}
+        if (comparison === 0) {{
+          comparison = left.index - right.index;
+        }}
+        return direction === "asc" ? comparison : -comparison;
+      }});
+
+      rows.forEach(function(item) {{
+        tbody.appendChild(item.row);
+      }});
+    }}
+
+    document.addEventListener("DOMContentLoaded", function() {{
+      document.querySelectorAll("table.sortable-table").forEach(function(table) {{
+        table.querySelectorAll("thead th").forEach(function(header, columnIndex) {{
+          var indicator = document.createElement("span");
+          indicator.className = "sort-indicator";
+          indicator.setAttribute("aria-hidden", "true");
+          header.appendChild(indicator);
+          header.tabIndex = 0;
+          header.setAttribute("role", "button");
+          header.setAttribute("aria-sort", "none");
+
+          function activateSort() {{
+            var direction = header.dataset.sortDirection === "asc" ? "desc" : "asc";
+            table.querySelectorAll("thead th").forEach(function(otherHeader) {{
+              otherHeader.dataset.sortDirection = "";
+              otherHeader.setAttribute("aria-sort", "none");
+              var otherIndicator = otherHeader.querySelector(".sort-indicator");
+              if (otherIndicator) {{
+                otherIndicator.textContent = "";
+              }}
+            }});
+            header.dataset.sortDirection = direction;
+            header.setAttribute("aria-sort", direction === "asc" ? "ascending" : "descending");
+            indicator.textContent = direction === "asc" ? "ASC" : "DESC";
+            sortTable(table, columnIndex, direction);
+          }}
+
+          header.addEventListener("click", activateSort);
+          header.addEventListener("keydown", function(event) {{
+            if (event.key === "Enter" || event.key === " ") {{
+              event.preventDefault();
+              activateSort();
+            }}
+          }});
+        }});
+      }});
+    }});
+  </script>
 </head>
 <body>
 <main>
@@ -402,7 +516,12 @@ def build_report_html(
   </section>
   <section>
     <h2>Per-category Metrics</h2>
-    {df_to_html_table(per_category_display, percent_columns=percent_columns)}
+    {df_to_html_table(
+        per_category_display,
+        percent_columns=percent_columns,
+        table_id="per-category-metrics",
+        sortable=True,
+    )}
   </section>
   <section>
     <h2>Top Confusions</h2>
