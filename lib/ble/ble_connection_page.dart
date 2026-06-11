@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:untitled/main_page.dart';
 
+import '../pages/background_alert_consent_page.dart';
 import 'ble_constants.dart';
 import 'ble_sound_service.dart';
 
@@ -89,8 +90,7 @@ class _BleConnectionPageState extends State<BleConnectionPage> {
     if (!mounted) return;
     setState(() {
       isScanning = false;
-      statusText =
-          scanResults.isEmpty ? '키링을 찾지 못했습니다.' : '키링을 선택해서 연결하세요.';
+      statusText = scanResults.isEmpty ? '키링을 찾지 못했습니다.' : '키링을 선택해서 연결하세요.';
     });
   }
 
@@ -105,18 +105,12 @@ class _BleConnectionPageState extends State<BleConnectionPage> {
 
       await BleSoundService.instance.connect(
         result.device,
-        deviceName: _deviceName(result),
+        deviceName: keyringDisplayName,
       );
 
       if (!mounted) return;
 
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const MainPage(title: 'Sound Keychain'),
-        ),
-        (_) => false,
-      );
+      await _openNextPage();
     } catch (e) {
       if (!mounted) return;
       setState(() {
@@ -126,13 +120,21 @@ class _BleConnectionPageState extends State<BleConnectionPage> {
     }
   }
 
-  String _deviceName(ScanResult result) {
-    final advName = result.advertisementData.advName;
-    final platformName = result.device.platformName;
+  Future<void> _openNextPage() async {
+    final shouldShowBackgroundAlertConsent =
+        await BackgroundAlertConsentPage.shouldShow();
 
-    if (advName.isNotEmpty) return advName;
-    if (platformName.isNotEmpty) return platformName;
-    return result.device.remoteId.str;
+    if (!mounted) return;
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => shouldShowBackgroundAlertConsent
+            ? const BackgroundAlertConsentPage()
+            : const MainPage(title: 'Sound Keychain'),
+      ),
+      (_) => false,
+    );
   }
 
   @override
@@ -165,7 +167,7 @@ class _BleConnectionPageState extends State<BleConnectionPage> {
 
                         return ListTile(
                           leading: const Icon(Icons.bluetooth),
-                          title: Text(_deviceName(result)),
+                          title: const Text(keyringDisplayName),
                           subtitle: Text(
                             '${result.device.remoteId.str} / RSSI ${result.rssi}',
                           ),
