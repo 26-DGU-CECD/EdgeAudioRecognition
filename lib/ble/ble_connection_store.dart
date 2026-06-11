@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// BLE 자동 연결에 필요한 정보 저장
@@ -9,7 +8,7 @@ class BleConnectionStore {
   static Future<void> save({
     required String deviceId,
     required String deviceName,
-}) async {
+  }) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_deviceIdKey, deviceId);
     await prefs.setString(_deviceNameKey, deviceName);

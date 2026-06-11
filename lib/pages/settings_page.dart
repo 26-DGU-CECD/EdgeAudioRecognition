@@ -7,22 +7,24 @@ import 'setting_notification_page.dart';
 class SettingsPage extends StatelessWidget {
   final DeviceStatus? deviceStatus;
   final List<String> soundLabels;
-  final Set<String> mutedLabels;
+  final Set<String> mutedLabelKeys;
   final bool backgroundAlertsEnabled;
   final int logCount;
   final ValueChanged<String> onToggleMutedLabel;
   final ValueChanged<bool> onToggleBackgroundAlerts;
+  final VoidCallback onReconnectDevice;
   final VoidCallback onClearLogs;
 
   const SettingsPage({
     super.key,
     required this.deviceStatus,
     required this.soundLabels,
-    required this.mutedLabels,
+    required this.mutedLabelKeys,
     required this.backgroundAlertsEnabled,
     required this.logCount,
     required this.onToggleMutedLabel,
     required this.onToggleBackgroundAlerts,
+    required this.onReconnectDevice,
     required this.onClearLogs,
   });
 
@@ -34,10 +36,12 @@ class SettingsPage extends StatelessWidget {
         children: [
           ListTile(
             leading: const Icon(Icons.memory),
-            title: const Text('기기 정보'),
-            subtitle: Text(deviceStatus?.deviceName.isNotEmpty == true
-                ? deviceStatus!.deviceName
-                : '연결된 기기 정보 없음'),
+            title: const Text('연결된 기기'),
+            subtitle: Text(
+              deviceStatus?.deviceName.isNotEmpty == true
+                  ? deviceStatus!.deviceName
+                  : '연결된 기기 정보 없음',
+            ),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.push(
@@ -45,6 +49,7 @@ class SettingsPage extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (_) => SettingDeviceInfoPage(
                     deviceStatus: deviceStatus,
+                    onReconnectDevice: onReconnectDevice,
                   ),
                 ),
               );
@@ -53,7 +58,7 @@ class SettingsPage extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.notifications_active),
             title: const Text('알림 설정'),
-            subtitle: Text('차단된 소리 ${mutedLabels.length}개'),
+            subtitle: Text('차단된 소리 ${mutedLabelKeys.length}개'),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.push(
@@ -61,7 +66,7 @@ class SettingsPage extends StatelessWidget {
                 MaterialPageRoute(
                   builder: (_) => SettingNotificationPage(
                     soundLabels: soundLabels,
-                    mutedLabels: mutedLabels,
+                    mutedLabelKeys: mutedLabelKeys,
                     onToggleMutedLabel: onToggleMutedLabel,
                   ),
                 ),

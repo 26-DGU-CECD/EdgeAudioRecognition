@@ -1,8 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:untitled/ble/connection_gate.dart';
-import 'main_page.dart';
+import 'dart:io';
 
-void main() {
+import 'package:flutter/material.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
+import 'package:untitled/ble/connection_gate.dart';
+import 'package:untitled/services/local_notification_service.dart';
+import 'package:untitled/services/sound_foreground_task.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  FlutterForegroundTask.initCommunicationPort();
+  if (Platform.isAndroid) {
+    SoundForegroundServiceController.initialize();
+    await LocalNotificationService.instance.initialize();
+  }
   runApp(const MyApp());
 }
 
@@ -18,7 +28,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         brightness: Brightness.light,
         scaffoldBackgroundColor: Colors.white,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan, brightness: Brightness.light,),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.cyan,
+          brightness: Brightness.light,
+        ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           foregroundColor: Colors.black,
@@ -29,14 +42,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-

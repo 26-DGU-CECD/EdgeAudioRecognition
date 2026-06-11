@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../services/alert_settings_store.dart';
+
 class SettingNotificationPage extends StatefulWidget {
   final List<String> soundLabels;
-  final Set<String> mutedLabels;
+  final Set<String> mutedLabelKeys;
   final ValueChanged<String> onToggleMutedLabel;
 
   const SettingNotificationPage({
     super.key,
     required this.soundLabels,
-    required this.mutedLabels,
+    required this.mutedLabelKeys,
     required this.onToggleMutedLabel,
   });
 
@@ -27,7 +29,8 @@ class _SettingNotificationPageState extends State<SettingNotificationPage> {
         itemCount: widget.soundLabels.length,
         itemBuilder: (context, index) {
           final label = widget.soundLabels[index];
-          final enabled = !widget.mutedLabels.contains(label);
+          final labelKey = AlertSettingsStore.labelKeyForDisplayLabel(label);
+          final enabled = !widget.mutedLabelKeys.contains(labelKey);
 
           return SwitchListTile(
             value: enabled,

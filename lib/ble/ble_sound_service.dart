@@ -13,18 +13,16 @@ class BleSoundService {
   static final BleSoundService instance = BleSoundService._();
 
   BluetoothDevice? _device;
-  BluetoothCharacteristic? _resultCharacteristic;
 
   StreamSubscription<List<int>>? _valueSub;
   StreamSubscription<BluetoothConnectionState>? _connectionSub;
 
-  final StreamController<SoundPacket> _soundPacketController = StreamController<
-      SoundPacket>.broadcast();
-  final StreamController<
-      DeviceStatus> _deviceStatusController = StreamController<
-      DeviceStatus>.broadcast();
-  final StreamController<String> _logController = StreamController<
-      String>.broadcast();
+  final StreamController<SoundPacket> _soundPacketController =
+      StreamController<SoundPacket>.broadcast();
+  final StreamController<DeviceStatus> _deviceStatusController =
+      StreamController<DeviceStatus>.broadcast();
+  final StreamController<String> _logController =
+      StreamController<String>.broadcast();
 
   Stream<SoundPacket> get soundPackets => _soundPacketController.stream;
 
@@ -35,6 +33,32 @@ class BleSoundService {
   BluetoothDevice? get device => _device;
 
   bool get isConnected => _device != null;
+
+  static SoundPacket? soundPacketFromBleJson(Map<String, dynamic> json) {
+    final type = json['type'];
+
+    if (type == 'sound_packet') {
+      final payload = json['payload'];
+      if (payload is Map) {
+        return SoundPacket.fromJson(_stringKeyMap(payload));
+      }
+      return null;
+    }
+
+    if (json['status'] == 'ok') {
+      return SoundPacket.fromJson(json);
+    }
+
+    return null;
+  }
+
+  static DeviceStatus? deviceStatusFromBleJson(Map<String, dynamic> json) {
+    if (json['type'] == 'device_status') {
+      return DeviceStatus.fromJson(json);
+    }
+
+    return null;
+  }
 
   /// 사용자가 BLE 연결 페이지에서 선택한 기기에 연결
   Future<void> connect(BluetoothDevice device, {String? deviceName}) async {
@@ -53,6 +77,12 @@ class BleSoundService {
       _log('BLE 상태: $state');
 
       if (state == BluetoothConnectionState.disconnected) {
+        if (_device == device) {
+          _device = null;
+        }
+        unawaited(_valueSub?.cancel());
+        _valueSub = null;
+
         _deviceStatusController.add(
           DeviceStatus(
             connection: 'disconnected',
@@ -65,7 +95,8 @@ class BleSoundService {
 
     await _discoverResultCharacteristic(device);
 
-    await BleConnectionStore.save(deviceId: device.remoteId.str,
+    await BleConnectionStore.save(
+      deviceId: device.remoteId.str,
       deviceName: deviceName ?? device.remoteId.str,
     );
 
@@ -80,11 +111,10 @@ class BleSoundService {
     _log('Bluetooth 연결 완료');
   }
 
-/// 저장된 deviceId로 자동 재연결
-/// 실패 시 false를 반환하고 블루투스 연결 페이지로 연결
+  /// 저장된 deviceId로 자동 재연결
+  /// 실패 시 false를 반환하고 블루투스 연결 페이지로 연결
   Future<bool> connectSavedDevice() async {
     final savedDeviceId = await BleConnectionStore.loadDeviceId();
-    final savedDeviceName = await BleConnectionStore.loadDeviceName();
 
     if (savedDeviceId == null) {
       return false;
@@ -92,7 +122,7 @@ class BleSoundService {
 
     try {
       final device = BluetoothDevice.fromId(savedDeviceId);
-      await connect(device, deviceName: savedDeviceName);
+      await connect(device, deviceName: keyringDisplayName);
       return true;
     } catch (e) {
       _log('자동 연결 실패: $e');
@@ -120,8 +150,6 @@ class BleSoundService {
     if (target == null) {
       throw Exception('SoundKey result characteristic을 찾지 못했습니다.');
     }
-
-    _resultCharacteristic = target;
 
     _valueSub?.cancel();
     _valueSub = target.onValueReceived.listen(_handleBytes);
@@ -161,7 +189,7 @@ class BleSoundService {
       _deviceStatusController.add(
         DeviceStatus(
           connection: 'connected',
-          deviceName: _device?.platformName ?? '',
+          deviceName: _device == null ? '' : keyringDisplayName,
           message: text,
         ),
       );
@@ -170,24 +198,15 @@ class BleSoundService {
 
   /// JSON 메시지 타입에 따라 SoundPacket 또는 DeviceStatus로 분리
   void _handleJson(Map<String, dynamic> json) {
-    final type = json['type'];
-
-    if (type == 'device_status') {
-      _deviceStatusController.add(DeviceStatus.fromJson(json));
+    final status = deviceStatusFromBleJson(json);
+    if (status != null) {
+      _deviceStatusController.add(status);
       return;
     }
 
-    if (type == 'sound_packet') {
-      final payload = json['payload'];
-      if (payload is Map<String, dynamic>) {
-        _soundPacketController.add(SoundPacket.fromJson(payload));
-      }
-      return;
-    }
-
-    /// type이 없어도 status == ok이면 SoundPacket
-    if (json['status'] == 'ok') {
-      _soundPacketController.add(SoundPacket.fromJson(json));
+    final packet = soundPacketFromBleJson(json);
+    if (packet != null) {
+      _soundPacketController.add(packet);
       return;
     }
 
@@ -200,7 +219,6 @@ class BleSoundService {
 
     final device = _device;
     _device = null;
-    _resultCharacteristic = null;
 
     if (device != null) {
       try {
@@ -211,5 +229,9 @@ class BleSoundService {
 
   void _log(String message) {
     _logController.add(message);
+  }
+
+  static Map<String, dynamic> _stringKeyMap(Map source) {
+    return source.map((key, value) => MapEntry(key.toString(), value));
   }
 }

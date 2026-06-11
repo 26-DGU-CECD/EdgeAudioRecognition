@@ -67,6 +67,15 @@ String displayNameForSound(String? label, [String? displayLabel]) {
   return _soundLabelKoMap[normalizedLabel] ?? rawLabel;
 }
 
+String soundLabelKeyFor(String? label, [String? displayLabel]) {
+  final displayLabelKey = displayNameForSound(label, displayLabel).trim();
+  if (displayLabelKey.isEmpty) {
+    return 'unknown';
+  }
+
+  return displayLabelKey.toLowerCase().replaceAll(RegExp(r'\s+'), '_');
+}
+
 double _toDouble(dynamic value) {
   if (value is num) {
     return value.toDouble();
@@ -75,6 +84,20 @@ double _toDouble(dynamic value) {
     return double.tryParse(value) ?? 0.0;
   }
   return 0.0;
+}
+
+bool _toBool(dynamic value) {
+  if (value is bool) {
+    return value;
+  }
+  if (value is num) {
+    return value != 0;
+  }
+  if (value is String) {
+    final normalized = value.trim().toLowerCase();
+    return normalized == 'true' || normalized == '1' || normalized == 'yes';
+  }
+  return false;
 }
 
 /// top-k 결과가 오면 이 클래스로 변환합니다.
@@ -102,6 +125,15 @@ class TopKItem {
       direction: json['direction']?.toString() ?? '',
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'label': label,
+      'display_label': displayLabel,
+      'score': score,
+      'direction': direction,
+    };
+  }
 }
 
 /// 키링으로부터 수신한 JSON 전체입니다.
@@ -118,6 +150,7 @@ class SoundPacket {
   final String direction;
   final double angle;
   final double angleRaw;
+  final bool hasDirectionAngle;
   final String directionText;
   final String doaStatus;
   final String raw;
@@ -136,6 +169,7 @@ class SoundPacket {
     required this.direction,
     required this.angle,
     required this.angleRaw,
+    required this.hasDirectionAngle,
     required this.directionText,
     required this.doaStatus,
     required this.raw,
@@ -146,6 +180,7 @@ class SoundPacket {
     final rawItems = json['items'];
     final label = json['label']?.toString() ?? '';
     final displayLabel = json['display_label']?.toString();
+    final rawAngle = json['angle'];
 
     return SoundPacket(
       status: json['status']?.toString() ?? '',
@@ -158,18 +193,53 @@ class SoundPacket {
       db: _toDouble(json['db']),
       level: json['level']?.toString() ?? 'info',
       direction: json['direction']?.toString() ?? '',
-      angle: _toDouble(json['angle']),
+      angle: _toDouble(rawAngle),
       angleRaw: _toDouble(json['angle_raw']),
+      hasDirectionAngle: _toBool(json['has_doa']) || rawAngle != null,
       directionText: json['direction_text']?.toString() ?? '',
       doaStatus: json['doa_status']?.toString() ?? '',
       raw: json['raw']?.toString() ?? '',
       items: rawItems is List
           ? rawItems
-              .whereType<Map<String, dynamic>>()
-              .map(TopKItem.fromJson)
-              .toList()
+                .whereType<Map>()
+                .map((item) => TopKItem.fromJson(_stringKeyMap(item)))
+                .toList()
           : [],
     );
+  }
+
+  String get notificationLabel {
+    final display = displayLabel.trim();
+    if (display.isNotEmpty) {
+      return display;
+    }
+    return displayNameForSound(label);
+  }
+
+  String get notificationLabelKey {
+    return soundLabelKeyFor(label, displayLabel);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'status': status,
+      'time': time,
+      'label': label,
+      'display_label': displayLabel,
+      'score': score,
+      'infer_sec': inferSec,
+      'total_sec': totalSec,
+      'db': db,
+      'level': level,
+      'direction': direction,
+      'angle': angle,
+      'angle_raw': angleRaw,
+      'has_doa': hasDirectionAngle,
+      'direction_text': directionText,
+      'doa_status': doaStatus,
+      'raw': raw,
+      'items': items.map((item) => item.toJson()).toList(),
+    };
   }
 
   /// 알림 기준 threshold
@@ -181,4 +251,8 @@ class SoundPacket {
   bool get isDanger {
     return level == 'danger';
   }
+}
+
+Map<String, dynamic> _stringKeyMap(Map source) {
+  return source.map((key, value) => MapEntry(key.toString(), value));
 }
