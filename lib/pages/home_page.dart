@@ -1,30 +1,24 @@
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
+
 import '../models/sound_packet.dart';
 import '../widgets/detected_content.dart';
 
-/// 홈 화면 UI
 class HomePage extends StatelessWidget {
   final SoundPacket? packet;
   final String Function(String label) imagePathForLabel;
-  final VoidCallback onReset;
-  final VoidCallback onMockDog;
-  final VoidCallback onMockDanger;
 
   const HomePage({
     super.key,
     required this.packet,
     required this.imagePathForLabel,
-    required this.onReset,
-    required this.onMockDog,
-    required this.onMockDanger,
   });
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     final isListening = packet == null;
-    final color = packet?.isDanger == true ? Colors.redAccent : Colors.cyanAccent;
+    final color = packet?.isDanger == true ? Colors.redAccent : Colors.cyan;
 
     return Scaffold(
       appBar: AppBar(
@@ -53,25 +47,14 @@ class HomePage extends StatelessWidget {
                   child: isListening
                       ? const ListeningContent()
                       : DetectedContent(
-                    packet: packet!,
-                    imagePath: imagePathForLabel(packet!.displayLabel),
-                    color: color,
-                  ),
+                          packet: packet!,
+                          imagePath: imagePathForLabel(packet!.displayLabel),
+                          color: color,
+                        ),
                 ),
               ),
             ),
             InfoPanel(packet: packet),
-            const SizedBox(height: 12,),
-
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                ElevatedButton(onPressed: onReset, child: const Text('듣기 상태')),
-                ElevatedButton(onPressed: onMockDog, child: Text('개소리 수신 테스트')),
-                ElevatedButton(onPressed: onMockDanger, child: const Text('위험 수신 테스트')),
-              ],
-            ),
           ],
         ),
       ),
@@ -79,7 +62,6 @@ class HomePage extends StatelessWidget {
   }
 }
 
-/// 방향 표시 원 그리기
 class DirectionCircle extends StatelessWidget {
   final double? angle;
   final bool isDanger;
@@ -114,7 +96,6 @@ class DirectionCircle extends StatelessWidget {
   }
 }
 
-/// 원, 방향 바늘 그리기
 class DirectionCirclePainter extends CustomPainter {
   final double? angle;
   final bool isDanger;
@@ -129,7 +110,6 @@ class DirectionCirclePainter extends CustomPainter {
     final center = size.center(Offset.zero);
     final outerRadius = size.width / 2;
     final innerRadius = outerRadius * 0.88;
-
     final baseColor = isDanger ? Colors.redAccent : Colors.cyan;
 
     final outerPaint = Paint()
@@ -166,13 +146,13 @@ class DirectionCirclePainter extends CustomPainter {
   }
 
   void _drawDirectionHighlight(
-      Canvas canvas,
-      Offset center,
-      double outerRadius,
-      double innerRadius,
-      double angle,
-      Color color,
-      ) {
+    Canvas canvas,
+    Offset center,
+    double outerRadius,
+    double innerRadius,
+    double angle,
+    Color color,
+  ) {
     final startAngle = (angle - 90 - 16) * math.pi / 180;
     const sweepAngle = 32 * math.pi / 180;
 
@@ -199,12 +179,12 @@ class DirectionCirclePainter extends CustomPainter {
   }
 
   void _drawOuterPointer(
-      Canvas canvas,
-      Offset center,
-      double outerRadius,
-      double angle,
-      Color color,
-      ) {
+    Canvas canvas,
+    Offset center,
+    double outerRadius,
+    double angle,
+    Color color,
+  ) {
     final radians = (angle - 90) * math.pi / 180;
 
     final direction = Offset(
@@ -284,7 +264,6 @@ class DirectionCirclePainter extends CustomPainter {
   }
 }
 
-/// 홈화면 하단 소리 정보
 class InfoPanel extends StatelessWidget {
   final SoundPacket? packet;
 
@@ -292,15 +271,10 @@ class InfoPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Row(
       children: [
-        Row(
-          children: [
-            Expanded(child: infoBox('INFER', '${packet?.inferSec ?? 0.0}s')),
-            Expanded(child: infoBox('DB', '${packet?.db ?? 0.0}dB')),
-            /// Expanded(child: infoBox('SCORE', packet == null ? '0.0%' : '${(packet!.score *100).toStringAsFixed(1)}%',),),
-          ],
-        ),
+        Expanded(child: infoBox('INFER', '${packet?.inferSec ?? 0.0}s')),
+        Expanded(child: infoBox('DB', '${packet?.db ?? 0.0}dB')),
       ],
     );
   }
