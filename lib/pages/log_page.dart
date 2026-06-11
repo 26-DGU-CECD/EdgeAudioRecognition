@@ -60,9 +60,7 @@ class LogPage extends StatelessWidget {
 
   Widget _logTile(SoundPacket log) {
     return ListTile(
-      leading: SoundImageView(
-        imagePath: imagePathForLabel(log.displayLabel),
-      ),
+      leading: SoundImageView(imagePath: imagePathForLabel(log.displayLabel)),
       title: Text(log.displayLabel),
       subtitle: Text('${log.db}dB | ${log.level}'),
       trailing: Text('${log.time}'),

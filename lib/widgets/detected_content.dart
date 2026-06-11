@@ -17,8 +17,6 @@ class ListeningContent extends StatelessWidget {
           '소리를 듣고 있어요',
           style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8),
-        Text('30dB 이상, score 70% 이상일 때 표시'),
       ],
     );
   }

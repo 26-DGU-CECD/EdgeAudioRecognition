@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 class SoundImageView extends StatelessWidget {
   final String imagePath;
 
-  const SoundImageView({
-    super.key,
-    required this.imagePath,
-  });
+  const SoundImageView({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {

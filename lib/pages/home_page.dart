@@ -19,6 +19,9 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final isListening = packet == null;
     final color = packet?.isDanger == true ? Colors.redAccent : Colors.cyan;
+    final directionAngle = packet?.hasDirectionAngle == true
+        ? packet!.angle
+        : null;
 
     return Scaffold(
       appBar: AppBar(
@@ -42,7 +45,7 @@ class HomePage extends StatelessWidget {
             Expanded(
               child: Center(
                 child: DirectionCircle(
-                  angle: packet?.angle,
+                  angle: directionAngle,
                   isDanger: packet?.isDanger == true,
                   child: isListening
                       ? const ListeningContent()
