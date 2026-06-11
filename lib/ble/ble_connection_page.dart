@@ -9,7 +9,12 @@ import 'ble_constants.dart';
 import 'ble_sound_service.dart';
 
 class BleConnectionPage extends StatefulWidget {
-  const BleConnectionPage({super.key});
+  const BleConnectionPage({
+    super.key,
+    this.showBackgroundAlertConsentOnConnect = false,
+  });
+
+  final bool showBackgroundAlertConsentOnConnect;
 
   @override
   State<BleConnectionPage> createState() => _BleConnectionPageState();
@@ -122,6 +127,7 @@ class _BleConnectionPageState extends State<BleConnectionPage> {
 
   Future<void> _openNextPage() async {
     final shouldShowBackgroundAlertConsent =
+        widget.showBackgroundAlertConsentOnConnect ||
         await BackgroundAlertConsentPage.shouldShow();
 
     if (!mounted) return;

@@ -169,7 +169,10 @@ class _MainPageState extends State<MainPage> {
 
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (_) => const BleConnectionPage()),
+      MaterialPageRoute(
+        builder: (_) =>
+            const BleConnectionPage(showBackgroundAlertConsentOnConnect: true),
+      ),
       (_) => false,
     );
   }
