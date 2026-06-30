@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:untitled/ble/connection_gate.dart';
-import 'main_page.dart';
+import 'services/notification_service.dart';
+import 'ui/app_colors.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+    ),
+  );
+  await NotificationService.instance.init();
   runApp(const MyApp());
 }
 
@@ -12,17 +23,34 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final colorScheme = ColorScheme.fromSeed(
+      seedColor: AppColors.primary,
+      brightness: Brightness.light,
+    ).copyWith(
+      primary: AppColors.primary,
+      surface: AppColors.scaffold,
+    );
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Sound Keyring',
       theme: ThemeData(
+        useMaterial3: true,
         brightness: Brightness.light,
-        scaffoldBackgroundColor: Colors.white,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan, brightness: Brightness.light,),
+        scaffoldBackgroundColor: AppColors.scaffold,
+        colorScheme: colorScheme,
+        splashColor: AppColors.primarySoft,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
+          backgroundColor: AppColors.scaffold,
+          surfaceTintColor: Colors.transparent,
+          foregroundColor: AppColors.textPrimary,
           elevation: 0,
+          centerTitle: false,
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w800,
+            color: AppColors.textPrimary,
+          ),
         ),
       ),
       home: const ConnectionGate(),

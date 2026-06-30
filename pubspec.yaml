@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.5.5
   flutter_blue_plus: ^2.3.4
+  flutter_local_notifications: ^18.0.1
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +62,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+     - assets/miimo.png
+     - assets/sounds/
      - assets/icon_soundkeyring.png
      - assets/soundimages/alarm_emoji.png
      - assets/soundimages/dog_emoji.png
