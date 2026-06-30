@@ -85,6 +85,17 @@ class SoundPacket {
     );
   }
 
+  /// angle(0~360)로부터 사용자 기준 방향 라벨 계산.
+  /// 0도(=기기의 북쪽)는 사용자의 뒤쪽(6시 방향)에 대응한다.
+  /// 원을 X로 4등분: 0=뒤쪽, 90=왼쪽, 180=앞쪽, 270=오른쪽.
+  /// 서버는 angle만 보내면 되고, 방향 텍스트는 앱에서 파생한다.
+  String get directionLabel {
+    const labels = ['뒤쪽', '왼쪽', '앞쪽', '오른쪽'];
+    final a = ((angle % 360) + 360) % 360;
+    final idx = (((a + 45) % 360) ~/ 90).toInt();
+    return labels[idx];
+  }
+
   /// 알림 기준 threshold
   bool get isDisplayable {
     return status == 'ok' && score >= 0.7 && db >= 45.0;
