@@ -24,3 +24,7 @@ lib/
 /playground/hyeonwoo/models/
 /playground/hyeonwoo/ESC-50-master/
 /playground/hyeonwoo/ESC-50-master.zip
+/playground/hyeonwoo/YAMNET/YAMNET_dataset
+/playground/hyeonwoo/YAMNET/YAMNET_dataset_2s/
+/playground/hyeonwoo/YAMNET/artifacts/*.npz
+/playground/hyeonwoo/YAMNET/models/
