@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../app_prefs.dart';
 import '../pages/home_page.dart' show CompassView;
 import '../ui/app_colors.dart';
-import 'background_consent_page.dart';
+import '../pages/background_alert_consent_page.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -130,7 +130,7 @@ class _OnboardingPageState extends State<OnboardingPage>
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const BackgroundConsentPage()),
+      MaterialPageRoute(builder: (_) => const BackgroundAlertConsentPage()),
     );
   }
 
