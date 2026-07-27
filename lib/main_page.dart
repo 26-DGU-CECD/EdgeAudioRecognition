@@ -1,16 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
-import 'app_prefs.dart';
 import 'ble/ble_connection_page.dart';
 import 'ble/ble_sound_service.dart';
-import 'device_status.dart';
-import 'home_page.dart';
-import 'log_page.dart';
-import 'services/notification_service.dart';
-import 'settings_page.dart';
-import 'sound_packet.dart';
+import 'models/device_status.dart';
+import 'models/sound_packet.dart';
+import 'pages/home_page.dart';
+import 'pages/log_page.dart';
+import 'pages/settings_page.dart';
+import 'services/alert_settings_store.dart';
+import 'services/sound_foreground_task.dart';
 import 'ui/app_bottom_nav.dart';
 import 'ui/push_banner.dart';
 
@@ -24,21 +25,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
-  static const List<String> soundLabels = [
-    '공사장 소음',
-    '총소리',
-    '응급·도난·화재 경보음',
-    '자전거 접근 소리',
-    '차량 경적',
-    '물 흐르는 소리',
-    '노크 소리',
-    '가전제품 작동음',
-    '아기 울음소리',
-    '개·고양이 울음소리',
-    '사람 울음 및 비명',
-    '유리 깨지는 소리',
-  ];
-
   int selectedIndex = 0;
   SoundPacket? currentPacket;
   DeviceStatus? deviceStatus;
@@ -47,6 +33,8 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   bool connected = false;
 
   final List<SoundPacket> logs = [];
+
+  /// 음소거된 표시 라벨 집합(UI 기준). 백그라운드 필터는 라벨 키로 저장됩니다.
   final Set<String> mutedLabels = {};
 
   bool backgroundAlertsEnabled = false;
@@ -70,6 +58,9 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     // 현재 연결 여부는 서비스에서 직접 가져온다.
     connected = BleSoundService.instance.isConnected;
 
+    // 백그라운드 포그라운드 서비스가 UI로 전달하는 패킷/상태 수신
+    FlutterForegroundTask.addTaskDataCallback(_onForegroundTaskData);
+
     _soundSub = BleSoundService.instance.soundPackets.listen((packet) {
       setState(() {
         _addPacket(packet);
@@ -83,17 +74,13 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       });
     });
 
-    AppPrefs.isBackgroundAlertsEnabled().then((enabled) {
-      if (!mounted) return;
-      setState(() {
-        backgroundAlertsEnabled = enabled;
-      });
-    });
+    _loadSavedSettings();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    FlutterForegroundTask.removeTaskDataCallback(_onForegroundTaskData);
     _soundSub?.cancel();
     _statusSub?.cancel();
     super.dispose();
@@ -102,6 +89,56 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     _lifecycle = state;
+  }
+
+  Future<void> _loadSavedSettings() async {
+    final savedBackgroundAlertsEnabled =
+        await AlertSettingsStore.loadBackgroundAlertsEnabled();
+    final savedMutedKeys = await AlertSettingsStore.loadMutedLabelKeys();
+
+    if (!mounted) return;
+
+    setState(() {
+      backgroundAlertsEnabled = savedBackgroundAlertsEnabled;
+      mutedLabels
+        ..clear()
+        ..addAll(knownKoreanSoundLabels.where(
+          (label) => savedMutedKeys
+              .contains(AlertSettingsStore.labelKeyForDisplayLabel(label)),
+        ));
+    });
+
+    if (savedBackgroundAlertsEnabled) {
+      await SoundForegroundServiceController.start();
+    }
+  }
+
+  void _onForegroundTaskData(Object data) {
+    if (!mounted || data is! Map) {
+      return;
+    }
+
+    final payload = data['payload'];
+    if (payload is! Map) {
+      return;
+    }
+
+    final payloadJson =
+        payload.map((key, value) => MapEntry(key.toString(), value));
+
+    switch (data['type']) {
+      case 'sound_packet':
+        setState(() {
+          _addPacket(SoundPacket.fromJson(payloadJson));
+        });
+        break;
+      case 'device_status':
+        setState(() {
+          deviceStatus = DeviceStatus.fromJson(payloadJson);
+          connected = deviceStatus?.connection == 'connected';
+        });
+        break;
+    }
   }
 
   void _addPacket(SoundPacket packet) {
@@ -114,13 +151,12 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     if (shouldAlert) _alert(packet);
   }
 
-  /// 포그라운드면 인앱 헤즈업 배너(P3), 백그라운드면 OS 푸시(P1/P2/P3).
+  /// 포그라운드면 인앱 헤즈업 배너(P3). 백그라운드에서는 포그라운드 서비스가
+  /// 자체적으로 OS 알림을 표시하므로 여기서는 배너만 처리한다.
   void _alert(SoundPacket packet) {
     final foreground = _lifecycle == AppLifecycleState.resumed;
     if (foreground) {
       bannerPacket = packet;
-    } else if (backgroundAlertsEnabled) {
-      NotificationService.instance.showForPacket(packet);
     }
   }
 
@@ -137,7 +173,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     });
   }
 
-  void toggleMutedLabel(String label) {
+  Future<void> toggleMutedLabel(String label) async {
     setState(() {
       if (mutedLabels.contains(label)) {
         mutedLabels.remove(label);
@@ -148,19 +184,55 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
         }
       }
     });
+
+    final keys =
+        mutedLabels.map(AlertSettingsStore.labelKeyForDisplayLabel).toSet();
+    await AlertSettingsStore.saveMutedLabelKeys(keys);
   }
 
-  void toggleBackgroundAlerts(bool enabled) {
+  Future<void> toggleBackgroundAlerts(bool enabled) async {
     setState(() {
       backgroundAlertsEnabled = enabled;
     });
-    AppPrefs.setBackgroundAlertsEnabled(enabled);
+
+    await AlertSettingsStore.saveBackgroundAlertsEnabled(enabled);
+
+    if (enabled) {
+      // 포그라운드 서비스가 BLE를 전담하므로 UI측 연결은 해제한다.
+      await BleSoundService.instance.disconnect();
+      final started = await SoundForegroundServiceController.start();
+
+      if (!started && mounted) {
+        await AlertSettingsStore.saveBackgroundAlertsEnabled(false);
+        setState(() {
+          backgroundAlertsEnabled = false;
+        });
+        unawaited(BleSoundService.instance.connectSavedDevice());
+      }
+      return;
+    }
+
+    await SoundForegroundServiceController.stop();
+    unawaited(BleSoundService.instance.connectSavedDevice());
   }
 
-  void _goToReconnect() {
-    Navigator.push(
+  Future<void> _goToReconnect() async {
+    if (backgroundAlertsEnabled) {
+      await AlertSettingsStore.saveBackgroundAlertsEnabled(false);
+      await SoundForegroundServiceController.stop();
+    }
+
+    await BleSoundService.instance.disconnect();
+
+    if (!mounted) return;
+
+    Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (_) => const BleConnectionPage()),
+      MaterialPageRoute(
+        builder: (_) =>
+            const BleConnectionPage(showBackgroundAlertConsentOnConnect: true),
+      ),
+      (_) => false,
     );
   }
 
@@ -189,7 +261,9 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
             selectedIndex = 1;
           });
         },
-        onReconnect: _goToReconnect,
+        onReconnect: () {
+          unawaited(_goToReconnect());
+        },
         onMockDog: () {
           receivePacket({
             'status': 'ok',
@@ -228,7 +302,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       LogPage(logs: logs),
       SettingsPage(
         deviceStatus: deviceStatus,
-        soundLabels: soundLabels,
+        soundLabels: knownKoreanSoundLabels,
         mutedLabels: mutedLabels,
         backgroundAlertsEnabled: backgroundAlertsEnabled,
         logCount: logs.length,

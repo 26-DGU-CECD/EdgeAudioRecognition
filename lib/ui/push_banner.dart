@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../sound_packet.dart';
+import '../models/sound_packet.dart';
 import 'app_colors.dart';
 import 'sound_style.dart';
 

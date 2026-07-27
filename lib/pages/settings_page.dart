@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'device_status.dart';
-import 'onboarding/onboarding_page.dart';
+import '../models/device_status.dart';
+import '../onboarding/onboarding_page.dart';
 import 'setting_device_info_page.dart';
 import 'setting_notification_page.dart';
-import 'ui/app_colors.dart';
-import 'ui/app_widgets.dart';
+import '../ui/app_colors.dart';
+import '../ui/app_widgets.dart';
 
 class SettingsPage extends StatelessWidget {
   final DeviceStatus? deviceStatus;

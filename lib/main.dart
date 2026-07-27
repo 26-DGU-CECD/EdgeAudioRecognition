@@ -1,19 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:untitled/ble/connection_gate.dart';
-import 'services/notification_service.dart';
-import 'ui/app_colors.dart';
+import 'package:untitled/services/local_notification_service.dart';
+import 'package:untitled/services/sound_foreground_task.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness: Brightness.light,
-    ),
-  );
-  await NotificationService.instance.init();
+  FlutterForegroundTask.initCommunicationPort();
+  if (Platform.isAndroid) {
+    SoundForegroundServiceController.initialize();
+    await LocalNotificationService.instance.initialize();
+  }
   runApp(const MyApp());
 }
 
@@ -23,48 +22,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: AppColors.primary,
-      brightness: Brightness.light,
-    ).copyWith(
-      primary: AppColors.primary,
-      surface: AppColors.scaffold,
-    );
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Sound Keyring',
       theme: ThemeData(
-        useMaterial3: true,
         brightness: Brightness.light,
-        scaffoldBackgroundColor: AppColors.scaffold,
-        colorScheme: colorScheme,
-        splashColor: AppColors.primarySoft,
+        scaffoldBackgroundColor: Colors.white,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.cyan,
+          brightness: Brightness.light,
+        ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: AppColors.scaffold,
-          surfaceTintColor: Colors.transparent,
-          foregroundColor: AppColors.textPrimary,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
           elevation: 0,
-          centerTitle: false,
-          titleTextStyle: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w800,
-            color: AppColors.textPrimary,
-          ),
         ),
       ),
       home: const ConnectionGate(),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-

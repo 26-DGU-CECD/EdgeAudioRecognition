@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'sound_packet.dart';
-import 'ui/app_colors.dart';
-import 'ui/app_widgets.dart';
+import '../models/sound_packet.dart';
+import '../ui/app_colors.dart';
+import '../ui/app_widgets.dart';
 
 class LogPage extends StatefulWidget {
   final List<SoundPacket> logs;

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'ble/ble_connection_page.dart';
-import 'ble/ble_sound_service.dart';
-import 'device_status.dart';
-import 'ui/app_colors.dart';
+import '../ble/ble_connection_page.dart';
+import '../ble/ble_sound_service.dart';
+import '../models/device_status.dart';
+import '../ui/app_colors.dart';
 
 class SettingDeviceInfoPage extends StatelessWidget {
   final DeviceStatus? deviceStatus;

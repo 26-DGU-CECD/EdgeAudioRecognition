@@ -2,11 +2,11 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import 'device_status.dart';
-import 'sound_packet.dart';
-import 'ui/app_colors.dart';
-import 'ui/app_widgets.dart';
-import 'ui/sound_style.dart';
+import '../models/device_status.dart';
+import '../models/sound_packet.dart';
+import '../ui/app_colors.dart';
+import '../ui/app_widgets.dart';
+import '../ui/sound_style.dart';
 
 /// 홈 화면 — 실시간 감지 (대기 / 감지됨 / 기기 미연결)
 class HomePage extends StatefulWidget {

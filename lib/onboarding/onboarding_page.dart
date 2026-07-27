@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../app_prefs.dart';
-import '../home_page.dart' show CompassView;
+import '../pages/home_page.dart' show CompassView;
 import '../ui/app_colors.dart';
 import 'background_consent_page.dart';
 

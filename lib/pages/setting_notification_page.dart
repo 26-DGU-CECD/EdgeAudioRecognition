@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'ui/app_colors.dart';
-import 'ui/app_widgets.dart';
-import 'ui/sound_style.dart';
+import '../ui/app_colors.dart';
+import '../ui/app_widgets.dart';
+import '../ui/sound_style.dart';
 
 class SettingNotificationPage extends StatefulWidget {
   final List<String> soundLabels;
