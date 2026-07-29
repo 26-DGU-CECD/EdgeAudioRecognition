@@ -1,28 +1,27 @@
+"""Realtime and WAV-file orchestration for the specialized detectors."""
 from __future__ import annotations
 
 import sys
+import time
 from datetime import datetime
+from typing import TYPE_CHECKING, Protocol
 
-from audio_buffer import AudioBuffer
+import numpy as np
+
+from audio_buffer import SlidingWindowBuffer
 from audio_level_meter import AudioLevelMeter
-from audio_math import colorize, format_scores
-from audio_preprocessor import AudioPreprocessor
-from ble_result_builder import build_ble_result, build_skip_result
+from audio_math import colorize
 from audio_queue import AudioQueue
-from constants import (
-    ANSI_GREEN,
-    ANSI_RED,
-    CHUNK_SECONDS,
-    MODEL_INPUT_SECONDS,
-    MODEL_SAMPLE_RATE,
-    SAMPLE_RATE,
-)
+from ble_result_builder import build_ble_result, build_skip_result
 from db_threshold_gate import DbThresholdGate
-from microphone_module import MicrophoneModule
-from model_inference import ModelInferenceEngine
+from decision import Decision, DecisionGate
+from parallel_inference import InferenceResult, ParallelInferenceEngine
+
+if TYPE_CHECKING:
+    from microphone_module import MicrophoneModule
 
 
-class InferencePublisher:
+class InferencePublisher(Protocol):
     def publish(self, data: dict) -> None: ...
 
 
@@ -30,123 +29,176 @@ class AudioStreamController:
     def __init__(
         self,
         *,
-        microphone: MicrophoneModule,
         audio_queue: AudioQueue,
-        audio_buffer: AudioBuffer,
+        window_buffer: SlidingWindowBuffer,
         level_meter: AudioLevelMeter,
         threshold_gate: DbThresholdGate,
-        preprocessor: AudioPreprocessor,
-        inference_engine: ModelInferenceEngine,
-        min_score: float,
-        skip_low_db: bool,
+        inference_engine: ParallelInferenceEngine,
+        decision_gate: DecisionGate,
+        microphone: MicrophoneModule | None = None,
         publisher: InferencePublisher | None = None,
+        skip_low_db: bool = True,
+        debug: bool = False,
+        max_windows_per_cycle: int = 2,
     ) -> None:
-        self.microphone = microphone
         self.audio_queue = audio_queue
-        self.audio_buffer = audio_buffer
+        self.window_buffer = window_buffer
         self.level_meter = level_meter
         self.threshold_gate = threshold_gate
-        self.preprocessor = preprocessor
         self.inference_engine = inference_engine
-        self.min_score = float(min_score)
-        self.skip_low_db = bool(skip_low_db)
+        self.decision_gate = decision_gate
+        self.microphone = microphone
         self.publisher = publisher
+        self.skip_low_db = bool(skip_low_db)
+        self.debug = bool(debug)
+        self.max_windows_per_cycle = max(1, int(max_windows_per_cycle))
+        self.dropped_windows = 0
 
     def print_startup_info(self) -> None:
+        if self.microphone is not None:
+            print(
+                f"입력 디바이스: [{self.microphone.device_index}] "
+                f"{self.microphone.device_info.get('name')} | "
+                f"channels={self.microphone.stream_channels}, "
+                f"channel={self.microphone.channel_index}, "
+                f"sr={self.microphone.sample_rate}"
+            )
+        hop_seconds = self.window_buffer.hop_samples / 16000
         print(
-            f"입력 디바이스: [{self.microphone.device_index}] {self.microphone.device_info.get('name')} | "
-            f"channels={self.microphone.stream_channels}, mic_sr={SAMPLE_RATE}, "
-            f"model_sr={MODEL_SAMPLE_RATE}, chunk={CHUNK_SECONDS}s, "
-            f"model_input={MODEL_INPUT_SECONDS}s, channel={self.microphone.channel_index}, "
-            f"min_dbfs={self.threshold_gate.min_dbfs:+.1f}, "
-            f"enhance_threshold_dbfs={self.preprocessor.enhance_threshold_db:+.1f}, "
-            f"noise_reduction_db={self.preprocessor.noise_reduction_db:.1f}, "
-            f"main_gain_db={self.preprocessor.main_gain_db:+.1f}, "
-            f"min_score={self.min_score:.1%}, skip_low_db={self.skip_low_db}, "
-            f"ble={self.publisher is not None}"
+            f"window={self.window_buffer.window_samples / 16000:.1f}s "
+            f"hop={hop_seconds:.2f}s | "
+            f"detectors={list(self.inference_engine.detectors)} | "
+            f"classes={len(self.inference_engine.classes)} | "
+            f"min_dbfs={self.threshold_gate.min_dbfs:+.1f} "
+            f"skip_low_db={self.skip_low_db} | "
+            f"debounce={self.decision_gate.debounce_seconds:.1f}s | "
+            f"ble={self.publisher is not None}",
+            flush=True,
         )
-        print("Ctrl+C로 종료합니다.")
 
     def run(self) -> None:
+        if self.microphone is None:
+            raise RuntimeError("마이크 없이 run()을 호출했습니다. run_file()을 사용하세요.")
         self.print_startup_info()
+        print("Ctrl+C로 종료합니다.", flush=True)
         with self.microphone:
             while True:
-                block = self.audio_queue.pop()
-                mono = self.microphone.extract_mono(block)
-                self.audio_buffer.append(mono)
+                block = self.audio_queue.pop(timeout=1.0)
+                if block is None:
+                    continue
+                dropped = self.audio_queue.take_dropped()
+                if dropped:
+                    print(
+                        f"경고: 입력 큐 포화로 오디오 블록 {dropped}개 폐기",
+                        file=sys.stderr,
+                        flush=True,
+                    )
+                self.window_buffer.append(self.microphone.extract_mono(block))
+                for window in self._take_windows():
+                    self.process_window(window)
 
-                for chunk in self.audio_buffer.pop_ready_chunks():
-                    self._process_chunk(chunk)
+    def _take_windows(self) -> list[np.ndarray]:
+        windows = self.window_buffer.pop_windows()
+        if len(windows) > self.max_windows_per_cycle:
+            self.dropped_windows += len(windows) - self.max_windows_per_cycle
+            windows = windows[-self.max_windows_per_cycle :]
+        return windows
 
-    def _process_chunk(self, chunk) -> None:  # noqa: ANN001
+    def run_file(self, waveform_16k: np.ndarray) -> int:
+        self.print_startup_info()
+        self.window_buffer.append(np.asarray(waveform_16k, dtype=np.float32))
+        windows = self.window_buffer.pop_windows()
+        for window in windows:
+            self.process_window(window)
+        if not windows:
+            print("경고: 입력이 2초보다 짧아 처리된 윈도우가 없습니다.", file=sys.stderr)
+        return len(windows)
+
+    def process_window(self, window: np.ndarray) -> dict | None:
         timestamp = datetime.now().strftime("%H:%M:%S")
-        chunk_dbfs = self.level_meter.calculate_dbfs(chunk)
-        over_threshold = self.threshold_gate.is_over_threshold(chunk_dbfs)
+        level_dbfs = self.level_meter.calculate_dbfs(window)
 
-        if not over_threshold and self.skip_low_db:
+        if self.skip_low_db and not self.threshold_gate.is_over_threshold(level_dbfs):
             line = (
                 f"[{timestamp}] skip: low_signal | "
-                f"level={chunk_dbfs:+.1f} dBFS < {self.threshold_gate.min_dbfs:+.1f} dBFS"
+                f"level={level_dbfs:+.1f} dBFS < "
+                f"{self.threshold_gate.min_dbfs:+.1f} dBFS"
             )
-            print(colorize(line, ANSI_RED), flush=True)
-            self._publish(build_skip_result(
+            print(colorize(line, "\033[31m"), flush=True)
+            payload = build_skip_result(
                 timestamp=timestamp,
-                chunk_dbfs=chunk_dbfs,
+                chunk_dbfs=level_dbfs,
                 threshold_dbfs=self.threshold_gate.min_dbfs,
                 raw_line=line,
-            ))
-            return
-
-        preprocess_result = self.preprocessor.enhance(chunk)
+            )
+            self._publish(payload)
+            return payload
 
         try:
-            prediction = self.inference_engine.predict(preprocess_result.processed_audio)
-        except Exception as exc:
-            print(f"[{timestamp}] 추론 오류: {exc} | 해당 청크 skip", file=sys.stderr)
-            return
-
-        status_reasons = []
-        if not over_threshold:
-            status_reasons.append(self.threshold_gate.low_signal_message(chunk_dbfs))
-        if prediction.best_probability < self.min_score:
-            status_reasons.append(
-                f"점수낮음 {prediction.best_probability:.1%}<{self.min_score:.1%}"
+            result = self.inference_engine.predict(window)
+            decision = self.decision_gate.evaluate(
+                result.probabilities,
+                time.monotonic(),
             )
+        except Exception as exc:
+            print(
+                f"[{timestamp}] 추론 오류: {exc} | 해당 윈도우 skip",
+                file=sys.stderr,
+                flush=True,
+            )
+            return None
 
-        if status_reasons:
-            status = "낮음(" + ", ".join(status_reasons) + ")"
-            status_key = "low_signal" if not over_threshold else "low_score"
-            line_color = ANSI_RED
-        else:
-            status = "감지"
-            status_key = "detected"
-            line_color = ANSI_GREEN
+        line = self._format_line(timestamp, level_dbfs, result, decision)
+        color = "\033[32m" if decision.new_events else "\033[31m"
+        print(colorize(line, color), flush=True)
 
-        line = (
-            f"[{timestamp}] 예측: {prediction.best_label} ({prediction.best_probability:.1%}) | "
-            f"status={status} | "
-            f"level={chunk_dbfs:+.1f} dBFS | "
-            f"enhanced={preprocess_result.enhanced_dbfs:+.1f} dBFS | "
-            f"quiet_gain={preprocess_result.quiet_gain:.2f}x "
-            f"loud_gain={preprocess_result.loud_gain:.2f}x"
-            f"{' clipped' if preprocess_result.clipped else ''} | "
-            f"전체: {format_scores(prediction.scores)}"
-        )
-        print(colorize(line, line_color), flush=True)
-        self._publish(build_ble_result(
+        if self.debug:
+            detail = ", ".join(
+                f"{class_name}={probability:.3f}/"
+                f"thr{self.decision_gate.threshold_for(class_name):.3f}"
+                for class_name, probability in result.probabilities.items()
+            )
+            latency = ", ".join(
+                f"{name}={elapsed:.0f}ms"
+                for name, elapsed in result.detector_latency_ms.items()
+            )
+            print(f"DEBUG {detail} | {latency}", file=sys.stderr, flush=True)
+
+        payload = build_ble_result(
             timestamp=timestamp,
-            best_label=prediction.best_label,
-            best_probability=prediction.best_probability,
-            scores=prediction.scores,
-            status_key=status_key,
-            status_text=status,
-            chunk_dbfs=chunk_dbfs,
-            enhanced_dbfs=preprocess_result.enhanced_dbfs,
-            quiet_gain=preprocess_result.quiet_gain,
-            loud_gain=preprocess_result.loud_gain,
-            clipped=preprocess_result.clipped,
+            probabilities=result.probabilities,
+            decision=decision,
+            chunk_dbfs=level_dbfs,
             raw_line=line,
-        ))
+        )
+        self._publish(payload)
+        return payload
+
+    def _format_line(
+        self,
+        timestamp: str,
+        level_dbfs: float,
+        result: InferenceResult,
+        decision: Decision,
+    ) -> str:
+        if decision.candidates:
+            candidates = ", ".join(
+                f"{class_name}={result.probabilities[class_name]:.3f}"
+                f"(thr {self.decision_gate.threshold_for(class_name):.3f})"
+                for class_name in decision.candidates
+            )
+            state = "감지" if decision.new_events else "감지(반복)"
+            body = f"{state}: {decision.best_label} | 후보: {candidates}"
+        else:
+            body = (
+                f"무발화 | 근접: {decision.nearest_label}="
+                f"{decision.nearest_probability:.3f} "
+                f"(thr {self.decision_gate.threshold_for(decision.nearest_label):.3f})"
+            )
+        return (
+            f"[{timestamp}] {body} | level={level_dbfs:+.1f} dBFS | "
+            f"{result.total_latency_ms:.0f}ms"
+        )
 
     def _publish(self, data: dict) -> None:
         if self.publisher is not None:

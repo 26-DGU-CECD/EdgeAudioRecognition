@@ -1,141 +1,193 @@
 #!/usr/bin/env python3
+"""Canonical ReSpeaker/WAV -> specialized detectors -> BLE entry point."""
 from __future__ import annotations
 
 import signal
 import sys
 from pathlib import Path
 
-import torch
-import torchaudio
+import numpy as np
 
-from audio_buffer import AudioBuffer
+import runtime_config
+from audio_buffer import SlidingWindowBuffer
 from audio_level_meter import AudioLevelMeter
-from audio_preprocessor import AudioPreprocessor
 from audio_queue import AudioQueue
 from audio_stream_controller import AudioStreamController
 from cli import parse_args
-from constants import MODEL_SAMPLE_RATE, SAMPLE_RATE
 from db_threshold_gate import DbThresholdGate
-from device_finder import InputDeviceFinder
-from efficientat_loader import EfficientATLoader
+from decision import DecisionGate, load_thresholds
+from detector_registry import build_detectors
 from io_setup import configure_utf8_stdio
-from label_mapper import CustomLabelMapper
-from microphone_module import MicrophoneModule
-from model_inference import ModelInferenceEngine
+from parallel_inference import ParallelInferenceEngine
 
 
-def main() -> int:
-    configure_utf8_stdio()
-    args = parse_args()
+def _load_wav(path: str) -> np.ndarray:
+    import soundfile as sf
 
-    device_finder = InputDeviceFinder()
-    if args.list_devices:
-        device_finder.print_input_devices()
-        return 0
+    waveform, sample_rate = sf.read(path, dtype="float32", always_2d=False)
+    if waveform.ndim > 1:
+        waveform = waveform.mean(axis=1)
+    if sample_rate != runtime_config.SAMPLE_RATE:
+        import librosa
 
-    try:
-        device_index, device_info, stream_channels = device_finder.find_respeaker_device(
-            args.device_index
+        waveform = librosa.resample(
+            waveform,
+            orig_sr=sample_rate,
+            target_sr=runtime_config.SAMPLE_RATE,
         )
-    except Exception as exc:
-        print(f"오류: {exc}", file=sys.stderr)
-        device_finder.print_input_devices()
+    return np.asarray(waveform, dtype=np.float32)
+
+
+def main(argv: list[str] | None = None) -> int:
+    configure_utf8_stdio()
+    args = parse_args(argv)
+    runtime_config.apply_path_overrides(
+        checkpoints_dir=args.checkpoints_dir,
+        thresholds=args.thresholds,
+        efficientat_dir=args.efficientat_dir,
+    )
+
+    hop_samples = int(round(args.hop_seconds * runtime_config.SAMPLE_RATE))
+    try:
+        window_buffer = SlidingWindowBuffer(
+            runtime_config.WINDOW_SAMPLES,
+            hop_samples,
+        )
+    except ValueError as exc:
+        print(f"윈도우 설정 오류: {exc}", file=sys.stderr)
+        return 1
+
+    if args.input_wav is not None and not Path(args.input_wav).is_file():
+        print(f"입력 파일이 없습니다: {args.input_wav}", file=sys.stderr)
+        return 1
+
+    device_index = device_info = stream_channels = None
+    if args.input_wav is None:
+        try:
+            from device_finder import InputDeviceFinder
+        except ImportError as exc:
+            print(
+                f"마이크 입력 모듈을 불러올 수 없습니다: {exc}\n"
+                "Pi에서는 portaudio19-dev 설치 후 sounddevice를 설치하세요. "
+                "하드웨어 없이 확인하려면 --input-wav를 사용하세요.",
+                file=sys.stderr,
+            )
+            return 1
+
+        finder = InputDeviceFinder()
+        if args.list_devices:
+            finder.print_input_devices()
+            return 0
+        try:
+            device_index, device_info, stream_channels = finder.find_respeaker_device(
+                args.device_index
+            )
+        except Exception as exc:
+            print(f"마이크 장치 오류: {exc}", file=sys.stderr)
+            finder.print_input_devices()
+            return 1
+    elif args.list_devices:
+        print("--input-wav와 --list-devices는 함께 사용할 수 없습니다.", file=sys.stderr)
         return 1
 
     ble_server = None
     if not args.no_ble:
         try:
-            # Import here so console-only mode can run on machines without python-dbus/BlueZ.
             from ble_inference_server import BleInferenceServer
 
             ble_server = BleInferenceServer(args.ble_name, args.ble_chunk_bytes)
             ble_server.start()
         except Exception as exc:
-            print(f"BLE 초기화 오류: {exc}", file=sys.stderr)
+            print(
+                f"BLE 초기화 오류: {exc}\n"
+                "추론만 확인하려면 --no-ble을 사용하세요.",
+                file=sys.stderr,
+            )
             return 1
 
-    torch_device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"추론 디바이스: {torch_device}")
-
-    resampler = None
-    if SAMPLE_RATE != MODEL_SAMPLE_RATE:
-        resampler = torchaudio.transforms.Resample(
-            orig_freq=SAMPLE_RATE,
-            new_freq=MODEL_SAMPLE_RATE,
-        ).to(torch_device).eval()
-
+    engine = None
+    audio_queue = AudioQueue(
+        runtime_config.QUEUE_MAX_SECONDS,
+        runtime_config.SAMPLE_RATE,
+    )
     try:
-        model, mel, audioset_labels = EfficientATLoader(
-            Path(args.efficientat_dir),
-            torch_device,
-        ).load()
-        custom_indices = CustomLabelMapper().build_indices(audioset_labels)
+        thresholds = load_thresholds(runtime_config.THRESHOLDS_JSON)
+        detectors = build_detectors(
+            args.detector_names,
+            batch_size=1,
+            torch_threads=args.torch_threads,
+        )
+        engine = ParallelInferenceEngine(
+            detectors,
+            concurrent=args.concurrent,
+        )
+        decision_gate = DecisionGate(
+            thresholds,
+            classes=engine.classes,
+            debounce_seconds=args.debounce_seconds,
+        )
     except Exception as exc:
-        print(f"모델 초기화 오류: {exc}", file=sys.stderr)
+        print(f"모델/threshold 초기화 오류: {exc}", file=sys.stderr)
         if ble_server is not None:
             ble_server.stop()
         return 1
 
-    audio_queue = AudioQueue()
-    microphone = MicrophoneModule(
-        device_index=device_index,
-        device_info=device_info,
-        stream_channels=stream_channels,
-        channel_index=args.channel_index,
-        audio_queue=audio_queue,
-    )
+    microphone = None
+    if args.input_wav is None:
+        from microphone_module import MicrophoneModule
 
-    inference_engine = ModelInferenceEngine(
-        model=model,
-        mel=mel,
-        resampler=resampler,
-        custom_indices=custom_indices,
-        audioset_labels=audioset_labels,
-        device=torch_device,
-        debug=args.debug,
-    )
+        microphone = MicrophoneModule(
+            device_index=device_index,
+            device_info=device_info,
+            stream_channels=stream_channels,
+            channel_index=args.channel_index,
+            audio_queue=audio_queue,
+        )
 
     controller = AudioStreamController(
-        microphone=microphone,
         audio_queue=audio_queue,
-        audio_buffer=AudioBuffer(),
+        window_buffer=window_buffer,
         level_meter=AudioLevelMeter(),
         threshold_gate=DbThresholdGate(args.min_db),
-        preprocessor=AudioPreprocessor(
-            enhance_threshold_db=args.enhance_threshold_db,
-            noise_reduction_db=args.noise_reduction_db,
-            main_gain_db=args.main_gain_db,
-            enhance_sharpness=args.enhance_sharpness,
-        ),
-        inference_engine=inference_engine,
-        min_score=args.min_score,
-        skip_low_db=args.skip_low_db,
+        inference_engine=engine,
+        decision_gate=decision_gate,
+        microphone=microphone,
         publisher=ble_server,
+        skip_low_db=args.skip_low_db,
+        debug=args.debug,
+        max_windows_per_cycle=runtime_config.MAX_WINDOWS_PER_CYCLE,
     )
 
-    stop_requested = False
-
     def stop(_signum, _frame) -> None:  # noqa: ANN001
-        nonlocal stop_requested
-        stop_requested = True
         raise KeyboardInterrupt
 
     signal.signal(signal.SIGINT, stop)
     signal.signal(signal.SIGTERM, stop)
 
+    exit_code = 0
     try:
-        controller.run()
+        if args.input_wav is not None:
+            processed = controller.run_file(_load_wav(args.input_wav))
+            print(f"처리된 윈도우: {processed}")
+        else:
+            controller.run()
     except KeyboardInterrupt:
         print("\n종료합니다.")
-        return 0
     except Exception as exc:
         print(f"오디오 스트림 오류: {exc}", file=sys.stderr)
-        return 1
+        exit_code = 1
     finally:
-        if stop_requested and ble_server is not None:
-            print("Stopping BLE server...", flush=True)
+        if audio_queue.total_dropped_blocks or controller.dropped_windows:
+            print(
+                f"폐기 누계: 오디오 블록 {audio_queue.total_dropped_blocks}, "
+                f"윈도우 {controller.dropped_windows}",
+                file=sys.stderr,
+            )
+        if engine is not None:
+            engine.close()
         if ble_server is not None:
             ble_server.stop()
+    return exit_code
 
 
 if __name__ == "__main__":

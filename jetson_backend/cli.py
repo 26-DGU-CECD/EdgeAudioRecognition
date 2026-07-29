@@ -1,116 +1,88 @@
+"""Command-line interface for Raspberry Pi parallel inference."""
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 
-from constants import (
-    DEFAULT_ENHANCE_SHARPNESS,
-    DEFAULT_ENHANCE_THRESHOLD_DB,
-    DEFAULT_MAIN_GAIN_DB,
-    DEFAULT_MIN_DB,
-    DEFAULT_MIN_SCORE,
-    DEFAULT_NOISE_REDUCTION_DB,
-    MIC_CHANNEL_INDEX,
-)
+import runtime_config
+from constants import MIC_CHANNEL_INDEX
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Realtime EfficientAT inference from ReSpeaker Array V3."
+        description=(
+            "ReSpeaker 실시간 병렬 전문 검출 "
+            "(EfficientAT + YAMNet + MobileNetV4)"
+        )
     )
+    parser.add_argument("--list-devices", action="store_true")
+    parser.add_argument("--device-index", type=int, default=None)
+    parser.add_argument("--channel-index", type=int, default=MIC_CHANNEL_INDEX)
     parser.add_argument(
-        "--efficientat-dir",
-        default=str(Path(__file__).resolve().parent / "EfficientAT"),
-        help="Path to cloned fschmid56/EfficientAT repository.",
-    )
-    parser.add_argument(
-        "--device-index",
-        type=int,
+        "--input-wav",
         default=None,
-        help="Optional sounddevice input device index. Defaults to automatic ReSpeaker search.",
+        help="마이크 대신 WAV 파일로 전체 추론 경로를 확인합니다.",
     )
     parser.add_argument(
-        "--channel-index",
-        type=int,
-        default=MIC_CHANNEL_INDEX,
-        help=(
-            "Input channel to use. ReSpeaker 4 Mic Array 6-channel firmware is usually "
-            "ch0=processed audio, ch1-4=raw microphones, ch5=playback."
-        ),
+        "--hop-seconds",
+        type=float,
+        default=runtime_config.DEFAULT_HOP_SECONDS,
     )
     parser.add_argument(
-        "--list-devices",
-        action="store_true",
-        help="Print available input devices and exit.",
+        "--detectors",
+        default=",".join(runtime_config.DEFAULT_DETECTORS),
+        help="efficientat,yamnet,mobilenetv4 중 실행할 항목",
     )
-    parser.add_argument(
-        "--debug",
-        action="store_true",
-        help="Print waveform, mel, logits, and top AudioSet sigmoid scores for each chunk.",
-    )
+    parser.add_argument("--thresholds", default=None)
+    parser.add_argument("--checkpoints-dir", default=None)
+    parser.add_argument("--efficientat-dir", default=None)
     parser.add_argument(
         "--min-db",
         type=float,
-        default=DEFAULT_MIN_DB,
-        help=(
-            "Mark chunks quieter than this level as low signal. Positive values are treated as "
-            "dB below full scale, so 30 means -30 dBFS. Use 0 or a negative value "
-            "to pass an explicit dBFS threshold."
-        ),
+        default=runtime_config.DEFAULT_MIN_DB,
+        help="45는 -45 dBFS를 뜻합니다.",
     )
     parser.add_argument(
-        "--enhance-threshold-db",
-        type=float,
-        default=DEFAULT_ENHANCE_THRESHOLD_DB,
-        help=(
-            "Sample-level enhancement threshold. Positive values are treated as "
-            "dB below full scale, so 35 means -35 dBFS."
-        ),
-    )
-    parser.add_argument(
-        "--noise-reduction-db",
-        type=float,
-        default=DEFAULT_NOISE_REDUCTION_DB,
-        help="Reduce quieter waveform parts by this many dB before inference.",
-    )
-    parser.add_argument(
-        "--main-gain-db",
-        type=float,
-        default=DEFAULT_MAIN_GAIN_DB,
-        help="Boost louder waveform parts by this many dB before inference.",
-    )
-    parser.add_argument("--gain-db", type=float, dest="main_gain_db", help=argparse.SUPPRESS)
-    parser.add_argument(
-        "--enhance-sharpness",
-        type=float,
-        default=DEFAULT_ENHANCE_SHARPNESS,
-        help="Higher values separate quiet noise and loud events more aggressively.",
-    )
-    parser.add_argument(
-        "--min-score",
-        type=float,
-        default=DEFAULT_MIN_SCORE,
-        help="Mark predictions whose best custom sigmoid score is below this value as low confidence.",
+        "--no-skip-low-db",
+        dest="skip_low_db",
+        action="store_false",
+        help="저음량 구간도 추론합니다.",
     )
     parser.add_argument(
         "--skip-low-db",
+        dest="skip_low_db",
         action="store_true",
-        help="Skip model inference when chunk dBFS is below --min-db threshold.",
+        help=argparse.SUPPRESS,
     )
+    parser.set_defaults(skip_low_db=True)
     parser.add_argument(
-        "--no-ble",
-        action="store_true",
-        help="Run console inference only without opening the BLE GATT server.",
+        "--debounce-seconds",
+        type=float,
+        default=runtime_config.DEFAULT_DEBOUNCE_SECONDS,
     )
+    parser.add_argument("--concurrent", action="store_true")
     parser.add_argument(
-        "--ble-name",
-        default="JHello",
-        help="BLE advertising name. Keep JHello to match the Flutter scanner.",
-    )
-    parser.add_argument(
-        "--ble-chunk-bytes",
+        "--torch-threads",
         type=int,
-        default=180,
-        help="Maximum bytes per BLE notification frame. Flutter usually requests MTU 247; 180 is safe.",
+        default=runtime_config.DEFAULT_TORCH_THREADS,
     )
-    return parser.parse_args()
+    parser.add_argument("--debug", action="store_true")
+    parser.add_argument("--no-ble", action="store_true")
+    parser.add_argument("--ble-name", default="JHello")
+    parser.add_argument("--ble-chunk-bytes", type=int, default=180)
+
+    args = parser.parse_args(argv)
+    args.detector_names = [
+        name.strip()
+        for name in args.detectors.split(",")
+        if name.strip()
+    ]
+    unknown = [
+        name
+        for name in args.detector_names
+        if name not in runtime_config.DEFAULT_DETECTORS
+    ]
+    if not args.detector_names:
+        parser.error("--detectors에 최소 한 개를 지정하세요.")
+    if unknown:
+        parser.error(f"알 수 없는 detector: {unknown}")
+    return args

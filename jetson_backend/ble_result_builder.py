@@ -2,42 +2,67 @@ from __future__ import annotations
 
 from typing import Dict
 
+from decision import Decision
+
+LEGACY_KEYS = {
+    "source",
+    "time",
+    "label",
+    "score",
+    "status",
+    "status_text",
+    "level_dbfs",
+    "enhanced_dbfs",
+    "quiet_gain",
+    "loud_gain",
+    "clipped",
+    "scores",
+    "raw",
+}
+
+SOURCE = "live_inference_refactored_ble_independent"
+
 
 def build_ble_result(
     *,
     timestamp: str,
-    best_label: str,
-    best_probability: float,
-    scores: Dict[str, float],
-    status_key: str,
-    status_text: str,
+    probabilities: Dict[str, float],
+    decision: Decision,
     chunk_dbfs: float,
-    enhanced_dbfs: float | None,
-    quiet_gain: float | None,
-    loud_gain: float | None,
-    clipped: bool,
     raw_line: str,
 ) -> dict:
+    detected = bool(decision.candidates)
     return {
-        "source": "live_inference_refactored_ble_independent",
+        "source": SOURCE,
         "time": timestamp,
-        "label": best_label,
-        "score": round(float(best_probability), 6),
-        "status": status_key,
-        "status_text": status_text,
+        "label": decision.best_label or "none",
+        "score": round(float(decision.best_probability), 6),
+        "status": "detected" if detected else "low_score",
+        "status_text": "감지" if detected else "점수낮음",
         "level_dbfs": round(float(chunk_dbfs), 2),
-        "enhanced_dbfs": None if enhanced_dbfs is None else round(float(enhanced_dbfs), 2),
-        "quiet_gain": None if quiet_gain is None else round(float(quiet_gain), 4),
-        "loud_gain": None if loud_gain is None else round(float(loud_gain), 4),
-        "clipped": bool(clipped),
-        "scores": {label: round(float(score), 6) for label, score in scores.items()},
+        "enhanced_dbfs": None,
+        "quiet_gain": None,
+        "loud_gain": None,
+        "clipped": False,
+        "scores": {
+            label: round(float(score), 6)
+            for label, score in probabilities.items()
+        },
         "raw": raw_line,
+        "candidates": list(decision.candidates),
+        "repeat": detected and not decision.new_events,
     }
 
 
-def build_skip_result(*, timestamp: str, chunk_dbfs: float, threshold_dbfs: float, raw_line: str) -> dict:
+def build_skip_result(
+    *,
+    timestamp: str,
+    chunk_dbfs: float,
+    threshold_dbfs: float,
+    raw_line: str,
+) -> dict:
     return {
-        "source": "live_inference_refactored_ble_independent",
+        "source": SOURCE,
         "time": timestamp,
         "label": "low_signal",
         "score": 0.0,
@@ -50,4 +75,6 @@ def build_skip_result(*, timestamp: str, chunk_dbfs: float, threshold_dbfs: floa
         "clipped": False,
         "scores": {},
         "raw": raw_line,
+        "candidates": [],
+        "repeat": False,
     }
