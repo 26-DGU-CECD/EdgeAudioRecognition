@@ -1,38 +1,38 @@
 from __future__ import annotations
 
-from typing import List
-
 import numpy as np
 
-from constants import CHUNK_SAMPLES
 
-
-class AudioBuffer:
-    def __init__(self, chunk_samples: int = CHUNK_SAMPLES) -> None:
-        self.chunk_samples = chunk_samples
-        self.pending_blocks: List[np.ndarray] = []
-        self.pending_samples = 0
+class SlidingWindowBuffer:
+    def __init__(self, window_samples: int, hop_samples: int) -> None:
+        if window_samples <= 0:
+            raise ValueError("window_samples must be positive")
+        if hop_samples <= 0:
+            raise ValueError("hop_samples must be positive")
+        if hop_samples > window_samples:
+            raise ValueError(
+                f"hop ({hop_samples}) must not exceed window ({window_samples})"
+            )
+        self.window_samples = int(window_samples)
+        self.hop_samples = int(hop_samples)
+        self._buffer = np.zeros(0, dtype=np.float32)
 
     def append(self, mono_block: np.ndarray) -> None:
-        block = mono_block.astype(np.float32, copy=True)
-        self.pending_blocks.append(block)
-        self.pending_samples += block.shape[0]
+        block = np.asarray(mono_block, dtype=np.float32).reshape(-1)
+        if block.size:
+            self._buffer = (
+                np.concatenate((self._buffer, block))
+                if self._buffer.size
+                else block.copy()
+            )
 
-    def has_chunk(self) -> bool:
-        return self.pending_samples >= self.chunk_samples
+    def pop_windows(self) -> list[np.ndarray]:
+        windows: list[np.ndarray] = []
+        while self._buffer.shape[0] >= self.window_samples:
+            windows.append(self._buffer[: self.window_samples].copy())
+            self._buffer = self._buffer[self.hop_samples :]
+        return windows
 
-    def pop_ready_chunks(self) -> list[np.ndarray]:
-        if not self.has_chunk():
-            return []
-
-        joined = np.concatenate(self.pending_blocks)
-        chunks: list[np.ndarray] = []
-        offset = 0
-        while joined.shape[0] - offset >= self.chunk_samples:
-            chunks.append(joined[offset : offset + self.chunk_samples])
-            offset += self.chunk_samples
-
-        remainder = joined[offset:]
-        self.pending_blocks = [remainder] if remainder.size else []
-        self.pending_samples = remainder.shape[0]
-        return chunks
+    @property
+    def pending_samples(self) -> int:
+        return int(self._buffer.shape[0])

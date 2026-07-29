@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import sys
 from types import TracebackType
-from typing import Callable
-
 import numpy as np
 import sounddevice as sd
 
@@ -79,4 +77,6 @@ class MicrophoneModule:
         self.close()
 
     def extract_mono(self, block: np.ndarray) -> np.ndarray:
+        if block.ndim == 1:
+            return block.astype(np.float32, copy=True)
         return block[:, self.channel_index].astype(np.float32, copy=True)
