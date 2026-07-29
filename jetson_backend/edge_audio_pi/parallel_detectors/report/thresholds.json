@@ -1,0 +1,16 @@
+{
+  "tuned_on": "val",
+  "thresholds": {
+    "siren": 0.46013665,
+    "scream": 0.52122796,
+    "crying": 0.4533379,
+    "bicycle_bell": 0.32903698,
+    "baby_cry": 0.9275035,
+    "gunshot": 0.6069454,
+    "glass_break": 0.39072785,
+    "water": 0.9220296,
+    "knock": 0.9999893,
+    "dog": 0.9962441,
+    "cat": 0.9954957
+  }
+}
