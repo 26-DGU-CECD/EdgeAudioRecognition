@@ -148,6 +148,11 @@ MOBILENETV4_CKPT = CHECKPOINTS_DIR / "mobilenetv4_small.pt"
 EFFICIENTAT_CKPT = CHECKPOINTS_DIR / "efficientat_head.pt"
 YAMNET_CKPT = CHECKPOINTS_DIR / "yamnet_head.pt"
 
+# Per-class temperature/bias fitted on the val split by calibrate.py. Auto-loaded by
+# the detectors when present; applied inside BaseDetector.probs_from_logits so the
+# offline scores, the training val loops and the Pi realtime path cannot disagree.
+CALIBRATION_JSON = REPORT_DIR / "calibration.json"
+
 
 def get_device(prefer: str = "auto") -> str:
     """Resolve a torch device string: cuda -> mps -> cpu."""

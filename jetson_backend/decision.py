@@ -34,6 +34,47 @@ def load_thresholds(path: Path | str) -> Dict[str, float]:
         raise ValueError(f"threshold 값이 숫자가 아닙니다: {threshold_path}") from exc
 
 
+def load_threshold_payload(path: Path | str) -> dict:
+    """thresholds.json을 통째로 읽는다 (calibration 스탬프 포함)."""
+    threshold_path = Path(path)
+    if not threshold_path.is_file():
+        raise RuntimeError(f"threshold 파일이 없습니다: {threshold_path}")
+    with threshold_path.open(encoding="utf-8") as handle:
+        return json.load(handle)
+
+
+def verify_calibration(payload: dict, detectors: Dict[str, object]) -> None:
+    """threshold와 detector의 확률 calibration 스케일이 같은지 확인한다."""
+    expected = payload.get("calibration")
+    if not expected:
+        print(
+            "[decision] 경고: thresholds.json에 calibration 정보가 없습니다 "
+            "(tune_thresholds.py로 재생성하면 기록됩니다). "
+            "스케일 일치를 확인할 수 없습니다."
+        )
+        return
+
+    mismatched = []
+    for name, detector in detectors.items():
+        want = expected.get(name)
+        if want is None:
+            continue
+        calibration = getattr(detector, "calibration", None)
+        actual = calibration.id if calibration is not None else "none"
+        if actual != want:
+            mismatched.append(
+                f"  {name}: thresholds는 calib={want} 기준인데 "
+                f"detector는 calib={actual} 입니다"
+            )
+    if mismatched:
+        raise RuntimeError(
+            "threshold와 detector의 확률 스케일이 다릅니다:\n"
+            + "\n".join(mismatched)
+            + "\n  edge_audio_pi/parallel_detectors/report/calibration.json 이 "
+            "있는지 확인하세요."
+        )
+
+
 class DecisionGate:
     def __init__(
         self,

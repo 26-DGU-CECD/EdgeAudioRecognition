@@ -1,0 +1,92 @@
+{
+  "fitted_on": "val",
+  "objective": "nll",
+  "manifest": "/Users/retrina0678/Project/efficientAT/parallel_detectors/manifest.csv",
+  "scores_dir": "/Users/retrina0678/Project/efficientAT/parallel_detectors/scores",
+  "temperature_bounds": [
+    0.05,
+    20.0
+  ],
+  "detectors": {
+    "yamnet": {
+      "classes": [
+        "siren",
+        "scream",
+        "crying"
+      ],
+      "temperature": {
+        "siren": 0.6021962171500188,
+        "scream": 0.8314899533570768,
+        "crying": 0.9517199628272898
+      },
+      "bias": {
+        "siren": -0.06690712198471474,
+        "scream": 1.1893081844156546,
+        "crying": 0.778757139863369
+      },
+      "clamped": {
+        "siren": false,
+        "scream": false,
+        "crying": false
+      },
+      "checkpoint_sha256": "9a0aad51765cccadb38d72944609005af3ecdef60e0b43761de94dd7ab1ffb43",
+      "id": "27616f38"
+    },
+    "efficientat": {
+      "classes": [
+        "bicycle_bell",
+        "baby_cry",
+        "gunshot",
+        "glass_break"
+      ],
+      "temperature": {
+        "bicycle_bell": 1.545987954813048,
+        "baby_cry": 1.631996923857255,
+        "gunshot": 1.9276712149795374,
+        "glass_break": 1.4958937423671508
+      },
+      "bias": {
+        "bicycle_bell": 1.0903837290601777,
+        "baby_cry": 3.4485587139329876,
+        "gunshot": 2.0325657475303864,
+        "glass_break": 0.22190558490897835
+      },
+      "clamped": {
+        "bicycle_bell": false,
+        "baby_cry": false,
+        "gunshot": false,
+        "glass_break": false
+      },
+      "checkpoint_sha256": "42fc486630cc725b903393ba73fc4a5dfee7ee24b207176d1bb0dc99ba0fd0a7",
+      "id": "587216af"
+    },
+    "mobilenetv4": {
+      "classes": [
+        "water",
+        "knock",
+        "dog",
+        "cat"
+      ],
+      "temperature": {
+        "water": 4.968711954112298,
+        "knock": 3.3114913475472503,
+        "dog": 4.046225815919273,
+        "cat": 4.157617992753535
+      },
+      "bias": {
+        "water": 3.4317204631378697,
+        "knock": 10.080701460122858,
+        "dog": 8.657622511836909,
+        "cat": 7.948560265708356
+      },
+      "clamped": {
+        "water": false,
+        "knock": false,
+        "dog": false,
+        "cat": false
+      },
+      "checkpoint_sha256": "1ef15baee7fd319195f3265524ebe1cd3b757afee45f05cd9ff22805749c3ae3",
+      "id": "bf5b0197"
+    }
+  }
+}

@@ -15,7 +15,12 @@ from audio_queue import AudioQueue
 from audio_stream_controller import AudioStreamController
 from cli import parse_args
 from db_threshold_gate import DbThresholdGate
-from decision import DecisionGate, load_thresholds
+from decision import (
+    DecisionGate,
+    load_threshold_payload,
+    load_thresholds,
+    verify_calibration,
+)
 from detector_registry import build_detectors
 from io_setup import configure_utf8_stdio
 from parallel_inference import ParallelInferenceEngine
@@ -112,11 +117,13 @@ def main(argv: list[str] | None = None) -> int:
     )
     try:
         thresholds = load_thresholds(runtime_config.THRESHOLDS_JSON)
+        threshold_payload = load_threshold_payload(runtime_config.THRESHOLDS_JSON)
         detectors = build_detectors(
             args.detector_names,
             batch_size=1,
             torch_threads=args.torch_threads,
         )
+        verify_calibration(threshold_payload, detectors)
         engine = ParallelInferenceEngine(
             detectors,
             concurrent=args.concurrent,

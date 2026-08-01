@@ -73,7 +73,10 @@ def _load_audioset_display_names(csv_path) -> list[str]:
 class EfficientATDetector(BaseDetector):
     target_classes = list(config.DETECTOR_CLASSES["efficientat"])
 
-    def __init__(self, device: str | None = None, batch_size: int = 64, ckpt=None):
+    provides_logits = True
+
+    def __init__(self, device: str | None = None, batch_size: int = 64, ckpt=None,
+                 calibration=None):
         self.device = torch.device(device or config.get_device())
         self.batch_size = batch_size
         self.mel = build_mel(self.device).eval()
@@ -103,8 +106,17 @@ class EfficientATDetector(BaseDetector):
                 self.class_indices[cls] = idxs
             print(f"[EfficientAT] zero-shot class->indices: {self.class_indices}")
 
+        self._init_calibration("efficientat", calibration,
+                               ckpt if self.mode == "trained" else None)
+
     @torch.no_grad()
-    def predict_proba_batch(self, waveforms_16k: np.ndarray) -> np.ndarray:
+    def predict_logits_batch(self, waveforms_16k: np.ndarray) -> np.ndarray:
+        """Raw logits per target class.
+
+        Zero-shot logits are recoverable despite the max-over-AudioSet-indices step:
+        sigmoid is strictly increasing, so max_j sigmoid(z_j) == sigmoid(max_j z_j).
+        Taking the max in logit space is therefore exactly the old computation.
+        """
         out = np.zeros((len(waveforms_16k), len(self.target_classes)), dtype=np.float32)
         for start in range(0, len(waveforms_16k), self.batch_size):
             chunk = waveforms_16k[start:start + self.batch_size]
@@ -115,10 +127,14 @@ class EfficientATDetector(BaseDetector):
                 wav = wav.repeat(1, reps)[:, :self.target_len]
             spec = self.mel(wav)                       # [b, 128, frames]
             logits, _ = self.model(spec.unsqueeze(1))  # [b, n]
-            probs = torch.sigmoid(logits.float()).cpu().numpy()
+            logits = logits.float().cpu().numpy()
             if self.mode == "trained":
-                out[start:start + len(chunk)] = probs
+                out[start:start + len(chunk)] = logits
             else:
                 for j, cls in enumerate(self.target_classes):
-                    out[start:start + len(chunk), j] = probs[:, self.class_indices[cls]].max(axis=1)
+                    out[start:start + len(chunk), j] = \
+                        logits[:, self.class_indices[cls]].max(axis=1)
         return out
+
+    def predict_proba_batch(self, waveforms_16k: np.ndarray) -> np.ndarray:
+        return self.probs_from_logits(self.predict_logits_batch(waveforms_16k))
