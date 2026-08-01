@@ -148,7 +148,7 @@ class SettingDeviceInfoPage extends StatelessWidget {
                             Icon(Icons.power, size: 16, color: AppColors.primary),
                             SizedBox(width: 6),
                             Text(
-                              '외부 전원 (USB)',
+                              '배터리 정보 없음',
                               style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,

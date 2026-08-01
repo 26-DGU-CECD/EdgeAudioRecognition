@@ -54,10 +54,41 @@ class BleSoundService {
 
   static DeviceStatus? deviceStatusFromBleJson(Map<String, dynamic> json) {
     if (json['type'] == 'device_status') {
-      return DeviceStatus.fromJson(json);
+      final payload = json['payload'];
+      if (payload is Map) {
+        final statusJson = Map<String, dynamic>.from(json)
+          ..remove('payload')
+          ..addAll(_stringKeyMap(payload));
+        statusJson.putIfAbsent('connection', () => 'connected');
+        return DeviceStatus.fromJson(statusJson);
+      }
+      final statusJson = Map<String, dynamic>.from(json);
+      statusJson.putIfAbsent('connection', () => 'connected');
+      return DeviceStatus.fromJson(statusJson);
     }
 
     return null;
+  }
+
+  /// 기기 상태 패킷뿐 아니라 소리 패킷에 함께 실린 배터리 값도 찾습니다.
+  /// 지원 예시:
+  /// - {"type":"sound_packet", "payload":{"battery":82, ...}}
+  /// - {"type":"sound_packet", "battery_percent":82, "payload":{...}}
+  /// - {"status":"ok", "battery":82, ...}
+  static int? batteryPercentFromBleJson(Map<String, dynamic> json) {
+    dynamic value = json['battery_percent'] ?? json['battery'];
+
+    final payload = json['payload'];
+    if (value == null && payload is Map) {
+      value = payload['battery_percent'] ?? payload['battery'];
+    }
+
+    final nestedStatus = json['device_status'];
+    if (value == null && nestedStatus is Map) {
+      value = nestedStatus['battery_percent'] ?? nestedStatus['battery'];
+    }
+
+    return DeviceStatus.parseBatteryPercent(value);
   }
 
   /// 사용자가 BLE 연결 페이지에서 선택한 기기에 연결
@@ -202,6 +233,18 @@ class BleSoundService {
     if (status != null) {
       _deviceStatusController.add(status);
       return;
+    }
+
+    final battery = batteryPercentFromBleJson(json);
+    if (battery != null) {
+      _deviceStatusController.add(
+        DeviceStatus(
+          connection: 'connected',
+          deviceName: _device == null ? '' : keyringDisplayName,
+          battery: battery,
+          message: '배터리 정보 수신',
+        ),
+      );
     }
 
     final packet = soundPacketFromBleJson(json);

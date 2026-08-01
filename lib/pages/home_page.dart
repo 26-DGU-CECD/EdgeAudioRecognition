@@ -12,6 +12,7 @@ import '../ui/sound_style.dart';
 class HomePage extends StatefulWidget {
   final SoundPacket? packet;
   final DeviceStatus? deviceStatus;
+  final int? demoBatteryPercent;
 
   /// 키링 연결 여부. false면 미연결(프레임 K) 화면을 보여줍니다.
   final bool connected;
@@ -27,6 +28,7 @@ class HomePage extends StatefulWidget {
     super.key,
     required this.packet,
     required this.deviceStatus,
+    required this.demoBatteryPercent,
     required this.connected,
     required this.recentLogs,
     required this.onReset,
@@ -99,8 +101,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   // ----- header -----
   Widget _header(bool isListening) {
-    final battery = widget.deviceStatus?.battery;
-    final connected = widget.connected;
+    final battery = widget.demoBatteryPercent ?? widget.deviceStatus?.battery;
+    final connected = widget.connected || widget.demoBatteryPercent != null;
+    final statusColor = !connected
+        ? AppColors.danger
+        : battery != null && battery <= 20
+            ? AppColors.danger
+            : AppColors.primary;
+    final statusBackground = !connected
+        ? AppColors.dangerSoft
+        : battery != null && battery <= 20
+            ? AppColors.dangerSoft
+            : AppColors.primarySoft;
     final subtitle = !connected
         ? '감지가 멈춰 있어요'
         : isListening
@@ -148,17 +160,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 9),
             decoration: BoxDecoration(
-              color: connected ? AppColors.primarySoft : AppColors.dangerSoft,
+              color: statusBackground,
               borderRadius: BorderRadius.circular(999),
             ),
             child: Row(
               children: [
                 Icon(
-                  connected
-                      ? Icons.bluetooth_connected
-                      : Icons.bluetooth_disabled,
+                  connected ? _batteryIcon(battery) : Icons.bluetooth_disabled,
                   size: 18,
-                  color: connected ? AppColors.primary : AppColors.danger,
+                  color: statusColor,
                 ),
                 const SizedBox(width: 6),
                 Text(
@@ -168,7 +178,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w800,
-                    color: connected ? AppColors.primary : AppColors.danger,
+                    color: statusColor,
                   ),
                 ),
               ],
@@ -177,6 +187,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ],
       ),
     );
+  }
+
+  IconData _batteryIcon(int? battery) {
+    if (battery == null) return Icons.power;
+    if (battery <= 15) return Icons.battery_alert;
+    if (battery <= 35) return Icons.battery_2_bar;
+    if (battery <= 65) return Icons.battery_4_bar;
+    return Icons.battery_full;
   }
 
   Widget _statusDot(bool connected) {

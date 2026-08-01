@@ -267,6 +267,18 @@ class SoundForegroundTaskHandler extends TaskHandler {
         return;
       }
 
+      final battery = BleSoundService.batteryPercentFromBleJson(json);
+      if (battery != null) {
+        _sendStatus(
+          DeviceStatus(
+            connection: 'connected',
+            deviceName: _device == null ? '' : keyringDisplayName,
+            battery: battery,
+            message: '배터리 정보 수신',
+          ),
+        );
+      }
+
       final packet = BleSoundService.soundPacketFromBleJson(json);
       if (packet == null) {
         return;

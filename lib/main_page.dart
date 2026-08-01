@@ -29,6 +29,10 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   SoundPacket? currentPacket;
   DeviceStatus? deviceStatus;
 
+  /// 데모 소리를 실행할 때 홈 헤더에만 표시하는 가상 배터리 잔량입니다.
+  /// 실제 BLE DeviceStatus는 변경하지 않습니다.
+  int? demoBatteryPercent;
+
   /// 키링 연결 여부. 미연결이면 홈에 프레임 K(미연결)를 보여줍니다.
   bool connected = false;
 
@@ -63,6 +67,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
 
     _soundSub = BleSoundService.instance.soundPackets.listen((packet) {
       setState(() {
+        demoBatteryPercent = null;
         _addPacket(packet);
       });
     });
@@ -129,6 +134,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     switch (data['type']) {
       case 'sound_packet':
         setState(() {
+          demoBatteryPercent = null;
           _addPacket(SoundPacket.fromJson(payloadJson));
         });
         break;
@@ -162,7 +168,11 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
 
   void receivePacket(Map<String, dynamic> json) {
     final packet = SoundPacket.fromJson(json);
+    final battery = DeviceStatus.parseBatteryPercent(
+      json['battery_percent'] ?? json['battery'],
+    );
     setState(() {
+      demoBatteryPercent = battery;
       _addPacket(packet);
     });
   }
@@ -170,6 +180,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   void resetToListening() {
     setState(() {
       currentPacket = null;
+      demoBatteryPercent = null;
     });
   }
 
@@ -249,6 +260,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       HomePage(
         packet: currentPacket,
         deviceStatus: deviceStatus,
+        demoBatteryPercent: demoBatteryPercent,
         connected: connected,
         recentLogs: logs,
         onReset: resetToListening,
@@ -276,6 +288,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
             'db': 47.2,
             'level': 'caution',
             'angle': 233.0,
+            'battery': 76,
             'doa_status': 'enabled',
             'raw': 'dog_bark score=0.998 db=47.2 doa=233',
             'items': [],
@@ -293,6 +306,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
             'db': 68.1,
             'level': 'danger',
             'angle': 12.0,
+            'battery': 15,
             'doa_status': 'enabled',
             'raw': 'alarm score=0.963 db=68.1 doa=12',
             'items': [],

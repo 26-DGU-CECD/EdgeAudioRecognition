@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sound Keyring 배터리 UI 변경 보고서</title>
+  <style>
+    :root {
+      --surface: #f4f6f9;
+      --card: #ffffff;
+      --border: #e6e9ee;
+      --text: #16151a;
+      --secondary: #5a6472;
+      --muted: #9aa3b0;
+      --primary: #1b6ef3;
+      --primary-soft: #eaf1fe;
+      --danger: #d92d20;
+      --danger-soft: #feeceb;
+      --success: #16a34a;
+      --success-soft: #e7f6ed;
+      --code: #20242b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--surface);
+      color: var(--text);
+      font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+      line-height: 1.6;
+      letter-spacing: 0;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 42px 0 72px;
+    }
+
+    .report-header {
+      padding-bottom: 26px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(29px, 5vw, 42px);
+      line-height: 1.22;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 14px 0 0;
+      color: var(--secondary);
+      font-size: 16px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      margin-top: 20px;
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    section {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-child { border-bottom: 0; }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 23px;
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: 0;
+    }
+
+    .section-copy {
+      max-width: 820px;
+      margin: 0 0 22px;
+      color: var(--secondary);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .summary-item {
+      min-height: 118px;
+      padding: 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .summary-number {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--primary);
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    .summary-item p {
+      margin: 4px 0 0;
+      color: var(--secondary);
+      font-size: 14px;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .comparison-panel {
+      overflow: hidden;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .panel-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tag {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #f1f3f6;
+      color: var(--secondary);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .tag.new {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .phone-fragment {
+      min-height: 260px;
+      padding: 26px 22px;
+      background: #fbfcfd;
+    }
+
+    .app-header {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .app-title {
+      margin: 0;
+      font-size: 23px;
+      font-weight: 900;
+    }
+
+    .app-subtitle {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 5px;
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 36px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status-chip.low {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .bluetooth-mark {
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    .battery-mark {
+      position: relative;
+      width: 20px;
+      height: 11px;
+      border: 2px solid currentColor;
+      border-radius: 2px;
+    }
+
+    .battery-mark::before {
+      content: "";
+      position: absolute;
+      top: 1px;
+      bottom: 1px;
+      left: 1px;
+      width: var(--level, 70%);
+      max-width: 14px;
+      background: currentColor;
+    }
+
+    .battery-mark::after {
+      content: "";
+      position: absolute;
+      right: -5px;
+      top: 2px;
+      width: 3px;
+      height: 5px;
+      border-radius: 0 2px 2px 0;
+      background: currentColor;
+    }
+
+    .placeholder-stage {
+      display: grid;
+      place-items: center;
+      height: 142px;
+      margin-top: 24px;
+      border: 1px dashed #d8dde5;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .panel-note {
+      margin: 0;
+      padding: 14px 16px 16px;
+      color: var(--secondary);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+    }
+
+    .state-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin: 22px 0;
+    }
+
+    .state-cell {
+      display: flex;
+      min-height: 90px;
+      padding: 14px;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .state-label {
+      color: var(--secondary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .demo-card {
+      padding: 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .demo-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .demo-sound {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .demo-icon {
+      display: grid;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .demo-icon.danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .demo-sound strong {
+      display: block;
+      font-size: 16px;
+    }
+
+    .demo-sound small {
+      display: block;
+      margin-top: 2px;
+      color: var(--secondary);
+      font-size: 12px;
+    }
+
+    .rule-list {
+      display: grid;
+      gap: 8px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .rule-list li {
+      padding: 10px 12px;
+      background: #f8f9fb;
+      border-left: 3px solid var(--primary);
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 13px 14px;
+      text-align: left;
+      vertical-align: top;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: #f8f9fb;
+      color: var(--secondary);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .flow-step {
+      position: relative;
+      padding: 17px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .flow-step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      top: 50%;
+      right: -19px;
+      color: var(--muted);
+      font-size: 19px;
+      transform: translateY(-50%);
+    }
+
+    .flow-index {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 12px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .flow-step p {
+      margin: 5px 0 0;
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 20px 0 0;
+      padding: 18px;
+      border-radius: 8px;
+      background: var(--code);
+      color: #e8edf5;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 13px;
+      line-height: 1.65;
+      tab-size: 2;
+    }
+
+    .json-key { color: #8ab4f8; }
+    .json-value { color: #a8dab5; }
+    .json-number { color: #f7c77d; }
+
+    .file-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .file-item {
+      display: grid;
+      grid-template-columns: minmax(250px, 0.9fr) minmax(0, 1.6fr);
+      gap: 18px;
+      padding: 13px 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+    }
+
+    code {
+      color: var(--primary);
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .file-item span {
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    .verification {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .check {
+      padding: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--success);
+      border-radius: 6px;
+    }
+
+    .check.caution { border-left-color: #d97706; }
+
+    .check strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+    }
+
+    .check span {
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    footer {
+      padding-top: 22px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 780px) {
+      main { width: min(100% - 22px, 1120px); padding-top: 24px; }
+      .summary-grid, .comparison-grid, .demo-grid, .verification { grid-template-columns: 1fr; }
+      .state-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .flow { grid-template-columns: 1fr; gap: 10px; }
+      .flow-step:not(:last-child)::after { display: none; }
+      .file-item { grid-template-columns: 1fr; gap: 5px; }
+      th:nth-child(3), td:nth-child(3) { display: none; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      main { width: 100%; padding: 0; }
+      section { break-inside: avoid; }
+      .comparison-panel, .summary-item, .flow-step, .state-cell { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="report-header">
+      <p class="eyebrow">SOUND KEYRING · UI CHANGE REPORT</p>
+      <h1>배터리 상태 표시 기능<br>디자인 변경 보고서</h1>
+      <p class="lead">
+        기존 실시간 감지 화면의 구조와 색상 체계를 유지하면서, 라즈베리파이 기기에 연결된
+        배터리 잔량을 사용자가 즉시 확인할 수 있도록 연결 상태 칩의 정보 밀도를 확장했다.
+        데모 소리에도 가상 배터리 상태를 적용해 실제 기기 없이 정상·저전력 표현을 검토할 수 있다.
+      </p>
+      <div class="meta">
+        <span>작성일 2026.08.01</span>
+        <span>프로젝트 C:\CookAndroid\untitled</span>
+        <span>브랜치 App</span>
+        <span>기준 커밋 fe347d5</span>
+      </div>
+    </header>
+
+    <section>
+      <h2>변경 요약</h2>
+      <p class="section-copy">
+        새로운 화면이나 별도 카드가 추가된 것이 아니라, 기존 홈 헤더의 우측 상태 칩을 재사용했다.
+        따라서 사용 흐름과 화면 높이는 그대로 유지되며 배터리 정보만 자연스럽게 추가된다.
+      </p>
+      <div class="summary-grid">
+        <article class="summary-item">
+          <span class="summary-number">01</span>
+          <h3>기존 위치 재사용</h3>
+          <p>홈 헤더 오른쪽의 연결 상태 칩 안에 배터리 아이콘과 잔량을 표시한다.</p>
+        </article>
+        <article class="summary-item">
+          <span class="summary-number">02</span>
+          <h3>상태 기반 색상</h3>
+          <p>정상 상태는 기존 브랜드 파랑, 20% 이하는 기존 위험 빨강을 사용한다.</p>
+        </article>
+        <article class="summary-item">
+          <span class="summary-number">03</span>
+          <h3>기존 디자인 보존</h3>
+          <p>화면 배치, 감지 애니메이션, 로그와 설정 구조에는 변화를 주지 않았다.</p>
+        </article>
+        <article class="summary-item">
+          <span class="summary-number">04</span>
+          <h3>데모 상태 검증</h3>
+          <p>개소리 76%, 위험음 15%를 표시해 정상과 저전력 디자인을 바로 비교한다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>홈 화면 전·후 비교</h2>
+      <p class="section-copy">
+        변경 전에는 연결 여부만 확인할 수 있었다. 변경 후에는 동일한 칩에서 배터리 아이콘과
+        백분율을 함께 보여주므로 별도의 화면 이동 없이 기기 전원 상태를 판단할 수 있다.
+      </p>
+      <div class="comparison-grid">
+        <article class="comparison-panel">
+          <div class="panel-heading">
+            <h3>변경 전</h3>
+            <span class="tag">연결 상태 중심</span>
+          </div>
+          <div class="phone-fragment">
+            <div class="app-header">
+              <div>
+                <p class="app-title">실시간 감지</p>
+                <div class="app-subtitle"><span class="dot"></span>소리를 기다리는 중</div>
+              </div>
+              <div class="status-chip">
+                <span class="bluetooth-mark">⌁</span>
+                <span>연결</span>
+              </div>
+            </div>
+            <div class="placeholder-stage">기존 감지 콘텐츠 영역<br>변경 없음</div>
+          </div>
+          <p class="panel-note">기기 연결 여부는 알 수 있지만 남은 사용 시간을 판단하기 어렵다.</p>
+        </article>
+
+        <article class="comparison-panel">
+          <div class="panel-heading">
+            <h3>변경 후</h3>
+            <span class="tag new">배터리 정보 포함</span>
+          </div>
+          <div class="phone-fragment">
+            <div class="app-header">
+              <div>
+                <p class="app-title">실시간 감지</p>
+                <div class="app-subtitle"><span class="dot"></span>소리를 기다리는 중</div>
+              </div>
+              <div class="status-chip">
+                <span class="battery-mark" style="--level: 82%"></span>
+                <span>82%</span>
+              </div>
+            </div>
+            <div class="placeholder-stage">기존 감지 콘텐츠 영역<br>변경 없음</div>
+          </div>
+          <p class="panel-note">연결 상태와 배터리 잔량을 한눈에 확인하며 기존 레이아웃 크기는 유지한다.</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <h2>배터리 상태별 표현</h2>
+      <p class="section-copy">
+        아이콘은 잔량 구간에 따라 단계적으로 변하고, 20% 이하부터 빨간색으로 전환된다.
+        색상만으로 판단하지 않도록 항상 숫자 퍼센트를 함께 표시한다.
+      </p>
+
+      <div class="state-strip">
+        <div class="state-cell">
+          <span class="state-label">정상 · 82%</span>
+          <span class="status-chip"><span class="battery-mark" style="--level: 82%"></span>82%</span>
+        </div>
+        <div class="state-cell">
+          <span class="state-label">중간 · 48%</span>
+          <span class="status-chip"><span class="battery-mark" style="--level: 48%"></span>48%</span>
+        </div>
+        <div class="state-cell">
+          <span class="state-label">부족 · 15%</span>
+          <span class="status-chip low"><span class="battery-mark" style="--level: 15%"></span>15%</span>
+        </div>
+        <div class="state-cell">
+          <span class="state-label">연결 끊김</span>
+          <span class="status-chip low"><span class="bluetooth-mark">×</span>끊김</span>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>조건</th>
+            <th>표시</th>
+            <th>색상</th>
+            <th>의도</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>66~100%</td>
+            <td>가득 찬 배터리 아이콘 + 퍼센트</td>
+            <td>브랜드 파랑</td>
+            <td>충분한 잔량을 평상 상태로 전달</td>
+          </tr>
+          <tr>
+            <td>36~65%</td>
+            <td>중간 배터리 아이콘 + 퍼센트</td>
+            <td>브랜드 파랑</td>
+            <td>잔량 감소를 아이콘 단계로 보조</td>
+          </tr>
+          <tr>
+            <td>21~35%</td>
+            <td>낮은 배터리 아이콘 + 퍼센트</td>
+            <td>브랜드 파랑</td>
+            <td>충전 준비가 필요한 상태를 사전 인지</td>
+          </tr>
+          <tr>
+            <td>0~20%</td>
+            <td>배터리 경고 아이콘 + 퍼센트</td>
+            <td>위험 빨강</td>
+            <td>즉시 충전이 필요한 상태를 강조</td>
+          </tr>
+          <tr>
+            <td>값 없음</td>
+            <td>전원 아이콘 + 연결</td>
+            <td>브랜드 파랑</td>
+            <td>외부 전원 또는 미지원 기기와 호환</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>데모 소리의 가상 배터리 표시</h2>
+      <p class="section-copy">
+        데모 버튼은 실제 BLE 기기 상태를 변경하지 않고 홈 화면에만 가상 배터리를 표시한다.
+        개소리는 일반 배터리 상태를, 위험음은 저전력 경고 상태를 검토하도록 서로 다른 값을 사용한다.
+      </p>
+
+      <div class="demo-grid">
+        <article class="demo-card">
+          <div class="demo-top">
+            <div class="demo-sound">
+              <span class="demo-icon">D</span>
+              <div>
+                <strong>개소리 데모</strong>
+                <small>정상 배터리 표현 확인</small>
+              </div>
+            </div>
+            <span class="status-chip"><span class="battery-mark" style="--level: 76%"></span>76%</span>
+          </div>
+        </article>
+
+        <article class="demo-card">
+          <div class="demo-top">
+            <div class="demo-sound">
+              <span class="demo-icon danger">!</span>
+              <div>
+                <strong>위험음 데모</strong>
+                <small>저전력 경고 표현 확인</small>
+              </div>
+            </div>
+            <span class="status-chip low"><span class="battery-mark" style="--level: 15%"></span>15%</span>
+          </div>
+        </article>
+      </div>
+
+      <ul class="rule-list">
+        <li>데모 배터리는 <code>demoBatteryPercent</code>에만 저장되며 실제 <code>DeviceStatus</code>를 덮어쓰지 않는다.</li>
+        <li>대기 상태 버튼을 누르면 데모 소리와 가상 배터리가 함께 해제된다.</li>
+        <li>실제 BLE 소리 패킷이 수신되면 가상 배터리를 제거하고 실제 기기 상태로 복귀한다.</li>
+        <li>설정의 기기 정보 화면에는 데모 값이 전달되지 않아 실제 배터리 정보가 유지된다.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>정보 전달 흐름</h2>
+      <p class="section-copy">
+        일반 앱 실행과 Android foreground service 모두 같은 배터리 파싱 규칙을 사용한다.
+        앱이 백그라운드에 있어도 최신 배터리 값이 메인 화면의 기기 상태로 전달된다.
+      </p>
+      <div class="flow">
+        <article class="flow-step">
+          <span class="flow-index">1</span>
+          <h3>라즈베리파이</h3>
+          <p>소리 분석 결과와 배터리 퍼센트를 JSON으로 생성한다.</p>
+        </article>
+        <article class="flow-step">
+          <span class="flow-index">2</span>
+          <h3>BLE GATT notify</h3>
+          <p>기존 characteristic 통로로 UTF-8 JSON을 전송한다.</p>
+        </article>
+        <article class="flow-step">
+          <span class="flow-index">3</span>
+          <h3>DeviceStatus</h3>
+          <p>값을 0~100 정수로 정규화하고 기기 상태 스트림으로 분리한다.</p>
+        </article>
+        <article class="flow-step">
+          <span class="flow-index">4</span>
+          <h3>홈 상태 칩</h3>
+          <p>연결 상태, 배터리 아이콘, 잔량 퍼센트를 즉시 갱신한다.</p>
+        </article>
+      </div>
+
+      <pre><code>{
+  <span class="json-key">"type"</span>: <span class="json-value">"sound_packet"</span>,
+  <span class="json-key">"payload"</span>: {
+    <span class="json-key">"status"</span>: <span class="json-value">"ok"</span>,
+    <span class="json-key">"label"</span>: <span class="json-value">"dog_bark"</span>,
+    <span class="json-key">"score"</span>: <span class="json-number">0.92</span>,
+    <span class="json-key">"db"</span>: <span class="json-number">58.4</span>,
+    <span class="json-key">"angle"</span>: <span class="json-number">120</span>,
+    <span class="json-key">"battery"</span>: <span class="json-number">82</span>
+  }
+}</code></pre>
+    </section>
+
+    <section>
+      <h2>코드 변경 범위</h2>
+      <p class="section-copy">
+        UI 변경은 홈 헤더에만 제한했고, 데이터 수신은 기존 BLE 서비스와 foreground service의
+        책임 범위 안에서 처리했다. 데모 값은 MainPage에서 별도 상태로 관리한다.
+      </p>
+      <div class="file-list">
+        <div class="file-item">
+          <code>lib/models/device_status.dart</code>
+          <span><code>battery</code>와 <code>battery_percent</code>를 지원하고 숫자·문자열 값을 0~100으로 정규화한다.</span>
+        </div>
+        <div class="file-item">
+          <code>lib/ble/ble_sound_service.dart</code>
+          <span>별도 기기 상태 패킷과 소리 패킷 내부의 배터리 값을 모두 찾아 DeviceStatus로 전달한다.</span>
+        </div>
+        <div class="file-item">
+          <code>lib/services/sound_foreground_task.dart</code>
+          <span>백그라운드 BLE 수신에서도 배터리 상태를 메인 isolate로 전달한다.</span>
+        </div>
+        <div class="file-item">
+          <code>lib/main_page.dart</code>
+          <span>데모 전용 배터리 값을 관리하고 개소리 76%, 위험음 15%, 해제 조건을 정의한다.</span>
+        </div>
+        <div class="file-item">
+          <code>lib/pages/home_page.dart</code>
+          <span>기존 상태 칩에 실제 또는 데모 배터리의 단계 아이콘, 퍼센트, 저전력 위험 색상을 적용한다.</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>검증 결과</h2>
+      <div class="verification">
+        <div class="check">
+          <strong>Dart 정적 분석 통과</strong>
+          <span>배터리 변경 관련 오류 0건. 기존 withOpacity 정보 경고 1건만 존재한다.</span>
+        </div>
+        <div class="check">
+          <strong>Git diff 범위 확인</strong>
+          <span>실제 수신과 데모 표시를 포함해 배터리 기능과 직접 관련된 5개 Dart 파일만 수정되었다.</span>
+        </div>
+        <div class="check">
+          <strong>기존 화면 구조 유지</strong>
+          <span>홈 콘텐츠, 방향 표시, 감지 애니메이션, 로그와 설정 이동 구조는 변경하지 않았다.</span>
+        </div>
+        <div class="check">
+          <strong>데모 상태 분리</strong>
+          <span>가상 배터리는 홈 데모에만 적용되며 실제 기기 상태와 설정 화면에는 반영되지 않는다.</span>
+        </div>
+        <div class="check caution">
+          <strong>APK 재빌드 필요</strong>
+          <span>Gradle 빌드가 시간 초과되어 이번 변경이 반영된 APK는 아직 생성되지 않았다.</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Sound Keyring · Battery status integration report · Static HTML document
+    </footer>
+  </main>
+</body>
+</html>
