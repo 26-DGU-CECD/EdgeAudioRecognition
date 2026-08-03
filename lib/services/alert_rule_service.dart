@@ -71,19 +71,22 @@ class AlertRuleService {
     return double.tryParse(match.group(1)!);
   }
 
+  /// angle 0=뒤쪽, 90=왼쪽, 180=앞쪽, 270=오른쪽 (시계방향).
+  /// `SoundPacket.directionLabel`, `home_page.dart`의 CompassView와 같은 규칙이다.
+  /// 예전에는 이 함수만 0=앞쪽으로 가정해서 나침반과 정확히 180도 어긋났다.
   String _relativeDirectionTextForAngle(double angle) {
-    final normalized = angle % 360.0;
+    final normalized = ((angle % 360.0) + 360.0) % 360.0;
 
     if (normalized < 45.0 || normalized >= 315.0) {
-      return '앞쪽입니다';
-    }
-    if (normalized < 135.0) {
-      return '오른쪽입니다';
-    }
-    if (normalized < 225.0) {
       return '뒤쪽입니다';
     }
-    return '왼쪽입니다';
+    if (normalized < 135.0) {
+      return '왼쪽입니다';
+    }
+    if (normalized < 225.0) {
+      return '앞쪽입니다';
+    }
+    return '오른쪽입니다';
   }
 
   String? _relativeDirectionTextForCardinal(String text) {
