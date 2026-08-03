@@ -32,6 +32,7 @@ const Map<String, String> _soundLabelKoMap = {
   'glass_breaking': '유리깨지는소리',
   'glass_shatter': '유리깨지는소리',
   'fire_alarm': '화재경보',
+  'knock': '노크',
   'baby_cry': '아기 우는 소리',
   'baby_crying': '아기 우는 소리',
   'dog': '개소리',
