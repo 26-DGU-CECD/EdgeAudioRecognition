@@ -12,7 +12,11 @@ from audio_buffer import SlidingWindowBuffer
 from audio_level_meter import AudioLevelMeter
 from audio_math import colorize
 from audio_queue import AudioQueue
-from ble_result_builder import build_ble_result, build_skip_result
+from ble_result_builder import (
+    build_app_packet,
+    build_idle_packet,
+    summarize_decision,
+)
 from db_threshold_gate import DbThresholdGate
 from decision import Decision, DecisionGate
 from parallel_inference import InferenceResult, ParallelInferenceEngine
@@ -39,6 +43,8 @@ class AudioStreamController:
         microphone: MicrophoneModule | None = None,
         publisher: InferencePublisher | None = None,
         battery_monitor: BatteryMonitor | None = None,
+        db_offset: float = 90.0,
+        full_packet: bool = False,
         skip_low_db: bool = True,
         debug: bool = False,
         max_windows_per_cycle: int = 2,
@@ -52,6 +58,8 @@ class AudioStreamController:
         self.microphone = microphone
         self.publisher = publisher
         self.battery_monitor = battery_monitor
+        self.db_offset = float(db_offset)
+        self.full_packet = bool(full_packet)
         self.skip_low_db = bool(skip_low_db)
         self.debug = bool(debug)
         self.max_windows_per_cycle = max(1, int(max_windows_per_cycle))
@@ -76,7 +84,9 @@ class AudioStreamController:
             f"skip_low_db={self.skip_low_db} | "
             f"debounce={self.decision_gate.debounce_seconds:.1f}s | "
             f"ble={self.publisher is not None} | "
-            f"battery={self.battery_monitor.describe() if self.battery_monitor else 'off'}",
+            f"battery={self.battery_monitor.describe() if self.battery_monitor else 'off'} | "
+            f"db_offset={self.db_offset:+.0f} "
+            f"(app db>={self.threshold_gate.min_dbfs + self.db_offset:.0f})",
             flush=True,
         )
 
@@ -129,15 +139,16 @@ class AudioStreamController:
                 f"{self.threshold_gate.min_dbfs:+.1f} dBFS"
             )
             print(colorize(line, "\033[31m"), flush=True)
-            payload = build_skip_result(
+            payload = build_idle_packet(
                 timestamp=timestamp,
+                reason="low_signal",
                 chunk_dbfs=level_dbfs,
-                threshold_dbfs=self.threshold_gate.min_dbfs,
-                raw_line=line,
+                db_offset=self.db_offset,
             )
             self._publish(payload)
             return payload
 
+        started = time.perf_counter()
         try:
             result = self.inference_engine.predict(window)
             decision = self.decision_gate.evaluate(
@@ -168,12 +179,38 @@ class AudioStreamController:
             )
             print(f"DEBUG {detail} | {latency}", file=sys.stderr, flush=True)
 
-        payload = build_ble_result(
+        total_sec = time.perf_counter() - started
+
+        if decision.best_label is None:
+            # 임계값을 넘은 클래스가 없다. status:"ok"로 보내면 앱의 알림 규칙
+            # (minNotificationScore=0.30)이 근접 후보로 오알림을 낼 수 있으므로
+            # 배터리만 실어 나르는 idle 패킷으로 보낸다.
+            payload = build_idle_packet(
+                timestamp=timestamp,
+                reason="below_threshold",
+                chunk_dbfs=level_dbfs,
+                db_offset=self.db_offset,
+            )
+            self._publish(payload)
+            return payload
+
+        label, score = summarize_decision(decision)
+        payload = build_app_packet(
             timestamp=timestamp,
-            probabilities=result.probabilities,
-            decision=decision,
+            label=label,
+            score=score,
+            infer_sec=result.total_latency_ms / 1000.0,
+            total_sec=total_sec,
             chunk_dbfs=level_dbfs,
-            raw_line=line,
+            db_offset=self.db_offset,
+            raw_line=(
+                # 앱은 raw를 저장만 하고 표시하지 않는다. 콘솔 줄을 그대로 보내면
+                # 한글 때문에 100바이트 넘게 먹으므로 압축한 ASCII 요약을 보낸다.
+                f"{label} {score:.3f}/{self.decision_gate.threshold_for(label):.3f} "
+                f"{level_dbfs:+.1f}dBFS {result.total_latency_ms:.0f}ms"
+            ),
+            probabilities=result.probabilities,
+            full_packet=self.full_packet,
         )
         self._publish(payload)
         return payload

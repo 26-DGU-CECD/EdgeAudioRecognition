@@ -78,6 +78,20 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--db-offset",
+        type=float,
+        default=runtime_config.DEFAULT_DB_OFFSET,
+        help=(
+            "dBFS를 앱이 쓰는 양수 dB로 변환합니다: db=max(0, dBFS+offset). "
+            "기본값 90은 --min-db 45(= -45 dBFS)와 앱의 db>=45 조건을 일치시킵니다."
+        ),
+    )
+    parser.add_argument(
+        "--full-packet",
+        action="store_true",
+        help="items/dbfs 등 부가 필드를 포함합니다. JSON이 커지니 MTU를 확인하세요.",
+    )
+    parser.add_argument(
         "--no-battery",
         dest="battery",
         action="store_false",
