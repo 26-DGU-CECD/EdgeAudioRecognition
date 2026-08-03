@@ -57,9 +57,7 @@ class AlertRuleService {
       return _relativeDirectionTextForAngle(angle);
     }
 
-    final directionText =
-        _relativeDirectionTextForCardinal(packet.direction) ??
-        _relativeDirectionTextForCardinal(packet.directionText);
+    final directionText = _relativeDirectionTextForCardinal(packet.directionText);
 
     return directionText ?? '방향 정보 없음';
   }

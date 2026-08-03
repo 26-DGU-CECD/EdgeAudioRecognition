@@ -106,13 +106,11 @@ class TopKItem {
   final String label;
   final String displayLabel;
   final double score;
-  final String direction;
 
   TopKItem({
     required this.label,
     required this.displayLabel,
     required this.score,
-    required this.direction,
   });
 
   factory TopKItem.fromJson(Map<String, dynamic> json) {
@@ -123,7 +121,6 @@ class TopKItem {
       label: label,
       displayLabel: displayNameForSound(label, displayLabel),
       score: _toDouble(json['score']),
-      direction: json['direction']?.toString() ?? '',
     );
   }
 
@@ -132,7 +129,6 @@ class TopKItem {
       'label': label,
       'display_label': displayLabel,
       'score': score,
-      'direction': direction,
     };
   }
 }
@@ -148,7 +144,6 @@ class SoundPacket {
   final double totalSec;
   final double db;
   final String level;
-  final String direction;
   final double angle;
   final double angleRaw;
   final bool hasDirectionAngle;
@@ -167,7 +162,6 @@ class SoundPacket {
     required this.totalSec,
     required this.db,
     required this.level,
-    required this.direction,
     required this.angle,
     required this.angleRaw,
     required this.hasDirectionAngle,
@@ -193,7 +187,6 @@ class SoundPacket {
       totalSec: _toDouble(json['total_sec']),
       db: _toDouble(json['db']),
       level: json['level']?.toString() ?? 'info',
-      direction: json['direction']?.toString() ?? '',
       angle: _toDouble(rawAngle),
       angleRaw: _toDouble(json['angle_raw']),
       hasDirectionAngle: _toBool(json['has_doa']) || rawAngle != null,
@@ -232,7 +225,6 @@ class SoundPacket {
       'total_sec': totalSec,
       'db': db,
       'level': level,
-      'direction': direction,
       'angle': angle,
       'angle_raw': angleRaw,
       'has_doa': hasDirectionAngle,
