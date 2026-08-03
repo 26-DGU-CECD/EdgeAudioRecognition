@@ -53,26 +53,58 @@ def yamnet_class_names(model) -> list[str]:
     return names
 
 
-def pooled_embeddings(model, waveforms_16k: np.ndarray) -> np.ndarray:
-    """Return mean-pooled [N, 1024] YAMNet embeddings for a batch of clips."""
-    out = np.zeros((len(waveforms_16k), 1024), dtype=np.float32)
+def pooled_embeddings(model, waveforms_16k: np.ndarray, pooling: str = "mean") -> np.ndarray:
+    """Pool YAMNet's [n_frames, 1024] embeddings into one vector per clip.
+
+      * "mean"    -> [N, 1024]
+      * "meanmax" -> [N, 2048], concat(mean, max) over frames
+
+    The pooling MUST match the one recorded in the trained checkpoint, otherwise
+    the head's input dim (and its meaning) is wrong.
+    """
+    if pooling not in ("mean", "meanmax"):
+        raise ValueError(f"unsupported YAMNet pooling: {pooling!r}")
+    dim = 1024 if pooling == "mean" else 2048
+    out = np.zeros((len(waveforms_16k), dim), dtype=np.float32)
     for i, wav in enumerate(waveforms_16k):
         _scores, embeddings, _spec = model(wav.astype(np.float32))
-        out[i] = embeddings.numpy().mean(axis=0)
+        emb = embeddings.numpy()
+        if pooling == "mean":
+            out[i] = emb.mean(axis=0)
+        else:
+            out[i] = np.concatenate([emb.mean(axis=0), emb.max(axis=0)])
     return out
 
 
 class YamnetHead:
-    """Tiny MLP head on top of YAMNet embeddings. Built lazily to avoid importing
-    torch when only zero-shot mode is used."""
+    """MLP head on top of pooled YAMNet embeddings. Built lazily to avoid importing
+    torch when only zero-shot mode is used.
+
+    Two architectures exist in the wild; the checkpoint records which one it is in
+    its "head_arch" field ("mlp1" is the historical default for checkpoints saved
+    before that field existed).
+    """
 
     @staticmethod
-    def build(input_dim: int, num_classes: int):
+    def build(input_dim: int, num_classes: int, arch: str = "mlp1"):
         import torch.nn as nn
-        return nn.Sequential(
-            nn.Linear(input_dim, 256), nn.ReLU(), nn.Dropout(0.3),
-            nn.Linear(256, num_classes),
-        )
+        if arch == "mlp1":
+            return nn.Sequential(
+                nn.Linear(input_dim, 256), nn.ReLU(), nn.Dropout(0.3),
+                nn.Linear(256, num_classes),
+            )
+        if arch == "mlp2":
+            return nn.Sequential(
+                nn.LayerNorm(input_dim),                            # 0
+                nn.Linear(input_dim, 512),                          # 1
+                nn.BatchNorm1d(512),                                # 2
+                nn.ReLU(), nn.Dropout(0.3),                         # 3, 4
+                nn.Linear(512, 256),                                # 5
+                nn.BatchNorm1d(256),                                # 6
+                nn.ReLU(), nn.Dropout(0.3),                         # 7, 8
+                nn.Linear(256, num_classes),                        # 9
+            )
+        raise ValueError(f"unknown YAMNet head_arch: {arch!r}")
 
 
 class YAMNetDetector(BaseDetector):
@@ -89,11 +121,15 @@ class YAMNetDetector(BaseDetector):
             self.mode = "trained"
             state = torch.load(ckpt, map_location="cpu")
             self.target_classes = state["target_classes"]
-            self.head = YamnetHead.build(state["input_dim"], len(self.target_classes))
+            # Older checkpoints predate these fields; their recipe was mean/mlp1.
+            self.pooling = state.get("pooling", "mean")
+            arch = state.get("head_arch", "mlp1")
+            self.head = YamnetHead.build(state["input_dim"], len(self.target_classes), arch)
             self.head.load_state_dict(state["head_state"])
             self.head.eval()
             self._torch = torch
-            print(f"[YAMNet] trained head loaded: {ckpt} | {self.target_classes}")
+            print(f"[YAMNet] trained head loaded: {ckpt} | {self.target_classes} "
+                  f"| pooling={self.pooling} arch={arch}")
         else:
             # ---- zero-shot mode ----
             self.mode = "zeroshot"
@@ -110,7 +146,7 @@ class YAMNetDetector(BaseDetector):
 
     def predict_proba_batch(self, waveforms_16k: np.ndarray) -> np.ndarray:
         if self.mode == "trained":
-            emb = pooled_embeddings(self.model, waveforms_16k)          # [N, 1024]
+            emb = pooled_embeddings(self.model, waveforms_16k, self.pooling)
             with self._torch.no_grad():
                 logits = self.head(self._torch.from_numpy(emb))
                 return self._torch.sigmoid(logits).numpy().astype(np.float32)
