@@ -92,6 +92,26 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="items/dbfs 등 부가 필드를 포함합니다. JSON이 커지니 MTU를 확인하세요.",
     )
     parser.add_argument(
+        "--north-offset",
+        type=float,
+        default=runtime_config.DEFAULT_NORTH_OFFSET,
+        help=(
+            "angle = (DOAANGLE 원값 - offset) %% 360. "
+            "보정 후 angle 0이 착용자 뒤쪽, 180이 앞쪽이 되도록 잡습니다."
+        ),
+    )
+    parser.add_argument(
+        "--disable-doa",
+        action="store_true",
+        help="ReSpeaker USB DOA 읽기를 끕니다 (angle은 null로 전송).",
+    )
+    parser.add_argument(
+        "--doa-poll-interval",
+        type=float,
+        default=runtime_config.DEFAULT_DOA_POLL_INTERVAL,
+        help="USB DSP DOA 폴링 주기(초). 기본 0.1.",
+    )
+    parser.add_argument(
         "--no-battery",
         dest="battery",
         action="store_false",

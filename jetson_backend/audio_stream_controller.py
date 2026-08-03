@@ -19,10 +19,12 @@ from ble_result_builder import (
 )
 from db_threshold_gate import DbThresholdGate
 from decision import Decision, DecisionGate
+from doa import DISABLED_READING
 from parallel_inference import InferenceResult, ParallelInferenceEngine
 
 if TYPE_CHECKING:
     from battery_monitor import BatteryMonitor
+    from doa import DOAReader
     from microphone_module import MicrophoneModule
 
 
@@ -43,7 +45,9 @@ class AudioStreamController:
         microphone: MicrophoneModule | None = None,
         publisher: InferencePublisher | None = None,
         battery_monitor: BatteryMonitor | None = None,
+        doa_reader: DOAReader | None = None,
         db_offset: float = 90.0,
+        north_offset: float = 0.0,
         full_packet: bool = False,
         skip_low_db: bool = True,
         debug: bool = False,
@@ -58,7 +62,9 @@ class AudioStreamController:
         self.microphone = microphone
         self.publisher = publisher
         self.battery_monitor = battery_monitor
+        self.doa_reader = doa_reader
         self.db_offset = float(db_offset)
+        self.north_offset = float(north_offset)
         self.full_packet = bool(full_packet)
         self.skip_low_db = bool(skip_low_db)
         self.debug = bool(debug)
@@ -85,6 +91,8 @@ class AudioStreamController:
             f"debounce={self.decision_gate.debounce_seconds:.1f}s | "
             f"ble={self.publisher is not None} | "
             f"battery={self.battery_monitor.describe() if self.battery_monitor else 'off'} | "
+            f"doa={self.doa_reader.describe() if self.doa_reader else 'off'} "
+            f"north_offset={self.north_offset:.0f} | "
             f"db_offset={self.db_offset:+.0f} "
             f"(app db>={self.threshold_gate.min_dbfs + self.db_offset:.0f})",
             flush=True,
@@ -195,6 +203,10 @@ class AudioStreamController:
             return payload
 
         label, score = summarize_decision(decision)
+        reading = (
+            self.doa_reader.snapshot() if self.doa_reader is not None
+            else DISABLED_READING
+        )
         payload = build_app_packet(
             timestamp=timestamp,
             label=label,
@@ -210,6 +222,9 @@ class AudioStreamController:
                 f"{level_dbfs:+.1f}dBFS {result.total_latency_ms:.0f}ms"
             ),
             probabilities=result.probabilities,
+            raw_angle=reading.raw_angle,
+            north_offset=self.north_offset,
+            doa_status=reading.status,
             full_packet=self.full_packet,
         )
         self._publish(payload)

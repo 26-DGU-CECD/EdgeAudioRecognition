@@ -118,6 +118,15 @@ def main(argv: list[str] | None = None) -> int:
                 file=sys.stderr,
             )
 
+    doa_reader = None
+    if args.input_wav is None:
+        from doa import DOAReader
+
+        doa_reader = DOAReader(
+            enabled=not args.disable_doa,
+            poll_interval=args.doa_poll_interval,
+        )
+
     engine = None
     audio_queue = AudioQueue(
         runtime_config.QUEUE_MAX_SECONDS,
@@ -141,6 +150,8 @@ def main(argv: list[str] | None = None) -> int:
         )
     except Exception as exc:
         print(f"모델/threshold 초기화 오류: {exc}", file=sys.stderr)
+        if doa_reader is not None:
+            doa_reader.stop()
         if battery_monitor is not None:
             battery_monitor.close()
         if ble_server is not None:
@@ -169,7 +180,9 @@ def main(argv: list[str] | None = None) -> int:
         microphone=microphone,
         publisher=ble_server,
         battery_monitor=battery_monitor,
+        doa_reader=doa_reader,
         db_offset=args.db_offset,
+        north_offset=args.north_offset,
         full_packet=args.full_packet,
         skip_low_db=args.skip_low_db,
         debug=args.debug,
@@ -203,6 +216,8 @@ def main(argv: list[str] | None = None) -> int:
             )
         if engine is not None:
             engine.close()
+        if doa_reader is not None:
+            doa_reader.stop()
         if battery_monitor is not None:
             battery_monitor.close()
         if ble_server is not None:
