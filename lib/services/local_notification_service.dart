@@ -10,6 +10,11 @@ class LocalNotificationService {
   static const String alertChannelDescription =
       'Notifications for detected environmental sounds.';
 
+  /// 모든 소리 알림이 공유하는 단일 ID.
+  /// 같은 ID로 show 하면 Android가 기존 알림을 교체하므로,
+  /// 알림이 쌓이지 않고 항상 최신 감지 하나만 남는다.
+  static const int soundAlertNotificationId = 1001;
+
   final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
 
@@ -57,7 +62,6 @@ class LocalNotificationService {
   Future<void> showSoundAlert({
     required String title,
     required String body,
-    required String labelKey,
   }) async {
     await initialize();
 
@@ -73,17 +77,10 @@ class LocalNotificationService {
     );
 
     await _plugin.show(
-      id: _notificationIdFor(labelKey),
+      id: soundAlertNotificationId,
       title: title,
       body: body,
       notificationDetails: const NotificationDetails(android: androidDetails),
     );
-  }
-
-  int _notificationIdFor(String labelKey) {
-    return labelKey.codeUnits.fold<int>(17, (hash, unit) {
-          return (hash * 37 + unit) & 0x7fffffff;
-        }) %
-        2147483647;
   }
 }

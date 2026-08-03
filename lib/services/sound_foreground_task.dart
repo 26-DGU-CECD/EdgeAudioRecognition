@@ -305,7 +305,6 @@ class SoundForegroundTaskHandler extends TaskHandler {
     await LocalNotificationService.instance.showSoundAlert(
       title: _alertRules.titleFor(packet),
       body: _alertRules.bodyFor(packet),
-      labelKey: packet.notificationLabelKey,
     );
   }
 
