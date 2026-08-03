@@ -1,0 +1,17 @@
+{
+  "tuned_on": "val",
+  "thresholds": {
+    "siren": 0.9999398,
+    "scream": 0.50764245,
+    "crying": 0.9895919,
+    "bicycle_bell": 0.9908505,
+    "baby_cry": 0.9464997,
+    "gunshot": 0.86728835,
+    "glass_break": 0.99963117,
+    "water": 0.99999774,
+    "knock": 0.98402023,
+    "dog": 0.9991768,
+    "cat": 0.99999607
+  },
+  "note": "안전 클래스 가중치 3.0. 원본 thresholds.json 을 대체하지 않음 — 검증 후 결정."
+}

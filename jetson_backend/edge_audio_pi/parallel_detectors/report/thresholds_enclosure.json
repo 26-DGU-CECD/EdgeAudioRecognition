@@ -1,0 +1,19 @@
+{
+  "tuned_on": "val",
+  "objective": "max_recall_subject_to_fp<=60_per_hour",
+  "derived_from": "report/thresholds.json (max-F1) 완화, 원본보다 높아지지 않음",
+  "note": "3D 프린팅 하우징 감쇠 대비. 실제 하우징 녹음으로 재검증 필요.",
+  "thresholds": {
+    "siren": 0.34324712,
+    "scream": 0.19502467,
+    "crying": 0.4533379,
+    "bicycle_bell": 0.00635596,
+    "baby_cry": 0.01903925,
+    "gunshot": 0.00854433,
+    "glass_break": 0.10441035,
+    "water": 0.90441215,
+    "knock": 0.00050053,
+    "dog": 0.00600549,
+    "cat": 0.9496367
+  }
+}

@@ -1,7 +1,14 @@
 .venv/
 EfficientAT/
+# 단, Pi 배포 번들 안의 EfficientAT 모델 정의 사본은 추적한다.
+# 번들이 자립적으로 동작하려면(= 받는 사람이 clone 없이 바로 실행) 반드시 커밋돼야 한다.
+!edge_audio_pi/EfficientAT/
 ESC-50/
 __pycache__/
 *.py[cod]
 .codex/
 .agents/
+
+# macOS Finder 부산물. 지워도 Finder가 다시 만들므로 규칙으로 막는다.
+# (위 EfficientAT negation 뒤에 와야 번들 안쪽까지 적용된다.)
+.DS_Store
