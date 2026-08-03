@@ -112,6 +112,89 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="USB DSP DOA 폴링 주기(초). 기본 0.1.",
     )
     parser.add_argument(
+        "--disable-imu",
+        action="store_true",
+        help="MPU-9250 흔들림 보정을 끕니다 (DOA 원값을 그대로 사용).",
+    )
+    parser.add_argument(
+        "--imu-bus",
+        type=int,
+        default=runtime_config.DEFAULT_IMU_BUS,
+        help="MPU-9250이 붙은 I2C 버스 번호입니다.",
+    )
+    parser.add_argument(
+        "--imu-address",
+        type=lambda value: int(value, 0),
+        default=runtime_config.DEFAULT_IMU_ADDRESS,
+        help="MPU-9250 I2C 주소 (기본 0x68).",
+    )
+    parser.add_argument(
+        "--imu-poll-hz",
+        type=float,
+        default=runtime_config.DEFAULT_IMU_POLL_HZ,
+        help="자이로 적분 주기(Hz). 기본 100.",
+    )
+    parser.add_argument(
+        "--imu-turn-threshold",
+        type=float,
+        default=runtime_config.DEFAULT_IMU_TURN_THRESHOLD,
+        help=(
+            "yaw 각속도의 이동 평균이 이 값(deg/s)을 넘고, 그 창 안에서 회전 방향이 "
+            "한 번도 뒤집히지 않았을 때만 '방향 전환'으로 봅니다. 흔들림은 반주기마다 "
+            "반드시 뒤집히므로 진폭이 아무리 커도 걸리지 않습니다."
+        ),
+    )
+    parser.add_argument(
+        "--imu-turn-window",
+        type=float,
+        default=runtime_config.DEFAULT_IMU_TURN_WINDOW_SECONDS,
+        help="방향 전환 판정 창(초). 흔들림 반주기보다 길어야 합니다. 기본 1.2.",
+    )
+    parser.add_argument(
+        "--imu-ref-tau-still",
+        type=float,
+        default=runtime_config.DEFAULT_IMU_REF_TAU_STILL,
+        help="정지/흔들림 상태에서 기준 방위가 따라가는 시정수(초). 클수록 흔들림을 잘 지웁니다.",
+    )
+    parser.add_argument(
+        "--imu-ref-tau-turn",
+        type=float,
+        default=runtime_config.DEFAULT_IMU_REF_TAU_TURN,
+        help="방향 전환 중 기준 방위가 따라가는 시정수(초). 작을수록 전환을 빨리 반영합니다.",
+    )
+    parser.add_argument(
+        "--imu-calibration-seconds",
+        type=float,
+        default=runtime_config.DEFAULT_IMU_CALIBRATION_SECONDS,
+        help="시작 시 자이로 바이어스를 평균낼 시간(초). 이 동안 정지해 있어야 합니다.",
+    )
+    parser.add_argument(
+        "--imu-gyro-range",
+        type=int,
+        choices=(250, 500, 1000, 2000),
+        default=runtime_config.DEFAULT_IMU_GYRO_RANGE_DPS,
+        help="자이로 측정 범위(deg/s). 흔들림이 세면 클리핑을 피하려 크게 잡습니다.",
+    )
+    parser.add_argument(
+        "--imu-yaw-axis",
+        choices=("gravity", "z"),
+        default=runtime_config.DEFAULT_IMU_YAW_AXIS,
+        help=(
+            "yaw 회전축. gravity는 가속도로 측정한 중력축에 자이로를 투영하고, "
+            "z는 칩의 자이로 Z를 그대로 씁니다. 보드가 수평이면 둘은 같습니다."
+        ),
+    )
+    parser.add_argument(
+        "--imu-swing-sign",
+        type=float,
+        choices=(1.0, -1.0),
+        default=runtime_config.DEFAULT_IMU_SWING_SIGN,
+        help=(
+            "angle = DOA + sign*swing - north_offset. 자이로와 DOA의 회전 방향이 "
+            "반대면 -1로 뒤집습니다 (흔들림이 2배로 커지면 부호가 틀린 것입니다)."
+        ),
+    )
+    parser.add_argument(
         "--no-battery",
         dest="battery",
         action="store_false",

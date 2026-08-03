@@ -119,12 +119,29 @@ def main(argv: list[str] | None = None) -> int:
             )
 
     doa_reader = None
+    imu_reader = None
     if args.input_wav is None:
         from doa import DOAReader
+        from imu import IMUReader
 
         doa_reader = DOAReader(
             enabled=not args.disable_doa,
             poll_interval=args.doa_poll_interval,
+        )
+        # De-swing only has something to correct when there is a DOA angle, and
+        # the constructor spends ~1.5 s calibrating, so skip it when DOA is off.
+        imu_reader = IMUReader(
+            enabled=not args.disable_imu and not args.disable_doa,
+            bus_number=args.imu_bus,
+            address=args.imu_address,
+            poll_hz=args.imu_poll_hz,
+            turn_threshold=args.imu_turn_threshold,
+            turn_window_seconds=args.imu_turn_window,
+            ref_tau_still=args.imu_ref_tau_still,
+            ref_tau_turn=args.imu_ref_tau_turn,
+            calibration_seconds=args.imu_calibration_seconds,
+            gyro_range_dps=args.imu_gyro_range,
+            yaw_axis=args.imu_yaw_axis,
         )
 
     engine = None
@@ -152,6 +169,8 @@ def main(argv: list[str] | None = None) -> int:
         print(f"모델/threshold 초기화 오류: {exc}", file=sys.stderr)
         if doa_reader is not None:
             doa_reader.stop()
+        if imu_reader is not None:
+            imu_reader.stop()
         if battery_monitor is not None:
             battery_monitor.close()
         if ble_server is not None:
@@ -181,6 +200,9 @@ def main(argv: list[str] | None = None) -> int:
         publisher=ble_server,
         battery_monitor=battery_monitor,
         doa_reader=doa_reader,
+        imu_reader=imu_reader,
+        imu_swing_sign=args.imu_swing_sign,
+        imu_max_sync_age=runtime_config.DEFAULT_IMU_MAX_SYNC_AGE,
         db_offset=args.db_offset,
         north_offset=args.north_offset,
         full_packet=args.full_packet,
@@ -218,6 +240,8 @@ def main(argv: list[str] | None = None) -> int:
             engine.close()
         if doa_reader is not None:
             doa_reader.stop()
+        if imu_reader is not None:
+            imu_reader.stop()
         if battery_monitor is not None:
             battery_monitor.close()
         if ble_server is not None:

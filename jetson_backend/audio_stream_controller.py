@@ -25,6 +25,7 @@ from parallel_inference import InferenceResult, ParallelInferenceEngine
 if TYPE_CHECKING:
     from battery_monitor import BatteryMonitor
     from doa import DOAReader
+    from imu import IMUReader
     from microphone_module import MicrophoneModule
 
 
@@ -46,6 +47,9 @@ class AudioStreamController:
         publisher: InferencePublisher | None = None,
         battery_monitor: BatteryMonitor | None = None,
         doa_reader: DOAReader | None = None,
+        imu_reader: IMUReader | None = None,
+        imu_swing_sign: float = 1.0,
+        imu_max_sync_age: float = 0.25,
         db_offset: float = 90.0,
         north_offset: float = 0.0,
         full_packet: bool = False,
@@ -63,6 +67,9 @@ class AudioStreamController:
         self.publisher = publisher
         self.battery_monitor = battery_monitor
         self.doa_reader = doa_reader
+        self.imu_reader = imu_reader
+        self.imu_swing_sign = 1.0 if float(imu_swing_sign) >= 0 else -1.0
+        self.imu_max_sync_age = max(0.0, float(imu_max_sync_age))
         self.db_offset = float(db_offset)
         self.north_offset = float(north_offset)
         self.full_packet = bool(full_packet)
@@ -93,6 +100,8 @@ class AudioStreamController:
             f"battery={self.battery_monitor.describe() if self.battery_monitor else 'off'} | "
             f"doa={self.doa_reader.describe() if self.doa_reader else 'off'} "
             f"north_offset={self.north_offset:.0f} | "
+            f"imu={self.imu_reader.describe() if self.imu_reader else 'off'} "
+            f"swing_sign={self.imu_swing_sign:+.0f} | "
             f"db_offset={self.db_offset:+.0f} "
             f"(app db>={self.threshold_gate.min_dbfs + self.db_offset:.0f})",
             flush=True,
@@ -207,6 +216,7 @@ class AudioStreamController:
             self.doa_reader.snapshot() if self.doa_reader is not None
             else DISABLED_READING
         )
+        swing_deg, imu_status = self._swing_for(reading)
         payload = build_app_packet(
             timestamp=timestamp,
             label=label,
@@ -225,10 +235,47 @@ class AudioStreamController:
             raw_angle=reading.raw_angle,
             north_offset=self.north_offset,
             doa_status=reading.status,
+            swing_deg=swing_deg,
+            imu_status=imu_status,
             full_packet=self.full_packet,
         )
         self._publish(payload)
         return payload
+
+    def _swing_for(self, reading) -> tuple[float | None, str]:  # noqa: ANN001
+        """De-swing correction for this DOA reading, sampled at *its* instant.
+
+        Returns `(None, status)` rather than 0.0 when there is no usable sample,
+        so the console line can distinguish "corrected by 0 degrees" from "not
+        corrected". A mismatch is reported as `nosync` instead of silently
+        applying the most recent swing, which would belong to a different
+        moment and add exactly the oscillation we are removing.
+        """
+        if self.imu_reader is None or not self.imu_reader.ok:
+            return None, (
+                self.imu_reader.describe() if self.imu_reader is not None else "disabled"
+            )
+        if reading.raw_angle is None:
+            return None, self.imu_reader.describe()
+
+        raw_swing = self.imu_reader.swing_at(
+            reading.timestamp,
+            max_age=self.imu_max_sync_age,
+        )
+        if raw_swing is None:
+            return None, "nosync"
+
+        swing = self.imu_swing_sign * raw_swing
+        state = self.imu_reader.snapshot()
+        print(
+            f"[IMU] raw_doa={reading.raw_angle} swing={raw_swing:+.1f} "
+            f"applied={swing:+.1f} yaw={state.yaw:.1f} ref={state.ref:.1f} "
+            f"mean0.5s={state.gyro_mean:+.1f} "
+            f"state={'TURN' if state.turning else 'still'}",
+            file=sys.stderr,
+            flush=True,
+        )
+        return swing, self.imu_reader.describe()
 
     def _format_line(
         self,

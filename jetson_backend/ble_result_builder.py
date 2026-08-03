@@ -20,6 +20,11 @@ from decision import Decision
 
 SOURCE = "jetson_backend_main"
 
+# Status strings are diagnostic and can end up carrying an exception type name,
+# so they are clipped: the packet has ~47 bytes of headroom against the app's
+# ~509 byte ceiling and an unbounded field could eat it.
+MAX_STATUS_CHARS = 24
+
 # 앱이 사용하는 위험도 등급. main.py의 11개 클래스 기준으로 다시 작성했다.
 # (참고 코드 realtime_inference_ble_doa.py의 DANGER/CAUTION_LABELS는
 #  alarm_siren/horn/glass_shatter 같은 다른 라벨 체계라 그대로 쓸 수 없다.)
@@ -71,8 +76,22 @@ def app_db_from_dbfs(dbfs: float, offset: float) -> float:
     return round(max(0.0, float(dbfs) + float(offset)), 1)
 
 
-def corrected_angle(raw_angle: float, north_offset: float) -> int:
-    return int(round((float(raw_angle) - float(north_offset)) % 360.0)) % 360
+def corrected_angle(
+    raw_angle: float,
+    north_offset: float,
+    swing_deg: float = 0.0,
+) -> int:
+    """DSP angle -> the angle the app renders.
+
+    `swing_deg` is how far the device has rotated away from its own reference
+    heading (see `imu.py`). The DSP measures direction in the device frame, so
+    rotating the device by +s moves a fixed source to raw-s; adding s back
+    cancels it. It is 0 whenever the IMU is off or its sample cannot be matched
+    to this reading's instant.
+    """
+    return int(
+        round((float(raw_angle) + float(swing_deg) - float(north_offset)) % 360.0)
+    ) % 360
 
 
 def relative_direction(angle: float) -> str:
@@ -96,9 +115,17 @@ def build_app_packet(
     raw_angle: int | None = None,
     north_offset: float = 0.0,
     doa_status: str = "disabled",
+    swing_deg: float | None = None,
+    imu_status: str = "disabled",
     full_packet: bool = False,
 ) -> dict:
-    """Build a `status: "ok"` sound packet."""
+    """Build a `status: "ok"` sound packet.
+
+    Only `imu_status` is added for the IMU. `swing`/`yaw`/`ref` stay out of the
+    wire format on purpose: the packet is already ~370 bytes against a ~509
+    byte ceiling, and the app only ever reads the corrected `angle`, so debug
+    values go to the console instead.
+    """
     sent_label = wire_label(label)
 
     if raw_angle is None:
@@ -106,7 +133,7 @@ def build_app_packet(
         angle_raw: float | None = None
         direction_text = ""
     else:
-        corrected = corrected_angle(raw_angle, north_offset)
+        corrected = corrected_angle(raw_angle, north_offset, swing_deg or 0.0)
         angle = float(corrected)
         angle_raw = float(raw_angle)
         direction_text = f"{relative_direction(corrected)} {corrected}도"
@@ -126,6 +153,7 @@ def build_app_packet(
         "has_doa": raw_angle is not None,
         "direction_text": direction_text,
         "doa_status": doa_status,
+        "imu_status": str(imu_status)[:MAX_STATUS_CHARS],
         "raw": raw_line,
     }
 
