@@ -18,6 +18,7 @@ from decision import Decision, DecisionGate
 from parallel_inference import InferenceResult, ParallelInferenceEngine
 
 if TYPE_CHECKING:
+    from battery_monitor import BatteryMonitor
     from microphone_module import MicrophoneModule
 
 
@@ -37,6 +38,7 @@ class AudioStreamController:
         decision_gate: DecisionGate,
         microphone: MicrophoneModule | None = None,
         publisher: InferencePublisher | None = None,
+        battery_monitor: BatteryMonitor | None = None,
         skip_low_db: bool = True,
         debug: bool = False,
         max_windows_per_cycle: int = 2,
@@ -49,6 +51,7 @@ class AudioStreamController:
         self.decision_gate = decision_gate
         self.microphone = microphone
         self.publisher = publisher
+        self.battery_monitor = battery_monitor
         self.skip_low_db = bool(skip_low_db)
         self.debug = bool(debug)
         self.max_windows_per_cycle = max(1, int(max_windows_per_cycle))
@@ -72,7 +75,8 @@ class AudioStreamController:
             f"min_dbfs={self.threshold_gate.min_dbfs:+.1f} "
             f"skip_low_db={self.skip_low_db} | "
             f"debounce={self.decision_gate.debounce_seconds:.1f}s | "
-            f"ble={self.publisher is not None}",
+            f"ble={self.publisher is not None} | "
+            f"battery={self.battery_monitor.describe() if self.battery_monitor else 'off'}",
             flush=True,
         )
 
@@ -201,5 +205,7 @@ class AudioStreamController:
         )
 
     def _publish(self, data: dict) -> None:
+        if self.battery_monitor is not None:
+            data.update(self.battery_monitor.snapshot())
         if self.publisher is not None:
             self.publisher.publish(data)

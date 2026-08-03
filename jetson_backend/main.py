@@ -105,6 +105,19 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 1
 
+    battery_monitor = None
+    if args.battery:
+        try:
+            from battery_monitor import BatteryMonitor
+
+            battery_monitor = BatteryMonitor(args.battery_bus, args.battery_interval)
+        except Exception as exc:
+            print(
+                f"배터리 모니터 비활성화: {exc}\n"
+                "UPS 없이 실행 중이면 --no-battery로 이 경고를 끌 수 있습니다.",
+                file=sys.stderr,
+            )
+
     engine = None
     audio_queue = AudioQueue(
         runtime_config.QUEUE_MAX_SECONDS,
@@ -128,6 +141,8 @@ def main(argv: list[str] | None = None) -> int:
         )
     except Exception as exc:
         print(f"모델/threshold 초기화 오류: {exc}", file=sys.stderr)
+        if battery_monitor is not None:
+            battery_monitor.close()
         if ble_server is not None:
             ble_server.stop()
         return 1
@@ -153,6 +168,7 @@ def main(argv: list[str] | None = None) -> int:
         decision_gate=decision_gate,
         microphone=microphone,
         publisher=ble_server,
+        battery_monitor=battery_monitor,
         skip_low_db=args.skip_low_db,
         debug=args.debug,
         max_windows_per_cycle=runtime_config.MAX_WINDOWS_PER_CYCLE,
@@ -185,6 +201,8 @@ def main(argv: list[str] | None = None) -> int:
             )
         if engine is not None:
             engine.close()
+        if battery_monitor is not None:
+            battery_monitor.close()
         if ble_server is not None:
             ble_server.stop()
     return exit_code
