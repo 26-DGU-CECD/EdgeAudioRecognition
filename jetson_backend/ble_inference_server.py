@@ -133,7 +133,9 @@ class BleInferenceServer:
     def publish(self, data: dict) -> None:
         if self.characteristic is None:
             return
-        payload = json.dumps(data, separators=(",", ":"), ensure_ascii=True)
+        # ensure_ascii=False: 한글은 UTF-8 3바이트지만 \uXXXX 이스케이프는 6바이트다.
+        # 앱은 utf8.decode()로 읽으므로 그대로 보내는 쪽이 짧고 안전하다.
+        payload = json.dumps(data, separators=(",", ":"), ensure_ascii=False)
         self.characteristic.notify_text(payload)
 
     def stop(self) -> None:

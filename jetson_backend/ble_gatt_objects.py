@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import json
-from typing import List
+import sys
 
 import dbus
 import dbus.service
@@ -85,6 +85,7 @@ class InferenceCharacteristic(dbus.service.Object):
         )
         self.notifying = False
         self.sequence = 0
+        self._warned_bytes = 0
         super().__init__(bus, self.path)
 
     def get_path(self) -> dbus.ObjectPath:
@@ -99,43 +100,43 @@ class InferenceCharacteristic(dbus.service.Object):
             }
         }
 
-    def _frames_for_payload(self, payload: str) -> List[bytes]:
-        payload_bytes = payload.encode("ascii")
-        total = 1
-        while True:
-            parts: list[bytes] = []
-            offset = 0
-            index = 1
-            while offset < len(payload_bytes) or (offset == 0 and not payload_bytes):
-                prefix = f"#{self.sequence}:{index}/{total}:".encode("ascii")
-                content_size = max(1, self.chunk_bytes - len(prefix))
-                parts.append(payload_bytes[offset : offset + content_size])
-                offset += content_size
-                index += 1
-            if len(parts) == total:
-                return [
-                    f"#{self.sequence}:{index}/{total}:".encode("ascii") + part
-                    for index, part in enumerate(parts, start=1)
-                ]
-            total = len(parts)
-
     def notify_text(self, payload: str) -> None:
         self.latest_payload = payload
         GLib.idle_add(self._notify_latest)
 
     def _notify_latest(self) -> bool:
+        """Send the whole JSON document as one UTF-8 notification.
+
+        The Flutter app decodes each notification with jsonDecode() directly
+        (ble_sound_service.dart:_handleBytes) and never reassembles chunks, so
+        the payload must never be split. chunk_bytes is only a warning
+        threshold: the app negotiates MTU 512, leaving ~509 usable bytes.
+        """
         if not self.notifying:
             return False
 
         self.sequence += 1
-        for frame in self._frames_for_payload(self.latest_payload):
-            self.PropertiesChanged(
-                GATT_CHRC_IFACE,
-                dbus.Dictionary({"Value": byte_array(frame)}, signature="sv"),
-                dbus.Array([], signature="s"),
+        payload_bytes = self.latest_payload.encode("utf-8")
+        # 매 패킷마다 같은 경고를 찍지 않도록 최대치를 갱신할 때만 알린다.
+        if len(payload_bytes) > max(self.chunk_bytes, self._warned_bytes):
+            self._warned_bytes = len(payload_bytes)
+            print(
+                f"경고: BLE JSON이 {len(payload_bytes)} 바이트로 "
+                f"--ble-chunk-bytes={self.chunk_bytes}를 넘습니다. "
+                "앱은 MTU 512(≈509바이트)를 요청하므로 그 아래면 보통 정상 수신됩니다. "
+                "앱이 패킷을 못 받으면 --full-packet을 빼거나 --ble-chunk-bytes를 조정하세요.",
+                file=sys.stderr,
+                flush=True,
             )
+
+        self.PropertiesChanged(
+            GATT_CHRC_IFACE,
+            dbus.Dictionary({"Value": byte_array(payload_bytes)}, signature="sv"),
+            dbus.Array([], signature="s"),
+        )
         print(
-            f"sent BLE inference notification seq={self.sequence} bytes={len(self.latest_payload)}",
+            f"sent BLE inference notification seq={self.sequence} "
+            f"bytes={len(payload_bytes)}",
             flush=True,
         )
         return False

@@ -68,7 +68,15 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("--no-ble", action="store_true")
     parser.add_argument("--ble-name", default="JHello")
-    parser.add_argument("--ble-chunk-bytes", type=int, default=180)
+    parser.add_argument(
+        "--ble-chunk-bytes",
+        type=int,
+        default=244,
+        help=(
+            "경고 임계값입니다. 패킷은 항상 단일 프레임으로 보내며, "
+            "이 값을 넘으면 경고만 출력합니다."
+        ),
+    )
     parser.add_argument(
         "--no-battery",
         dest="battery",
