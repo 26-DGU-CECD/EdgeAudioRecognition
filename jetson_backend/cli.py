@@ -69,6 +69,25 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--no-ble", action="store_true")
     parser.add_argument("--ble-name", default="JHello")
     parser.add_argument("--ble-chunk-bytes", type=int, default=180)
+    parser.add_argument(
+        "--no-battery",
+        dest="battery",
+        action="store_false",
+        help="UPS 배터리 잔량을 전송하지 않습니다.",
+    )
+    parser.set_defaults(battery=True)
+    parser.add_argument(
+        "--battery-bus",
+        type=int,
+        default=runtime_config.DEFAULT_BATTERY_BUS,
+        help="UPS 연료계가 붙은 I2C 버스 번호입니다.",
+    )
+    parser.add_argument(
+        "--battery-interval",
+        type=float,
+        default=runtime_config.DEFAULT_BATTERY_INTERVAL_SECONDS,
+        help="배터리를 다시 읽는 최소 간격(초)입니다.",
+    )
 
     args = parser.parse_args(argv)
     args.detector_names = [
