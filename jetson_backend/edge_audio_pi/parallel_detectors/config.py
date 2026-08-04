@@ -61,6 +61,7 @@ FOLDER_TO_TARGET: dict[str, tuple[str, str] | None] = {
     "화재경보":        ("yamnet", "siren"),
     "비명":            ("yamnet", "scream"),
     "울음":            ("yamnet", "crying"),
+    "car_horn":        ("yamnet", "car_horn"),
     # NOTE: plan listed "공사장 소리" (construction) for YAMNet but there is no such
     #       folder in the dataset, so it cannot be evaluated and is omitted.
 
@@ -78,12 +79,11 @@ FOLDER_TO_TARGET: dict[str, tuple[str, str] | None] = {
 
     # --- Negatives (not assigned to any detector; FP sources) ---
     "background":      None,
-    "car_horn":        None,
 }
 
 # Ordered target classes per detector (defines score-column order & report order).
 DETECTOR_CLASSES: dict[str, list[str]] = {
-    "yamnet":       ["siren", "scream", "crying"],
+    "yamnet":       ["siren", "scream", "crying", "car_horn"],
     "efficientat":  ["bicycle_bell", "baby_cry", "gunshot", "glass_break"],
     "mobilenetv4":  ["water", "knock", "dog", "cat"],
 }
@@ -147,6 +147,11 @@ MOBILENETV4_CKPT = CHECKPOINTS_DIR / "mobilenetv4_small.pt"
 # exist, run_inference uses the TRAINED head instead of zero-shot AudioSet mapping.
 EFFICIENTAT_CKPT = CHECKPOINTS_DIR / "efficientat_head.pt"
 YAMNET_CKPT = CHECKPOINTS_DIR / "yamnet_head.pt"
+
+# Per-class temperature/bias fitted on the val split by calibrate.py. Auto-loaded by
+# the detectors when present; applied inside BaseDetector.probs_from_logits so the
+# offline scores, the training val loops and the Pi realtime path cannot disagree.
+CALIBRATION_JSON = REPORT_DIR / "calibration.json"
 
 
 def get_device(prefer: str = "auto") -> str:

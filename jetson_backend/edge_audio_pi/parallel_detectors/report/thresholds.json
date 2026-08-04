@@ -1,16 +1,23 @@
 {
   "tuned_on": "val",
+  "objective": "f1",
+  "calibration": {
+    "efficientat": "587216af",
+    "mobilenetv4": "bf5b0197",
+    "yamnet": "d2c4e6e2"
+  },
   "thresholds": {
-    "siren": 0.46013665,
-    "scream": 0.52122796,
-    "crying": 0.4533379,
-    "bicycle_bell": 0.32903698,
-    "baby_cry": 0.9275035,
-    "gunshot": 0.6069454,
-    "glass_break": 0.39072785,
-    "water": 0.9220296,
-    "knock": 0.9999893,
-    "dog": 0.9962441,
-    "cat": 0.9954957
+    "siren": 0.481357,
+    "scream": 0.34307086,
+    "crying": 0.43146798,
+    "car_horn": 0.36296394,
+    "bicycle_bell": 0.23754296,
+    "baby_cry": 0.36557984,
+    "gunshot": 0.30385262,
+    "glass_break": 0.3904728,
+    "water": 0.33096996,
+    "knock": 0.56366557,
+    "dog": 0.46439308,
+    "cat": 0.45275724
   }
 }
