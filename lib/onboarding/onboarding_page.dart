@@ -3,9 +3,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../app_prefs.dart';
+import '../ble/ble_connection_page.dart';
 import '../pages/home_page.dart' show CompassView;
 import '../ui/app_colors.dart';
-import '../pages/background_alert_consent_page.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -130,7 +130,11 @@ class _OnboardingPageState extends State<OnboardingPage>
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (_) => const BackgroundAlertConsentPage()),
+      MaterialPageRoute(
+        builder: (_) => const BleConnectionPage(
+          showBackgroundAlertConsentOnConnect: true,
+        ),
+      ),
     );
   }
 

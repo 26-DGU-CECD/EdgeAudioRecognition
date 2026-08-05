@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'ble_sound_service.dart';
 import 'ble_connection_page.dart';
 import 'ble_connection_store.dart';
+import 'package:untitled/app_prefs.dart';
 import 'package:untitled/main_page.dart';
+import 'package:untitled/onboarding/onboarding_page.dart';
 import 'package:untitled/pages/background_alert_consent_page.dart';
 import 'package:untitled/services/alert_settings_store.dart';
 import 'package:untitled/services/sound_foreground_task.dart';
@@ -23,6 +25,19 @@ class _ConnectionGateState extends State<ConnectionGate> {
   }
 
   Future<void> _routeBySavedConnection() async {
+    // 첫 실행이면 온보딩부터. 온보딩 마지막에서 BLE 연결 -> 백그라운드 동의 -> 메인.
+    final onboardingSeen = await AppPrefs.isOnboardingSeen();
+
+    if (!onboardingSeen) {
+      if (!mounted) return;
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const OnboardingPage()),
+      );
+      return;
+    }
+
     final savedDeviceId = await BleConnectionStore.loadDeviceId();
     final backgroundAlertsEnabled =
         await AlertSettingsStore.loadBackgroundAlertsEnabled();
