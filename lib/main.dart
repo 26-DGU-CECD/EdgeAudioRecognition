@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 import 'package:untitled/ble/connection_gate.dart';
@@ -8,10 +9,13 @@ import 'package:untitled/services/sound_foreground_task.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  FlutterForegroundTask.initCommunicationPort();
-  if (Platform.isAndroid) {
-    SoundForegroundServiceController.initialize();
-    await LocalNotificationService.instance.initialize();
+  // 웹에는 dart:isolate / dart:io Platform이 없으므로 네이티브 전용 초기화는 건너뛴다.
+  if (!kIsWeb) {
+    FlutterForegroundTask.initCommunicationPort();
+    if (Platform.isAndroid) {
+      SoundForegroundServiceController.initialize();
+      await LocalNotificationService.instance.initialize();
+    }
   }
   runApp(const MyApp());
 }

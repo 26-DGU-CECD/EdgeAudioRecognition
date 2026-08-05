@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
@@ -25,7 +26,7 @@ void startSoundForegroundTask() {
 
 class SoundForegroundServiceController {
   static void initialize() {
-    if (!Platform.isAndroid) {
+    if (kIsWeb || !Platform.isAndroid) {
       return;
     }
 
@@ -57,7 +58,7 @@ class SoundForegroundServiceController {
   }
 
   static Future<bool> start() async {
-    if (!Platform.isAndroid) {
+    if (kIsWeb || !Platform.isAndroid) {
       return false;
     }
 
@@ -80,7 +81,7 @@ class SoundForegroundServiceController {
   }
 
   static Future<void> stop() async {
-    if (!Platform.isAndroid) {
+    if (kIsWeb || !Platform.isAndroid) {
       return;
     }
 
@@ -90,7 +91,7 @@ class SoundForegroundServiceController {
   }
 
   static Future<bool> isRunning() async {
-    if (!Platform.isAndroid) {
+    if (kIsWeb || !Platform.isAndroid) {
       return false;
     }
     return FlutterForegroundTask.isRunningService;
