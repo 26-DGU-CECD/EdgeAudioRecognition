@@ -1,3 +1,14 @@
+/// 라벨을 사용자에게 노출하기 위한 최소 신뢰도(85%).
+/// 홈 화면 표시, 배너, OS 알림, 감지 기록이 모두 이 값을 공유한다.
+/// 클래스 구분 없이 전부 같은 임계값을 쓴다.
+const double kMinConfidenceScore = 0.85;
+
+/// 해당 라벨에 적용할 최소 신뢰도를 돌려준다.
+/// 지금은 모든 클래스가 [kMinConfidenceScore]로 균일하다.
+double minConfidenceScoreFor(String? label, [String? displayLabel]) {
+  return kMinConfidenceScore;
+}
+
 const List<String> knownKoreanSoundLabels = [
   '총',
   '경보',
@@ -10,6 +21,7 @@ const List<String> knownKoreanSoundLabels = [
   '아기 우는 소리',
   '개소리',
   '고양이소리',
+  '경적',
 ];
 
 const Map<String, String> _soundLabelKoMap = {
@@ -23,6 +35,8 @@ const Map<String, String> _soundLabelKoMap = {
   'warning_alarm': '경보',
   'bicycle': '자전거',
   'bike': '자전거',
+  'bicycle_bell': '자전거',
+  'bike_bell': '자전거',
   'water': '물소리',
   'water_sound': '물소리',
   'cry': '울음',
@@ -39,6 +53,9 @@ const Map<String, String> _soundLabelKoMap = {
   'dog_bark': '개소리',
   'cat': '고양이소리',
   'cat_meow': '고양이소리',
+  'car_horn': '경적',
+  'vehicle_horn': '경적',
+  'horn': '경적',
 };
 
 String displayNameForSound(String? label, [String? displayLabel]) {
@@ -235,9 +252,19 @@ class SoundPacket {
     };
   }
 
+  /// 이 패킷의 라벨에 적용되는 최소 신뢰도
+  double get minConfidenceScore {
+    return minConfidenceScoreFor(label, displayLabel);
+  }
+
+  /// 신뢰도가 충분해서 라벨을 믿고 보여줄 수 있는지 여부
+  bool get isConfident {
+    return status == 'ok' && score >= minConfidenceScore;
+  }
+
   /// 알림 기준 threshold (홈 화면 표시 조건)
   bool get isDisplayable {
-    return status == 'ok' && score >= 0.7 && db >= 45.0;
+    return isConfident && db >= 45.0;
   }
 
   /// 방향(각도)을 한글 방위 텍스트로 변환

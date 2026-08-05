@@ -148,6 +148,11 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   }
 
   void _addPacket(SoundPacket packet) {
+    /// 신뢰도가 낮은 추론은 라벨을 믿을 수 없으므로 기록에도 남기지 않는다.
+    if (!packet.isConfident) {
+      return;
+    }
+
     logs.insert(0, packet);
 
     final isMuted = mutedLabels.contains(packet.displayLabel);

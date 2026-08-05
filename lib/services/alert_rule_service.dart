@@ -2,13 +2,15 @@ import '../models/sound_packet.dart';
 import 'alert_settings_store.dart';
 
 class AlertRuleService {
-  static const double minNotificationScore = 0.30;
+  /// 알림 판정은 `packet.isConfident`가 담당한다. 이 값은 그 임계값과
+  /// 같은 값을 외부에 노출하기 위한 별칭이다.
+  static const double minNotificationScore = kMinConfidenceScore;
   static const Duration duplicateCooldown = Duration(seconds: 10);
 
   final Map<String, DateTime> _lastNotificationAtByLabelKey = {};
 
   Future<bool> shouldNotify(SoundPacket packet) async {
-    if (packet.score < minNotificationScore) {
+    if (!packet.isConfident) {
       return false;
     }
 
