@@ -298,7 +298,29 @@ class SoundForegroundTaskHandler extends TaskHandler {
     }
   }
 
+  /// 앱 화면을 보고 있는 동안에는 OS 알림을 띄우지 않는다.
+  /// 이때는 `main_page`가 같은 패킷으로 인앱 헤즈업 배너를 띄우므로,
+  /// OS 알림까지 보내면 같은 소리로 알림이 두 번 울린다.
+  ///
+  /// `isAppOnForeground`는 ActivityManager의 프로세스 중요도를 보기 때문에
+  /// UI가 보일 때만 true이고, 포그라운드 서비스만 돌 때는 false다.
+  /// 상태를 따로 저장하지 않아서 UI가 강제 종료돼도 값이 굳지 않는다.
+  Future<bool> _isAppVisible() async {
+    try {
+      return await FlutterForegroundTask.isAppOnForeground;
+    } catch (_) {
+      /// 확인에 실패하면 알림을 보내는 쪽으로 둔다. 중복 알림이 울리는 편이
+      /// 위험음 알림을 통째로 놓치는 것보다 낫다.
+      return false;
+    }
+  }
+
   Future<void> _maybeNotify(SoundPacket packet) async {
+    /// 중복 알림 쿨다운을 소모하지 않도록 규칙 검사보다 먼저 확인한다.
+    if (await _isAppVisible()) {
+      return;
+    }
+
     if (!await _alertRules.shouldNotify(packet)) {
       return;
     }
