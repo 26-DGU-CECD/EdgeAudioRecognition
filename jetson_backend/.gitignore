@@ -5,3 +5,6 @@ __pycache__/
 *.py[cod]
 .codex/
 .agents/
+
+# 기기마다 다른 IMU 보정값
+imu_calibration.json

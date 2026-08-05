@@ -102,6 +102,84 @@ requirements가 변경됐다면 다시 설치한다.
 ./venv/bin/pip freeze > requirements-pi.lock.txt
 ```
 
+## IMU (MPU9250)
+
+기기가 흔들리는 동안에는 손이나 옷에 쓸리는 마찰음이 마이크에 그대로 들어와
+오탐이 난다. IMU를 켜면 오디오 윈도우와 같은 구간의 움직임 상태를 함께 실어
+보내고, 필요하면 그 구간의 추론을 아예 건너뛸 수 있다. `--imu`를 주지 않으면
+IMU 코드는 로드되지 않으므로 기존 동작 그대로다.
+
+### 1. I2C 활성화와 연결 확인
+
+```bash
+sudo raspi-config   # Interface Options -> I2C -> Enable
+sudo apt install -y i2c-tools
+./venv/bin/pip install smbus2
+
+./venv/bin/python test_imu.py --scan
+```
+
+`0x68 <- IMU 후보 MPU9250`처럼 나오면 정상이다. 주소가 `0x69`면
+`--imu-address 0x69`를 쓴다.
+
+### 2. 캘리브레이션
+
+정지 상태에서 합성 가속도가 1g가 되도록 스케일을 맞추고, 자이로 바이어스를
+측정한다. 기기를 움직이지 않는 곳에 두고 한 번만 실행하면 되고, 결과는
+`imu_calibration.json`에 저장된다. 기울어져 있어도 상관없다.
+
+```bash
+./venv/bin/python test_imu.py --calibrate
+```
+
+`검증(정지 상태 1초): motion=still`이 나오면 성공이다.
+
+### 3. 단독 동작 확인
+
+```bash
+./venv/bin/python test_imu.py --window-seconds 1.0
+```
+
+가만히 두면 `still`, 손으로 들면 `motion`, 툭 치면 `shock`, 떨어뜨리면
+`free_fall`이 나온다.
+
+### 4. 추론과 함께 실행
+
+```bash
+# 움직임 상태를 결과에 붙이기만 한다
+./venv/bin/python main.py --imu
+
+# 움직이는 동안에는 추론을 건너뛴다 (오탐 억제 + CPU 절약)
+./venv/bin/python main.py --imu --suppress-on-motion
+```
+
+| 옵션 | 기본값 | 설명 |
+| --- | --- | --- |
+| `--imu` | 꺼짐 | IMU 샘플링을 켠다 |
+| `--imu-bus` | `1` | I2C 버스 번호 |
+| `--imu-address` | `0x68` | I2C 주소 |
+| `--imu-sample-hz` | `50` | 샘플링 주기 |
+| `--suppress-on-motion` | 꺼짐 | `motion` 구간의 추론을 건너뛴다 |
+
+`--suppress-on-motion`은 `motion`만 막는다. `shock`과 `free_fall`은 유리가
+깨지거나 물건이 떨어지는 순간이라 오히려 소리를 놓치면 안 되므로 추론을 그대로
+돌리고 `motion` 필드로 표시만 한다.
+
+### 움직임 상태
+
+| 상태 | 의미 | 판정 기준 |
+| --- | --- | --- |
+| `still` | 정지 | 가속도 RMS ≤ 0.04g 이고 자이로 ≤ 12 dps |
+| `motion` | 들고 있거나 걷는 중 | 위 조건을 벗어남 |
+| `shock` | 충격 | 가속도 피크 ≥ 2.2g 또는 자이로 ≥ 400 dps |
+| `free_fall` | 낙하 | 합성 가속도 < 0.35g 가 0.08초 이상 지속 |
+| `unknown` | IMU 없음/통신 끊김 | 샘플 부족 |
+
+임계값은 `motion_state.py` 상단 상수로 모여 있다.
+
+IMU 읽기가 연속 10회 실패하면 상태가 `unknown`으로 떨어지고 오디오 파이프라인은
+그대로 돌아간다. IMU 문제가 소리 감지를 멈추지는 않는다.
+
 ## YAMNet과 인터넷 연결
 
 YAMNet 백본은 최초 한 번 TF-Hub에서 다운로드한다.
@@ -324,6 +402,24 @@ Frame              #<seq>:<part>/<total>:<JSON 조각>
 - `candidates`: 각자 threshold를 넘은 모든 클래스
 - `repeat`: debounce 시간 안에 같은 후보가 다시 감지됐는지 여부
 - `scores`: 활성화된 검출기의 전체 클래스 확률
+- `motion`: 같은 구간의 IMU 요약. IMU를 켜지 않으면 `state`가 `unknown`이다
+
+```json
+"motion": {
+  "state": "still",
+  "samples": 100,
+  "accel_rms_g": 0.0028,
+  "accel_peak_g": 1.0089,
+  "gyro_max_dps": 0.56,
+  "pitch_deg": 34.6,
+  "roll_deg": 73.8,
+  "temperature_c": 29.0
+}
+```
+
+`--suppress-on-motion`으로 건너뛴 윈도우는 `status`가 `motion_skipped`,
+`label`이 움직임 상태(`motion`/`shock`/`free_fall`)로 나간다. 앱에서 `shock`과
+`free_fall`은 소리와 별개로 알림에 쓸 수 있다.
 
 기존 앱은 `label`만 읽어도 계속 동작한다.
 

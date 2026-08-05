@@ -65,6 +65,34 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         type=int,
         default=runtime_config.DEFAULT_TORCH_THREADS,
     )
+    parser.add_argument(
+        "--imu",
+        action="store_true",
+        help="MPU9250 IMU를 함께 읽어 움직임 상태를 결과에 붙입니다.",
+    )
+    parser.add_argument(
+        "--imu-bus",
+        type=int,
+        default=runtime_config.DEFAULT_IMU_BUS,
+    )
+    parser.add_argument(
+        "--imu-address",
+        type=lambda value: int(value, 0),
+        default=runtime_config.DEFAULT_IMU_ADDRESS,
+    )
+    parser.add_argument(
+        "--imu-sample-hz",
+        type=float,
+        default=runtime_config.DEFAULT_IMU_SAMPLE_HZ,
+    )
+    parser.add_argument(
+        "--suppress-on-motion",
+        action="store_true",
+        help=(
+            "기기가 움직이는 동안 추론을 건너뜁니다. "
+            "손으로 만질 때 나는 마찰음 오탐을 줄입니다."
+        ),
+    )
     parser.add_argument("--debug", action="store_true")
     parser.add_argument("--no-ble", action="store_true")
     parser.add_argument("--ble-name", default="JHello")
@@ -85,4 +113,6 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         parser.error("--detectors에 최소 한 개를 지정하세요.")
     if unknown:
         parser.error(f"알 수 없는 detector: {unknown}")
+    if args.suppress_on_motion and not args.imu:
+        parser.error("--suppress-on-motion은 --imu와 함께 써야 합니다.")
     return args

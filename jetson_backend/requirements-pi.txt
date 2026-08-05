@@ -14,3 +14,6 @@ numpy>=1.26
 sounddevice>=0.4.6
 soundfile>=0.12
 librosa>=0.10
+
+# MPU9250 IMU (I2C). --imu 옵션을 쓸 때만 필요하다.
+smbus2>=0.4

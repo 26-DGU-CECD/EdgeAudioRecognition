@@ -12,9 +12,14 @@ from audio_buffer import SlidingWindowBuffer
 from audio_level_meter import AudioLevelMeter
 from audio_math import colorize
 from audio_queue import AudioQueue
-from ble_result_builder import build_ble_result, build_skip_result
+from ble_result_builder import (
+    build_ble_result,
+    build_motion_skip_result,
+    build_skip_result,
+)
 from db_threshold_gate import DbThresholdGate
 from decision import Decision, DecisionGate
+from motion_state import UNKNOWN_SNAPSHOT, MotionMonitor, MotionSnapshot
 from parallel_inference import InferenceResult, ParallelInferenceEngine
 
 if TYPE_CHECKING:
@@ -37,6 +42,7 @@ class AudioStreamController:
         decision_gate: DecisionGate,
         microphone: MicrophoneModule | None = None,
         publisher: InferencePublisher | None = None,
+        motion_monitor: MotionMonitor | None = None,
         skip_low_db: bool = True,
         debug: bool = False,
         max_windows_per_cycle: int = 2,
@@ -49,10 +55,12 @@ class AudioStreamController:
         self.decision_gate = decision_gate
         self.microphone = microphone
         self.publisher = publisher
+        self.motion_monitor = motion_monitor
         self.skip_low_db = bool(skip_low_db)
         self.debug = bool(debug)
         self.max_windows_per_cycle = max(1, int(max_windows_per_cycle))
         self.dropped_windows = 0
+        self.motion_suppressed_windows = 0
 
     def print_startup_info(self) -> None:
         if self.microphone is not None:
@@ -62,6 +70,11 @@ class AudioStreamController:
                 f"channels={self.microphone.stream_channels}, "
                 f"channel={self.microphone.channel_index}, "
                 f"sr={self.microphone.sample_rate}"
+            )
+        if self.motion_monitor is not None and self.motion_monitor.enabled:
+            print(
+                f"IMU: {self.motion_monitor.imu.description} | "
+                f"suppress_on_motion={self.motion_monitor.suppress_on_motion}"
             )
         hop_seconds = self.window_buffer.hop_samples / 16000
         print(
@@ -117,6 +130,7 @@ class AudioStreamController:
     def process_window(self, window: np.ndarray) -> dict | None:
         timestamp = datetime.now().strftime("%H:%M:%S")
         level_dbfs = self.level_meter.calculate_dbfs(window)
+        motion = self._motion_snapshot()
 
         if self.skip_low_db and not self.threshold_gate.is_over_threshold(level_dbfs):
             line = (
@@ -130,6 +144,25 @@ class AudioStreamController:
                 chunk_dbfs=level_dbfs,
                 threshold_dbfs=self.threshold_gate.min_dbfs,
                 raw_line=line,
+                motion=motion,
+            )
+            self._publish(payload)
+            return payload
+
+        # 기기를 만지는 중이면 마찰음이 그대로 들어오므로 추론 자체를 건너뛴다.
+        # 판정 게이트를 거치지 않아 debounce 상태도 오염되지 않는다.
+        if self.motion_monitor is not None and self.motion_monitor.should_suppress(motion):
+            self.motion_suppressed_windows += 1
+            line = (
+                f"[{timestamp}] skip: {motion.state} | "
+                f"level={level_dbfs:+.1f} dBFS | {motion.summary()}"
+            )
+            print(colorize(line, "\033[33m"), flush=True)
+            payload = build_motion_skip_result(
+                timestamp=timestamp,
+                chunk_dbfs=level_dbfs,
+                raw_line=line,
+                motion=motion,
             )
             self._publish(payload)
             return payload
@@ -148,7 +181,7 @@ class AudioStreamController:
             )
             return None
 
-        line = self._format_line(timestamp, level_dbfs, result, decision)
+        line = self._format_line(timestamp, level_dbfs, result, decision, motion)
         color = "\033[32m" if decision.new_events else "\033[31m"
         print(colorize(line, color), flush=True)
 
@@ -170,9 +203,15 @@ class AudioStreamController:
             decision=decision,
             chunk_dbfs=level_dbfs,
             raw_line=line,
+            motion=motion,
         )
         self._publish(payload)
         return payload
+
+    def _motion_snapshot(self) -> MotionSnapshot:
+        if self.motion_monitor is None:
+            return UNKNOWN_SNAPSHOT
+        return self.motion_monitor.snapshot()
 
     def _format_line(
         self,
@@ -180,6 +219,7 @@ class AudioStreamController:
         level_dbfs: float,
         result: InferenceResult,
         decision: Decision,
+        motion: MotionSnapshot,
     ) -> str:
         if decision.candidates:
             candidates = ", ".join(
@@ -195,9 +235,10 @@ class AudioStreamController:
                 f"{decision.nearest_probability:.3f} "
                 f"(thr {self.decision_gate.threshold_for(decision.nearest_label):.3f})"
             )
+        motion_part = f" | {motion.summary()}" if motion.is_known else ""
         return (
             f"[{timestamp}] {body} | level={level_dbfs:+.1f} dBFS | "
-            f"{result.total_latency_ms:.0f}ms"
+            f"{result.total_latency_ms:.0f}ms{motion_part}"
         )
 
     def _publish(self, data: dict) -> None:

@@ -53,6 +53,11 @@ DEFAULT_TORCH_THREADS = min(4, os.cpu_count() or 4)
 QUEUE_MAX_SECONDS = 6.0
 MAX_WINDOWS_PER_CYCLE = 2
 
+# IMU(MPU9250) 기본값. 실제 배선이 다르면 --imu-bus/--imu-address로 덮어쓴다.
+DEFAULT_IMU_BUS = 1
+DEFAULT_IMU_ADDRESS = 0x68
+DEFAULT_IMU_SAMPLE_HZ = 50.0
+
 
 def apply_path_overrides(
     *,

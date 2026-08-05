@@ -18,6 +18,7 @@ from db_threshold_gate import DbThresholdGate
 from decision import DecisionGate, load_thresholds
 from detector_registry import build_detectors
 from io_setup import configure_utf8_stdio
+from motion_state import MotionMonitor
 from parallel_inference import ParallelInferenceEngine
 
 
@@ -144,6 +145,36 @@ def main(argv: list[str] | None = None) -> int:
             audio_queue=audio_queue,
         )
 
+    imu = None
+    if args.imu:
+        try:
+            from imu_module import ImuError, open_imu
+
+            imu = open_imu(
+                bus=args.imu_bus,
+                address=args.imu_address,
+                sample_hz=args.imu_sample_hz,
+                history_seconds=max(4.0, runtime_config.WINDOW_SECONDS * 2.0),
+            )
+        except (ImportError, ImuError) as exc:
+            print(
+                f"IMU 초기화 오류: {exc}\n"
+                "IMU 없이 실행하려면 --imu를 빼고 다시 실행하세요. "
+                "연결 확인은 `python3 test_imu.py --scan`을 쓰세요.",
+                file=sys.stderr,
+            )
+            if engine is not None:
+                engine.close()
+            if ble_server is not None:
+                ble_server.stop()
+            return 1
+
+    motion_monitor = MotionMonitor(
+        imu,
+        window_seconds=runtime_config.WINDOW_SECONDS,
+        suppress_on_motion=args.suppress_on_motion,
+    )
+
     controller = AudioStreamController(
         audio_queue=audio_queue,
         window_buffer=window_buffer,
@@ -153,6 +184,7 @@ def main(argv: list[str] | None = None) -> int:
         decision_gate=decision_gate,
         microphone=microphone,
         publisher=ble_server,
+        motion_monitor=motion_monitor,
         skip_low_db=args.skip_low_db,
         debug=args.debug,
         max_windows_per_cycle=runtime_config.MAX_WINDOWS_PER_CYCLE,
@@ -183,6 +215,15 @@ def main(argv: list[str] | None = None) -> int:
                 f"윈도우 {controller.dropped_windows}",
                 file=sys.stderr,
             )
+        if controller.motion_suppressed_windows:
+            print(
+                f"움직임으로 건너뛴 윈도우: {controller.motion_suppressed_windows}",
+                file=sys.stderr,
+            )
+        if imu is not None:
+            if imu.read_errors:
+                print(f"IMU 읽기 오류 누계: {imu.read_errors}", file=sys.stderr)
+            imu.stop()
         if engine is not None:
             engine.close()
         if ble_server is not None:

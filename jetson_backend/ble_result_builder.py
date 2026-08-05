@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Dict
 
 from decision import Decision
+from motion_state import UNKNOWN_SNAPSHOT, MotionSnapshot
 
 LEGACY_KEYS = {
     "source",
@@ -30,6 +31,7 @@ def build_ble_result(
     decision: Decision,
     chunk_dbfs: float,
     raw_line: str,
+    motion: MotionSnapshot = UNKNOWN_SNAPSHOT,
 ) -> dict:
     detected = bool(decision.candidates)
     return {
@@ -51,6 +53,7 @@ def build_ble_result(
         "raw": raw_line,
         "candidates": list(decision.candidates),
         "repeat": detected and not decision.new_events,
+        "motion": motion.as_dict(),
     }
 
 
@@ -60,6 +63,7 @@ def build_skip_result(
     chunk_dbfs: float,
     threshold_dbfs: float,
     raw_line: str,
+    motion: MotionSnapshot = UNKNOWN_SNAPSHOT,
 ) -> dict:
     return {
         "source": SOURCE,
@@ -77,4 +81,37 @@ def build_skip_result(
         "raw": raw_line,
         "candidates": [],
         "repeat": False,
+        "motion": motion.as_dict(),
+    }
+
+
+def build_motion_skip_result(
+    *,
+    timestamp: str,
+    chunk_dbfs: float,
+    raw_line: str,
+    motion: MotionSnapshot,
+) -> dict:
+    """움직임 때문에 추론을 건너뛴 윈도우.
+
+    label은 움직임 상태를 그대로 쓴다. 앱에서 shock/free_fall은 소리와 별개로
+    알릴 수 있고, motion은 그냥 무시하면 된다.
+    """
+    return {
+        "source": SOURCE,
+        "time": timestamp,
+        "label": motion.state,
+        "score": 0.0,
+        "status": "motion_skipped",
+        "status_text": f"움직임감지 {motion.state}",
+        "level_dbfs": round(float(chunk_dbfs), 2),
+        "enhanced_dbfs": None,
+        "quiet_gain": None,
+        "loud_gain": None,
+        "clipped": False,
+        "scores": {},
+        "raw": raw_line,
+        "candidates": [],
+        "repeat": False,
+        "motion": motion.as_dict(),
     }
