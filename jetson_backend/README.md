@@ -68,6 +68,91 @@ ReSpeaker Mic Array v3.0
 
 `경보`와 `화재경보`는 `siren` 하나로 통합한다. 전체 클래스는 11개다.
 
+## IMU 흔들림 보정 (MPU-9250)
+
+키링이 흔들리면 DSP가 주는 DOA도 같이 흔들린다. 소리는 가만히 있는데 화면의
+방향만 출렁인다. `imu.py`가 기기가 **자기 기준 방위에서 얼마나 돌아갔는지**(`swing`)를
+추적해서 그만큼 되돌려 준다.
+
+```text
+angle = (raw_DOA + sign*swing - north_offset) % 360
+```
+
+절대 방위(북쪽)는 쓰지 않는다. `yaw`와 `ref`는 같이 드리프트하므로 그 차이인
+`swing`에서는 드리프트가 상쇄된다. 지자기(AK8963)는 초기화도 하지 않는다.
+I2C bus 1 / `0x68`에 물려 있고 배터리 게이지(`0x36`)와 버스를 공유한다.
+`smbus2`로 레지스터를 직접 읽으므로 새 의존성이 없다.
+
+### 흔들림과 방향 전환 구분
+
+둘 다 0.5~2 Hz 대역이라 lowpass로는 갈라지지 않는다. **평균만 보는 판별식도
+쓸 수 없다.** 진동을 자기 주기보다 짧은 창으로 평균내면 상쇄가 아니라 정류가
+되기 때문이다. 창 `T`에서 진폭 `A`, 주파수 `f` 진동의 최악 평균은
+`2A·|sin(πfT)|/T`이고, ±25도 흔들림을 0.5초로 평균내면
+
+| 흔들림 | 0.5초 평균 |
+|---|---:|
+| 0.5 Hz | 71 deg/s |
+| 0.75 Hz | 92 deg/s |
+| 1.0 Hz | 100 deg/s |
+
+이 나온다. 실제 90도 회전(1.5초)은 60 deg/s뿐이라 **흔들림이 회전보다 큰 값**이
+된다. 창을 늘려도 4초에서는 같은 회전이 22.5 deg/s로 떨어져 반대로 놓친다.
+
+그래서 크기 조건에 **회전 방향 반전 횟수**를 함께 본다.
+
+```text
+|mean(yaw_rate, W)| > turn_threshold
+  그리고 창 W 안에서 회전 방향이 한 번도 뒤집히지 않음  -> 방향 전환
+그 외                                                  -> 흔들림
+```
+
+반전 횟수는 진폭·위상에 관계없이 `f` Hz 진동이면 초당 `2f`번이므로 aliasing이
+없다. 기본 `W=1.2초`는 `1/(2W)=0.42 Hz` 위의 모든 흔들림을 잡아낸다.
+
+### 부호 측정
+
+`--imu-swing-sign`은 **반드시 실측해야 한다.** 펌웨어가 DOA 방향을
+"Orientation depends on build configuration"이라고만 밝히기 때문에 조회할 방법이
+없다. 부호가 반대면 보정이 흔들림을 빼는 대신 더해서 **흔들림이 2배가 된다.**
+
+연속적인 소리(음악·물소리·선풍기)를 켜 두고, 소리와 몸은 고정한 채 키링만
+좌우로 ±60도쯤 계속 돌리면서:
+
+```bash
+sudo ./venv/bin/python imu_sign_check.py --seconds 25
+```
+
+`d(DOA)/d(yaw)` 기울기를 회귀로 구해 `--imu-swing-sign` 값을 출력한다.
+`R^2`가 낮으면 소리가 끊겼거나 회전이 부족한 것이니 다시 실행한다.
+
+### 확인
+
+```bash
+# IMU 단독 - 정지 드리프트와 회전 반응
+./venv/bin/python -c "
+from imu import IMUReader
+import time
+r = IMUReader()
+print('describe:', r.describe())
+for _ in range(30):
+    time.sleep(0.5); print(r.debug_snapshot())
+"
+
+# 전체 실행
+sudo ./venv/bin/python main.py --north-offset 90 --ble-chunk-bytes 500
+```
+
+시작 시 자이로 바이어스를 1.5초 평균으로 잡는다. **이 동안 정지해 있어야 한다.**
+움직이면 표준편차 경고를 내고 그대로 진행하므로, 경고가 보이면 재시작한다.
+
+보드가 수평이 아니면 자이로 Z는 yaw가 아니다. 기본값 `--imu-yaw-axis gravity`는
+가속도로 측정한 중력축에 자이로 벡터를 투영하므로 어느 각도로 달아도 동작하고,
+보드가 수평일 때는 자이로 Z와 정확히 같아진다.
+
+BLE 패킷에는 `imu_status` 문자열 하나만 추가된다. `swing`/`yaw`/`ref` 같은
+디버그 값은 509바이트 상한 때문에 콘솔(stderr)로만 나간다.
+
 ## 저장소 업데이트
 
 Pi에서 최신 코드를 받을 때:
@@ -235,6 +320,13 @@ ReSpeaker Mic Array v3.0의 6채널 펌웨어에서는 기본적으로 channel 0
 | `--torch-threads` | 최대 `4` | PyTorch CPU thread 수 |
 | `--no-ble` | 꺼짐 | BLE 없이 콘솔만 실행 |
 | `--debug` | 꺼짐 | 전체 확률, threshold, 모델별 지연 출력 |
+| `--disable-imu` | 꺼짐 | IMU 흔들림 보정을 끄고 DOA 원값을 그대로 사용 |
+| `--imu-swing-sign` | `+1` | `imu_sign_check.py`로 측정한 부호 (`+1` 또는 `-1`) |
+| `--imu-turn-threshold` | `10.0` | 방향 전환으로 볼 yaw 각속도(deg/s) 하한 |
+| `--imu-turn-window` | `1.2` | 방향 전환 판정 창(초). 흔들림 반주기보다 길어야 한다 |
+| `--imu-ref-tau-still` | `4.0` | 정지/흔들림 상태에서 기준 방위 시정수(초) |
+| `--imu-ref-tau-turn` | `0.25` | 방향 전환 중 기준 방위 시정수(초) |
+| `--imu-yaw-axis` | `gravity` | `gravity`=중력축 투영, `z`=자이로 Z 그대로 |
 
 체크포인트나 모델을 다른 위치에 둘 때:
 

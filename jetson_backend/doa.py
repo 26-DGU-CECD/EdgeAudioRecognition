@@ -26,14 +26,21 @@ TUNING_DIR = Path(__file__).resolve().parent / "usb_4_mic_array"
 
 @dataclass(frozen=True)
 class DOAReading:
-    """A DOA snapshot. `raw_angle is None` means "no direction available"."""
+    """A DOA snapshot. `raw_angle is None` means "no direction available".
+
+    `timestamp` is the `time.monotonic()` instant `raw_angle` was read off the
+    DSP, not the instant `snapshot()` was called. The IMU de-swing correction
+    has to be sampled at the same moment as the angle it corrects, so this has
+    to survive the trip through the publish path.
+    """
 
     raw_angle: int | None
     source: str
     status: str
+    timestamp: float | None = None
 
 
-DISABLED_READING = DOAReading(None, "none", "disabled")
+DISABLED_READING = DOAReading(None, "none", "disabled", None)
 
 
 class DOAReader:
@@ -57,6 +64,10 @@ class DOAReader:
         self._last_angle: int | None = None
         self._last_voice: bool | None = None
         self._last_read_at: float | None = None
+        # `_last_read_at` tracks liveness (did the poll thread run?) while
+        # `_last_angle_at` tracks the age of `_last_angle` specifically: a poll
+        # that comes back with no angle refreshes the former but not the latter.
+        self._last_angle_at: float | None = None
         self._last_error: str | None = None
 
         if not enabled:
@@ -92,7 +103,7 @@ class DOAReader:
             self.ok = True
             self.status = "enabled"
             self._last_angle = int(float(angle)) % 360
-            self._last_read_at = time.monotonic()
+            self._last_read_at = self._last_angle_at = time.monotonic()
             self._thread = threading.Thread(
                 target=self._poll_loop,
                 name="doa-usb-poll",
@@ -142,10 +153,14 @@ class DOAReader:
         try:
             with self._lock:
                 angle, voice = self._read_device()
-            self._last_read_at = time.monotonic()
+                # Stamped next to the transfer, not at snapshot() time: this is
+                # the instant the IMU swing has to be sampled at.
+                read_at = time.monotonic()
+            self._last_read_at = read_at
             self._last_voice = voice
             if angle is not None:
                 self._last_angle = angle
+                self._last_angle_at = read_at
             self.status = "enabled"
             self._last_error = None
         except Exception as exc:
@@ -166,23 +181,20 @@ class DOAReader:
             status = self.status
             if self._last_error:
                 status = f"{status}:{self._last_error}"
-            return DOAReading(None, "none", status)
+            return DOAReading(None, "none", status, None)
 
         angle = self._last_angle
+        read_at = self._last_angle_at
         if angle is None:
             status = self._last_error and f"usb_no_angle:{self._last_error}"
-            return DOAReading(None, "usb", status or "usb_no_angle")
+            return DOAReading(None, "usb", status or "usb_no_angle", None)
 
-        age = (
-            None
-            if self._last_read_at is None
-            else time.monotonic() - self._last_read_at
-        )
+        age = None if read_at is None else time.monotonic() - read_at
         if age is not None and age > max(1.0, self.poll_interval * 5.0):
-            return DOAReading(None, "usb", "usb_stale")
+            return DOAReading(None, "usb", "usb_stale", read_at)
 
         status = "usb_no_voice" if self._last_voice is False else "usb_active"
-        return DOAReading(angle, "usb", status)
+        return DOAReading(angle, "usb", status, read_at)
 
     def stop(self) -> None:
         self._stop_event.set()
