@@ -1,0 +1,14 @@
+﻿label,current_urgency_group,current_expert_owner,acoustic_family_hypothesis,temporal_form_hypothesis,duration_p50_ms,repeat_fraction,minimum_validated_context_ms,confusable_labels_measured,validation_source_group_count,profile_status
+baby_cry,주의,efficientat,vocalization,short|repeated|sustained,,,,,,hypothesis_not_measured
+bicycle,주의,efficientat,definition_pending,unknown,,,,,,hypothesis_not_measured
+car_horn,긴급,yamnet,signal_harmonic,transient|sustained,,,,,,hypothesis_not_measured
+cat_meow,일상,mobilenetv4,vocalization,short|repeated,,,,,,hypothesis_not_measured
+cry,긴급,yamnet,vocalization,short|repeated|sustained,,,,,,hypothesis_not_measured
+dog_bark,일상,mobilenetv4,vocalization,transient|repeated,,,,,,hypothesis_not_measured
+fire_alarm,긴급,yamnet,alarm_signal,repeated|sustained,,,,,,hypothesis_not_measured
+glass_breaking,주의,efficientat,impact_fracture,transient|decay,,,,,,hypothesis_not_measured
+gun,주의,efficientat,impulsive,transient|repeated,,,,,,hypothesis_not_measured
+knock,일상,mobilenetv4,impulsive,transient|repeated,,,,,,hypothesis_not_measured
+scream,긴급,yamnet,vocalization,short|sustained,,,,,,hypothesis_not_measured
+siren,긴급,yamnet,alarm_modulated,sustained|repeated,,,,,,hypothesis_not_measured
+water,일상,mobilenetv4,definition_pending_liquid,short|sustained,,,,,,hypothesis_not_measured

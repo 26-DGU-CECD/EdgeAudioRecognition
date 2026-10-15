@@ -1,0 +1,800 @@
+{
+  "schema": "policy_framework_v1",
+  "scope": "supplied_specialist_cache_reference; NOT verified best historical run",
+  "selection_spec": {
+    "experiment_id": "R0_predefined_nonexpert_070",
+    "expert_classes": {
+      "efficientat": [
+        "bicycle",
+        "baby_cry",
+        "gun",
+        "glass_breaking"
+      ],
+      "yamnet": [
+        "siren",
+        "fire_alarm",
+        "scream",
+        "cry",
+        "car_horn"
+      ],
+      "mobilenetv4": [
+        "water",
+        "knock",
+        "dog_bark",
+        "cat_meow"
+      ]
+    },
+    "model_class_names": {
+      "efficientat": [
+        "baby_cry",
+        "background",
+        "bicycle",
+        "car_horn",
+        "cat_meow",
+        "cry",
+        "dog_bark",
+        "fire_alarm",
+        "glass_breaking",
+        "gun",
+        "knock",
+        "scream",
+        "siren",
+        "water"
+      ],
+      "yamnet": [
+        "baby_cry",
+        "background",
+        "bicycle",
+        "car_horn",
+        "cat_meow",
+        "cry",
+        "dog_bark",
+        "fire_alarm",
+        "glass_breaking",
+        "gun",
+        "knock",
+        "scream",
+        "siren",
+        "water"
+      ],
+      "mobilenetv4": [
+        "baby_cry",
+        "background",
+        "bicycle",
+        "car_horn",
+        "cat_meow",
+        "cry",
+        "dog_bark",
+        "fire_alarm",
+        "glass_breaking",
+        "gun",
+        "knock",
+        "scream",
+        "siren",
+        "water"
+      ]
+    },
+    "score_type": "softmax_logits",
+    "checkpoint_files": {
+      "efficientat": "runs/E_predefined_specialists/nonexpert_070/efficientat/best.pt",
+      "yamnet": "runs/E_predefined_specialists/nonexpert_070/yamnet/best.keras",
+      "mobilenetv4": "runs/E_predefined_specialists/nonexpert_070/mobilenetv4/best.pt"
+    }
+  },
+  "prediction_provenance": {
+    "efficientat": {
+      "path": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\efficientat\\val_predictions.npz",
+      "sha256": "4535e613e949a57f721ecd886f77b5cc38d803b5e073e87a38336bac5d90d5f8"
+    },
+    "yamnet": {
+      "path": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\yamnet\\val_predictions.npz",
+      "sha256": "85acd78331fbd4f955491490e58346aeeb1ad85fd733d26c882fdaeb141ef110"
+    },
+    "mobilenetv4": {
+      "path": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\mobilenetv4\\val_predictions.npz",
+      "sha256": "dcf4363ad02cd82e6adc9c488d1fa575e25bf6b9598586e8bcafa1d0fec9f0a7"
+    }
+  },
+  "class_names": [
+    "baby_cry",
+    "background",
+    "bicycle",
+    "car_horn",
+    "cat_meow",
+    "cry",
+    "dog_bark",
+    "fire_alarm",
+    "glass_breaking",
+    "gun",
+    "knock",
+    "scream",
+    "siren",
+    "water"
+  ],
+  "seed": 42,
+  "policies": {
+    "global_max": {
+      "global_threshold": 0.74,
+      "class_thresholds": {
+        "baby_cry": 0.605,
+        "bicycle": 0.74,
+        "car_horn": 0.665,
+        "cat_meow": 0.865,
+        "cry": 0.74,
+        "dog_bark": 0.0,
+        "fire_alarm": 0.485,
+        "glass_breaking": 0.675,
+        "gun": 0.875,
+        "knock": 0.74,
+        "scream": 0.5,
+        "siren": 0.62,
+        "water": 0.0
+      }
+    }
+  },
+  "framework": {
+    "model_order": [
+      "efficientat",
+      "yamnet",
+      "mobilenetv4"
+    ],
+    "fusions": [
+      "F0",
+      "F1",
+      "F2"
+    ],
+    "classwise_weights": [
+      [
+        0.4174411475505066,
+        0.391750481501772,
+        0.4572414173058817,
+        0.4088077104469864,
+        0.40405056902740055,
+        0.3519742507347742,
+        0.34746374501825666,
+        0.3325401260430539,
+        0.4438055178446653,
+        0.5469214849828128,
+        0.4674008445806077,
+        0.38350790932335393,
+        0.32743470260314117,
+        0.34994886937039343
+      ],
+      [
+        0.2943913853697331,
+        0.3498791145201809,
+        0.25448245838076367,
+        0.4616299666151923,
+        0.19799654175124082,
+        0.3691580748596248,
+        0.3571639908161219,
+        0.36159963131580947,
+        0.2909998602102267,
+        0.1997046132301906,
+        0.23451188208992305,
+        0.32948506361683744,
+        0.3898287988543139,
+        0.32424071434791973
+      ],
+      [
+        0.28816746707976026,
+        0.2583704039780471,
+        0.28827612431335464,
+        0.12956232293782133,
+        0.39795288922135874,
+        0.278867674405601,
+        0.29537226416562146,
+        0.30586024264113665,
+        0.2651946219451079,
+        0.2533739017869967,
+        0.29808727332946927,
+        0.2870070270598086,
+        0.282736498542545,
+        0.32581041628168683
+      ]
+    ],
+    "weight_parameters": {
+      "floor": 0.05,
+      "power": 2.0,
+      "expert_boost": 1.25
+    },
+    "owner_background": "global_max",
+    "acceptance": {
+      "F0": {
+        "global_threshold": 0.74,
+        "global_fit_feasible": true,
+        "class_thresholds": {
+          "baby_cry": 0.605,
+          "bicycle": 0.74,
+          "car_horn": 0.665,
+          "cat_meow": 0.865,
+          "cry": 0.74,
+          "dog_bark": 0.0,
+          "fire_alarm": 0.485,
+          "glass_breaking": 0.675,
+          "gun": 0.875,
+          "knock": 0.74,
+          "scream": 0.5,
+          "siren": 0.62,
+          "water": 0.0
+        },
+        "diagnostics": [
+          {
+            "label": "baby_cry",
+            "threshold": 0.605,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 180,
+            "fit_accepted": 125,
+            "fit_precision": 0.952,
+            "fit_recall": 0.6611111111111111,
+            "raw_candidate_recall": 0.7333333333333333,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "bicycle",
+            "threshold": 0.74,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 279,
+            "fit_accepted": 211,
+            "fit_precision": 0.95260663507109,
+            "fit_recall": 0.7204301075268817,
+            "raw_candidate_recall": 0.8207885304659498,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "car_horn",
+            "threshold": 0.665,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 27,
+            "fit_accepted": 25,
+            "fit_precision": 0.96,
+            "fit_recall": 0.8888888888888888,
+            "raw_candidate_recall": 0.9259259259259259,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "cat_meow",
+            "threshold": 0.865,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 225,
+            "fit_accepted": 132,
+            "fit_precision": 0.9696969696969697,
+            "fit_recall": 0.5688888888888889,
+            "raw_candidate_recall": 0.7955555555555556,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "cry",
+            "threshold": 0.74,
+            "threshold_source": "shared_fallback_precision_unverified",
+            "fit_support": 522,
+            "fit_accepted": 399,
+            "fit_precision": 0.9097744360902256,
+            "fit_recall": 0.6954022988505747,
+            "raw_candidate_recall": 0.8812260536398467,
+            "recall_floor": 0.5,
+            "target_precision_met": false,
+            "recall_floor_met": true
+          },
+          {
+            "label": "dog_bark",
+            "threshold": 0.0,
+            "threshold_source": "upstream_recall_limit_no_extra_rejection",
+            "fit_support": 99,
+            "fit_accepted": 54,
+            "fit_precision": 0.8703703703703703,
+            "fit_recall": 0.47474747474747475,
+            "raw_candidate_recall": 0.47474747474747475,
+            "recall_floor": 0.5,
+            "target_precision_met": false,
+            "recall_floor_met": false
+          },
+          {
+            "label": "fire_alarm",
+            "threshold": 0.485,
+            "threshold_source": "recall_backoff_precision_relaxed",
+            "fit_support": 441,
+            "fit_accepted": 430,
+            "fit_precision": 0.5488372093023256,
+            "fit_recall": 0.5351473922902494,
+            "raw_candidate_recall": 0.7074829931972789,
+            "recall_floor": 0.5,
+            "target_precision_met": false,
+            "recall_floor_met": true
+          },
+          {
+            "label": "glass_breaking",
+            "threshold": 0.675,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 936,
+            "fit_accepted": 876,
+            "fit_precision": 0.9509132420091324,
+            "fit_recall": 0.8899572649572649,
+            "raw_candidate_recall": 0.9316239316239316,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "gun",
+            "threshold": 0.875,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 253,
+            "fit_accepted": 165,
+            "fit_precision": 0.9575757575757575,
+            "fit_recall": 0.6245059288537549,
+            "raw_candidate_recall": 0.8260869565217391,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "knock",
+            "threshold": 0.74,
+            "threshold_source": "low_support_shared_unverified",
+            "fit_support": 0,
+            "fit_accepted": 2,
+            "fit_precision": 0.0,
+            "fit_recall": null,
+            "raw_candidate_recall": 0.0,
+            "recall_floor": 0.5,
+            "target_precision_met": false,
+            "recall_floor_met": false
+          },
+          {
+            "label": "scream",
+            "threshold": 0.5,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 198,
+            "fit_accepted": 124,
+            "fit_precision": 0.9516129032258065,
+            "fit_recall": 0.5959595959595959,
+            "raw_candidate_recall": 0.6717171717171717,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "siren",
+            "threshold": 0.62,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 1200,
+            "fit_accepted": 767,
+            "fit_precision": 0.9517601043024772,
+            "fit_recall": 0.6083333333333333,
+            "raw_candidate_recall": 0.7416666666666667,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "water",
+            "threshold": 0.0,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 477,
+            "fit_accepted": 391,
+            "fit_precision": 0.9539641943734015,
+            "fit_recall": 0.7819706498951782,
+            "raw_candidate_recall": 0.7819706498951782,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          }
+        ],
+        "target_precision": 0.95,
+        "recall_floor": 0.5,
+        "label_recall_floors": {}
+      },
+      "F1": {
+        "global_threshold": 0.5700000000000001,
+        "global_fit_feasible": true,
+        "class_thresholds": {
+          "baby_cry": 0.47500000000000003,
+          "bicycle": 0.44,
+          "car_horn": 0.0,
+          "cat_meow": 0.38,
+          "cry": 0.64,
+          "dog_bark": 0.21,
+          "fire_alarm": 0.525,
+          "glass_breaking": 0.68,
+          "gun": 0.58,
+          "knock": 0.5700000000000001,
+          "scream": 0.0,
+          "siren": 0.52,
+          "water": 0.0
+        },
+        "diagnostics": [
+          {
+            "label": "baby_cry",
+            "threshold": 0.47500000000000003,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 180,
+            "fit_accepted": 131,
+            "fit_precision": 0.9541984732824428,
+            "fit_recall": 0.6944444444444444,
+            "raw_candidate_recall": 0.7833333333333333,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "bicycle",
+            "threshold": 0.44,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 279,
+            "fit_accepted": 233,
+            "fit_precision": 0.9527896995708155,
+            "fit_recall": 0.7956989247311828,
+            "raw_candidate_recall": 0.8422939068100358,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "car_horn",
+            "threshold": 0.0,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 27,
+            "fit_accepted": 28,
+            "fit_precision": 0.9642857142857143,
+            "fit_recall": 1.0,
+            "raw_candidate_recall": 1.0,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "cat_meow",
+            "threshold": 0.38,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 225,
+            "fit_accepted": 203,
+            "fit_precision": 0.9507389162561576,
+            "fit_recall": 0.8577777777777778,
+            "raw_candidate_recall": 0.8888888888888888,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "cry",
+            "threshold": 0.64,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 522,
+            "fit_accepted": 450,
+            "fit_precision": 0.9511111111111111,
+            "fit_recall": 0.8199233716475096,
+            "raw_candidate_recall": 0.9482758620689655,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "dog_bark",
+            "threshold": 0.21,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 99,
+            "fit_accepted": 81,
+            "fit_precision": 0.9506172839506173,
+            "fit_recall": 0.7777777777777778,
+            "raw_candidate_recall": 0.7777777777777778,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "fire_alarm",
+            "threshold": 0.525,
+            "threshold_source": "recall_backoff_precision_relaxed",
+            "fit_support": 441,
+            "fit_accepted": 475,
+            "fit_precision": 0.5368421052631579,
+            "fit_recall": 0.5782312925170068,
+            "raw_candidate_recall": 0.8798185941043084,
+            "recall_floor": 0.5,
+            "target_precision_met": false,
+            "recall_floor_met": true
+          },
+          {
+            "label": "glass_breaking",
+            "threshold": 0.68,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 936,
+            "fit_accepted": 826,
+            "fit_precision": 0.950363196125908,
+            "fit_recall": 0.8386752136752137,
+            "raw_candidate_recall": 0.969017094017094,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "gun",
+            "threshold": 0.58,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 253,
+            "fit_accepted": 155,
+            "fit_precision": 0.9548387096774194,
+            "fit_recall": 0.5849802371541502,
+            "raw_candidate_recall": 0.758893280632411,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "knock",
+            "threshold": 0.5700000000000001,
+            "threshold_source": "low_support_shared_unverified",
+            "fit_support": 0,
+            "fit_accepted": 0,
+            "fit_precision": null,
+            "fit_recall": null,
+            "raw_candidate_recall": 0.0,
+            "recall_floor": 0.5,
+            "target_precision_met": false,
+            "recall_floor_met": false
+          },
+          {
+            "label": "scream",
+            "threshold": 0.0,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 198,
+            "fit_accepted": 178,
+            "fit_precision": 0.9550561797752809,
+            "fit_recall": 0.8585858585858586,
+            "raw_candidate_recall": 0.8585858585858586,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "siren",
+            "threshold": 0.52,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 1200,
+            "fit_accepted": 817,
+            "fit_precision": 0.9510403916768666,
+            "fit_recall": 0.6475,
+            "raw_candidate_recall": 0.72,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "water",
+            "threshold": 0.0,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 477,
+            "fit_accepted": 473,
+            "fit_precision": 0.9577167019027484,
+            "fit_recall": 0.949685534591195,
+            "raw_candidate_recall": 0.949685534591195,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          }
+        ],
+        "target_precision": 0.95,
+        "recall_floor": 0.5,
+        "label_recall_floors": {}
+      },
+      "F2": {
+        "global_threshold": 0.5650000000000001,
+        "global_fit_feasible": true,
+        "class_thresholds": {
+          "baby_cry": 0.395,
+          "bicycle": 0.41000000000000003,
+          "car_horn": 0.36,
+          "cat_meow": 0.395,
+          "cry": 0.635,
+          "dog_bark": 0.225,
+          "fire_alarm": 0.52,
+          "glass_breaking": 0.68,
+          "gun": 0.595,
+          "knock": 0.5650000000000001,
+          "scream": 0.265,
+          "siren": 0.525,
+          "water": 0.0
+        },
+        "diagnostics": [
+          {
+            "label": "baby_cry",
+            "threshold": 0.395,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 180,
+            "fit_accepted": 141,
+            "fit_precision": 0.950354609929078,
+            "fit_recall": 0.7444444444444445,
+            "raw_candidate_recall": 0.7888888888888889,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "bicycle",
+            "threshold": 0.41000000000000003,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 279,
+            "fit_accepted": 244,
+            "fit_precision": 0.9508196721311475,
+            "fit_recall": 0.8315412186379928,
+            "raw_candidate_recall": 0.8602150537634409,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "car_horn",
+            "threshold": 0.36,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 27,
+            "fit_accepted": 28,
+            "fit_precision": 0.9642857142857143,
+            "fit_recall": 1.0,
+            "raw_candidate_recall": 1.0,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "cat_meow",
+            "threshold": 0.395,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 225,
+            "fit_accepted": 203,
+            "fit_precision": 0.9605911330049262,
+            "fit_recall": 0.8666666666666667,
+            "raw_candidate_recall": 0.8933333333333333,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "cry",
+            "threshold": 0.635,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 522,
+            "fit_accepted": 453,
+            "fit_precision": 0.9514348785871964,
+            "fit_recall": 0.8256704980842912,
+            "raw_candidate_recall": 0.946360153256705,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "dog_bark",
+            "threshold": 0.225,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 99,
+            "fit_accepted": 80,
+            "fit_precision": 0.95,
+            "fit_recall": 0.7676767676767676,
+            "raw_candidate_recall": 0.7676767676767676,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "fire_alarm",
+            "threshold": 0.52,
+            "threshold_source": "recall_backoff_precision_relaxed",
+            "fit_support": 441,
+            "fit_accepted": 498,
+            "fit_precision": 0.5341365461847389,
+            "fit_recall": 0.6031746031746031,
+            "raw_candidate_recall": 0.873015873015873,
+            "recall_floor": 0.5,
+            "target_precision_met": false,
+            "recall_floor_met": true
+          },
+          {
+            "label": "glass_breaking",
+            "threshold": 0.68,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 936,
+            "fit_accepted": 835,
+            "fit_precision": 0.9508982035928144,
+            "fit_recall": 0.8482905982905983,
+            "raw_candidate_recall": 0.9615384615384616,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "gun",
+            "threshold": 0.595,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 253,
+            "fit_accepted": 171,
+            "fit_precision": 0.9532163742690059,
+            "fit_recall": 0.6442687747035574,
+            "raw_candidate_recall": 0.8181818181818182,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "knock",
+            "threshold": 0.5650000000000001,
+            "threshold_source": "low_support_shared_unverified",
+            "fit_support": 0,
+            "fit_accepted": 1,
+            "fit_precision": 0.0,
+            "fit_recall": null,
+            "raw_candidate_recall": 0.0,
+            "recall_floor": 0.5,
+            "target_precision_met": false,
+            "recall_floor_met": false
+          },
+          {
+            "label": "scream",
+            "threshold": 0.265,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 198,
+            "fit_accepted": 183,
+            "fit_precision": 0.9508196721311475,
+            "fit_recall": 0.8787878787878788,
+            "raw_candidate_recall": 0.8787878787878788,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "siren",
+            "threshold": 0.525,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 1200,
+            "fit_accepted": 821,
+            "fit_precision": 0.9524969549330086,
+            "fit_recall": 0.6516666666666666,
+            "raw_candidate_recall": 0.7208333333333333,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          },
+          {
+            "label": "water",
+            "threshold": 0.0,
+            "threshold_source": "precision_and_recall_fit",
+            "fit_support": 477,
+            "fit_accepted": 472,
+            "fit_precision": 0.9576271186440678,
+            "fit_recall": 0.9475890985324947,
+            "raw_candidate_recall": 0.9475890985324947,
+            "recall_floor": 0.5,
+            "target_precision_met": true,
+            "recall_floor_met": true
+          }
+        ],
+        "target_precision": 0.95,
+        "recall_floor": 0.5,
+        "label_recall_floors": {}
+      }
+    },
+    "group_split": {
+      "fusion_fit": {
+        "clips": 5892,
+        "groups": 658
+      },
+      "policy_fit": {
+        "clips": 6073,
+        "groups": 693
+      },
+      "evaluation": {
+        "clips": 11882,
+        "groups": 1338
+      }
+    },
+    "group_overlap": 0
+  },
+  "calibration_scope": "Exploratory validation re-split. Original checkpoint/model/ownership selection may already have used validation. No independent test/risk guarantee."
+}

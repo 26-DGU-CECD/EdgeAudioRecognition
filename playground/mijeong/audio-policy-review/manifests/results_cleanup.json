@@ -1,0 +1,215 @@
+{
+  "created_utc": "2026-10-15T19:36:20.844835+00:00",
+  "scope": "C:\\Users\\PLASS\\Documents\\Codex\\2026-10-16\\r\\outputs\\audio-policy-team-share\\results",
+  "before_files": 105,
+  "before_bytes": 62405508,
+  "removed_files": 29,
+  "removed_bytes": 52569832,
+  "after_files": 76,
+  "after_bytes": 9835676,
+  "removed": [
+    {
+      "path": "results/followup/B_adaptive_audio_trace.csv",
+      "bytes": 3610340,
+      "sha256": "887cb575f0d92420da98a5e9e73ea922635171d4c1a09d7285633f8cbc68b730",
+      "reason": "regenerable_trace",
+      "regenerate": "python scripts/replay_cached.py --stage STAGE --timing TIMING; see results/README.md"
+    },
+    {
+      "path": "results/followup/B_adaptive_fifo_trace.csv",
+      "bytes": 5437334,
+      "sha256": "bd0bf0e876da19e0f425e15ca5824a401ece0471bf8601ab167ab0b3b20742ae",
+      "reason": "regenerable_trace",
+      "regenerate": "python scripts/replay_cached.py --stage STAGE --timing TIMING; see results/README.md"
+    },
+    {
+      "path": "results/followup/C_temporal_audio_trace.csv",
+      "bytes": 8547652,
+      "sha256": "deb18ae567bf2095549f04219410ef601f3c926bab8eb978bf7224dd171e866e",
+      "reason": "regenerable_trace",
+      "regenerate": "python scripts/replay_cached.py --stage STAGE --timing TIMING; see results/README.md"
+    },
+    {
+      "path": "results/followup/C_temporal_fifo_trace.csv",
+      "bytes": 12780243,
+      "sha256": "13ee99932f7c2e7ceb008424c6254c877fbcb769efa3f35500c0fd65da83b6e7",
+      "reason": "regenerable_trace",
+      "regenerate": "python scripts/replay_cached.py --stage STAGE --timing TIMING; see results/README.md"
+    },
+    {
+      "path": "results/followup/D_bounded_trace.csv",
+      "bytes": 2831998,
+      "sha256": "2f7a101fd979ccd2d65d6b04da7b9cee4c1c9af77648032949a40bb0761076ae",
+      "reason": "regenerable_trace",
+      "regenerate": "python scripts/replay_cached.py --stage STAGE --timing TIMING; see results/README.md"
+    },
+    {
+      "path": "results/followup/D_wait_all_trace.csv",
+      "bytes": 2352236,
+      "sha256": "e7a19f4f64473974e267e0c5e2829cca495febe22df52da5685dc17109645fd7",
+      "reason": "regenerable_trace",
+      "regenerate": "python scripts/replay_cached.py --stage STAGE --timing TIMING; see results/README.md"
+    },
+    {
+      "path": "results/original/V14_pilot_20261016_034601/B_expanded_fifo_trace.csv",
+      "bytes": 9572435,
+      "sha256": "b97c1a3c3cdc16de32c84206568568cf80be64702350edf1b3c80b9a3cb2f679",
+      "reason": "regenerable_trace",
+      "regenerate": "python scripts/replay_cached.py --stage STAGE --timing TIMING; see results/README.md"
+    },
+    {
+      "path": "results/original/V14_pilot_20261016_034601/B_expanded_trace.csv",
+      "bytes": 6354143,
+      "sha256": "49a1b2922932ab3ea5f88a63022e9a732d3dee56a3c60148f93dd6b765dcb496",
+      "reason": "regenerable_trace",
+      "regenerate": "python scripts/replay_cached.py --stage STAGE --timing TIMING; see results/README.md"
+    },
+    {
+      "path": "results/original/V14_smoke_20261016_032646/B_input_trace.csv",
+      "bytes": 58472,
+      "sha256": "1afb46ba1a6b3de5b04791270a3a3bc17638570c48c6d57c1bcc907001e8b1de",
+      "reason": "regenerable_trace",
+      "regenerate": "python scripts/replay_cached.py --stage STAGE --timing TIMING; see results/README.md"
+    },
+    {
+      "path": "results/followup/selection_config.json",
+      "bytes": 26518,
+      "sha256": "ae8e34e3e8682102e17ca39adbb9225e01d3ae863708d2f11e51993d4a37f6c2",
+      "reason": "exact_duplicate_input",
+      "retained_at": "results/original/V14_pilot_20261016_034601/selection_config.json"
+    },
+    {
+      "path": "results/followup/selection_samples.npz",
+      "bytes": 246015,
+      "sha256": "0a4095933a188a057b1f1c88c44c18c543998b8e8b3c27ebe2847423e5f60b5c",
+      "reason": "exact_duplicate_input",
+      "retained_at": "results/original/V14_pilot_20261016_034601/selection_samples.npz"
+    },
+    {
+      "path": "results/followup/replay_manifest.json",
+      "bytes": 141739,
+      "sha256": "ae44b4654d718021ecdcc2dce02ad4730b67d033fd1492074a5a8d5005c020e8",
+      "reason": "exact_duplicate_input",
+      "retained_at": "results/original/V14_pilot_20261016_034601/replay_manifest.json"
+    },
+    {
+      "path": "results/followup/audio_preflight.json",
+      "bytes": 302,
+      "sha256": "fe51b8daf9a5923b9f477911457d82da13cbdac686b2fb21aff9141c08d10f92",
+      "reason": "exact_duplicate_input",
+      "retained_at": "results/original/V14_pilot_20261016_034601/audio_preflight.json"
+    },
+    {
+      "path": "results/followup/audio_preflight.csv",
+      "bytes": 18821,
+      "sha256": "76c0169fdce25d6bee95d41012b3bc12247e227aecc6ef5df3e0ae8ef21b1207",
+      "reason": "exact_duplicate_input",
+      "retained_at": "results/original/V14_pilot_20261016_034601/audio_preflight.csv"
+    },
+    {
+      "path": "results/followup/replay_efficientat.npz",
+      "bytes": 94105,
+      "sha256": "1dda110d1a58c0ba235ef475f2da35f9f8b88e52d17de0e55ff11b5031996d22",
+      "reason": "exact_duplicate_input",
+      "retained_at": "results/original/V14_pilot_20261016_034601/replay_efficientat.npz"
+    },
+    {
+      "path": "results/followup/runtime_efficientat.json",
+      "bytes": 860,
+      "sha256": "07940c56b991deb2f990e387ce909e8f35c7eeb4bd047c6251f5374e0dbd0524",
+      "reason": "exact_duplicate_input",
+      "retained_at": "results/original/V14_pilot_20261016_034601/runtime_efficientat.json"
+    },
+    {
+      "path": "results/followup/replay_mobilenetv4.npz",
+      "bytes": 93744,
+      "sha256": "706af81e371d816c159d9918a837e755f590f6bcaaeb6bc23e0a634419f37bf2",
+      "reason": "exact_duplicate_input",
+      "retained_at": "results/original/V14_pilot_20261016_034601/replay_mobilenetv4.npz"
+    },
+    {
+      "path": "results/followup/runtime_mobilenetv4.json",
+      "bytes": 860,
+      "sha256": "b9ca63b4cae015a2231f18a04b4654ff7944395bc77446aae7e5702dfe8785b8",
+      "reason": "exact_duplicate_input",
+      "retained_at": "results/original/V14_pilot_20261016_034601/runtime_mobilenetv4.json"
+    },
+    {
+      "path": "results/followup/replay_yamnet.npz",
+      "bytes": 92158,
+      "sha256": "76132eedb37f18595fc50cf0040e7b8d2e0cd166c54e8a1fb49768037537a36f",
+      "reason": "exact_duplicate_input",
+      "retained_at": "results/original/V14_pilot_20261016_034601/replay_yamnet.npz"
+    },
+    {
+      "path": "results/followup/runtime_yamnet.json",
+      "bytes": 817,
+      "sha256": "2748123d0b926b3877b42d0ab97879502f89fe996c115388bf948cf7a209e8b5",
+      "reason": "exact_duplicate_input",
+      "retained_at": "results/original/V14_pilot_20261016_034601/runtime_yamnet.json"
+    },
+    {
+      "path": "results/checks/v14_reference/framework_static_comparison.csv",
+      "bytes": 1489,
+      "sha256": "0a4d569ccfd3707e15d482e996bd6c525a02f9a111cfc3806dddf7d8bf0d0a45",
+      "reason": "exact_duplicate_reference",
+      "retained_at": "results/original/V14_pilot_20261016_034601/framework_static_comparison.csv"
+    },
+    {
+      "path": "results/checks/v14_reference/framework_static_per_class.csv",
+      "bytes": 9244,
+      "sha256": "ef61f534208b1167d92db2c0c34afbc7b16079084907d0af2a036e5ebb9b89eb",
+      "reason": "exact_duplicate_reference",
+      "retained_at": "results/original/V14_pilot_20261016_034601/framework_static_per_class.csv"
+    },
+    {
+      "path": "results/checks/v14_reference/framework_threshold_diagnostics.csv",
+      "bytes": 4723,
+      "sha256": "7c3177aee1944137ebdc22716dc7cadaa8cc29b81b6174075048822d6569f50b",
+      "reason": "exact_duplicate_reference",
+      "retained_at": "results/original/V14_pilot_20261016_034601/framework_threshold_diagnostics.csv"
+    },
+    {
+      "path": "results/checks/v14_reference/replay_manifest.json",
+      "bytes": 5595,
+      "sha256": "7d80f1a87397693eceb51a4f0dc72fc64f31d361698c82795ad8ff6549a0d96a",
+      "reason": "exact_duplicate_reference",
+      "retained_at": "results/original/V14_smoke_20261016_032646/replay_manifest.json"
+    },
+    {
+      "path": "results/checks/v14_reference/selection_config.json",
+      "bytes": 26518,
+      "sha256": "ae8e34e3e8682102e17ca39adbb9225e01d3ae863708d2f11e51993d4a37f6c2",
+      "reason": "exact_duplicate_reference",
+      "retained_at": "results/original/V14_pilot_20261016_034601/selection_config.json"
+    },
+    {
+      "path": "results/checks/v14_reference/selection_samples.npz",
+      "bytes": 246015,
+      "sha256": "0a4095933a188a057b1f1c88c44c18c543998b8e8b3c27ebe2847423e5f60b5c",
+      "reason": "exact_duplicate_reference",
+      "retained_at": "results/original/V14_pilot_20261016_034601/selection_samples.npz"
+    },
+    {
+      "path": "results/original/V14_smoke_20261016_032646/framework_static_comparison.csv",
+      "bytes": 1489,
+      "sha256": "0a4d569ccfd3707e15d482e996bd6c525a02f9a111cfc3806dddf7d8bf0d0a45",
+      "reason": "exact_duplicate_static_comparison",
+      "retained_at": "results/original/V14_pilot_20261016_034601/framework_static_comparison.csv"
+    },
+    {
+      "path": "results/original/V14_smoke_20261016_032646/framework_static_per_class.csv",
+      "bytes": 9244,
+      "sha256": "ef61f534208b1167d92db2c0c34afbc7b16079084907d0af2a036e5ebb9b89eb",
+      "reason": "exact_duplicate_static_comparison",
+      "retained_at": "results/original/V14_pilot_20261016_034601/framework_static_per_class.csv"
+    },
+    {
+      "path": "results/original/V14_smoke_20261016_032646/framework_threshold_diagnostics.csv",
+      "bytes": 4723,
+      "sha256": "7c3177aee1944137ebdc22716dc7cadaa8cc29b81b6174075048822d6569f50b",
+      "reason": "exact_duplicate_static_comparison",
+      "retained_at": "results/original/V14_pilot_20261016_034601/framework_threshold_diagnostics.csv"
+    }
+  ]
+}

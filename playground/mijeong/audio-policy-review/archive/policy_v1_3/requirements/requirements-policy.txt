@@ -1,0 +1,3 @@
+# Saved-prediction policy experiments only (no audio inference or GPU).
+# Matches the NumPy version used to verify the supplied v1.2 reference results.
+numpy==1.26.4

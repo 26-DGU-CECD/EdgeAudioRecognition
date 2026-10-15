@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "unique_source_files": 112,
+  "failed_files": 0,
+  "short_files": 0,
+  "manifest_sha256": "ae44b4654d718021ecdcc2dce02ad4730b67d033fd1492074a5a8d5005c020e8",
+  "scope": "Header and first 2s decoding check only. Does not verify label, event onset or whole-file integrity."
+}

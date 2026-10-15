@@ -1,0 +1,11 @@
+{
+  "original_project": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF",
+  "original_review": "C:\\Users\\PLASS\\Desktop\\audio-policy-review-20261015T164106Z-1-001\\audio-policy-review",
+  "original_codex_outputs": "C:\\Users\\PLASS\\Documents\\Codex\\2026-10-16\\r\\outputs",
+  "dataset_root": "D:\\Sound_Dataset_aug",
+  "metadata_original_root": "/home/plass/YAMNet/aug_data",
+  "repository_project": "project",
+  "repository_policy": "src/policy_v1_4",
+  "original_results": "results/original",
+  "followup_results": "results/followup"
+}

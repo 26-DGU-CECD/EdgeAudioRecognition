@@ -1,0 +1,285 @@
+{
+  "verified_settings": 80,
+  "verified_episode_rows": 35840,
+  "fingerprint": "28f12f9d8527322b674d2521ec5b3f153461dc49ee0b9daf8b2c78985b1f3418",
+  "adaptive_paired": [
+    {
+      "stage": "B_adaptive_audio",
+      "fusion": "F1",
+      "rule": "R0",
+      "lost": 4,
+      "gained": 0,
+      "lost_group_count": 1,
+      "lost_labels": {
+        "scream": 4
+      },
+      "gained_labels": {}
+    },
+    {
+      "stage": "B_adaptive_audio",
+      "fusion": "F1",
+      "rule": "R2",
+      "lost": 4,
+      "gained": 0,
+      "lost_group_count": 1,
+      "lost_labels": {
+        "scream": 4
+      },
+      "gained_labels": {}
+    },
+    {
+      "stage": "B_adaptive_audio",
+      "fusion": "F2",
+      "rule": "R0",
+      "lost": 4,
+      "gained": 0,
+      "lost_group_count": 1,
+      "lost_labels": {
+        "scream": 4
+      },
+      "gained_labels": {}
+    },
+    {
+      "stage": "B_adaptive_audio",
+      "fusion": "F2",
+      "rule": "R2",
+      "lost": 6,
+      "gained": 0,
+      "lost_group_count": 2,
+      "lost_labels": {
+        "bicycle": 2,
+        "scream": 4
+      },
+      "gained_labels": {}
+    },
+    {
+      "stage": "B_adaptive_fifo",
+      "fusion": "F1",
+      "rule": "R0",
+      "lost": 0,
+      "gained": 0,
+      "lost_group_count": 0,
+      "lost_labels": {},
+      "gained_labels": {}
+    },
+    {
+      "stage": "B_adaptive_fifo",
+      "fusion": "F1",
+      "rule": "R2",
+      "lost": 0,
+      "gained": 0,
+      "lost_group_count": 0,
+      "lost_labels": {},
+      "gained_labels": {}
+    },
+    {
+      "stage": "B_adaptive_fifo",
+      "fusion": "F2",
+      "rule": "R0",
+      "lost": 0,
+      "gained": 0,
+      "lost_group_count": 0,
+      "lost_labels": {},
+      "gained_labels": {}
+    },
+    {
+      "stage": "B_adaptive_fifo",
+      "fusion": "F2",
+      "rule": "R2",
+      "lost": 2,
+      "gained": 0,
+      "lost_group_count": 1,
+      "lost_labels": {
+        "bicycle": 2
+      },
+      "gained_labels": {}
+    }
+  ],
+  "region_window_counts": {
+    "I1": {
+      "synthetic_prefix": 672,
+      "source_overlap": 1568,
+      "synthetic_tail": 224
+    },
+    "I2": {
+      "synthetic_prefix": 1120,
+      "source_overlap": 3136,
+      "synthetic_tail": 448
+    },
+    "I3": {
+      "synthetic_prefix": 672,
+      "source_overlap": 2630,
+      "synthetic_tail": 428
+    }
+  },
+  "top_confusions": [
+    {
+      "true_label": "car_horn",
+      "displayed_label": "gun",
+      "groups": 5,
+      "episodes": 20,
+      "windows": 38
+    },
+    {
+      "true_label": "dog_bark",
+      "displayed_label": "cry",
+      "groups": 4,
+      "episodes": 16,
+      "windows": 16
+    },
+    {
+      "true_label": "fire_alarm",
+      "displayed_label": "siren",
+      "groups": 4,
+      "episodes": 16,
+      "windows": 40
+    },
+    {
+      "true_label": "glass_breaking",
+      "displayed_label": "gun",
+      "groups": 4,
+      "episodes": 14,
+      "windows": 22
+    },
+    {
+      "true_label": "baby_cry",
+      "displayed_label": "cry",
+      "groups": 3,
+      "episodes": 12,
+      "windows": 20
+    },
+    {
+      "true_label": "bicycle",
+      "displayed_label": "glass_breaking",
+      "groups": 3,
+      "episodes": 10,
+      "windows": 18
+    },
+    {
+      "true_label": "cat_meow",
+      "displayed_label": "water",
+      "groups": 2,
+      "episodes": 8,
+      "windows": 8
+    },
+    {
+      "true_label": "siren",
+      "displayed_label": "fire_alarm",
+      "groups": 2,
+      "episodes": 8,
+      "windows": 20
+    },
+    {
+      "true_label": "baby_cry",
+      "displayed_label": "scream",
+      "groups": 1,
+      "episodes": 4,
+      "windows": 4
+    },
+    {
+      "true_label": "background",
+      "displayed_label": "fire_alarm",
+      "groups": 1,
+      "episodes": 4,
+      "windows": 4
+    },
+    {
+      "true_label": "bicycle",
+      "displayed_label": "gun",
+      "groups": 1,
+      "episodes": 4,
+      "windows": 4
+    },
+    {
+      "true_label": "car_horn",
+      "displayed_label": "knock",
+      "groups": 1,
+      "episodes": 4,
+      "windows": 4
+    }
+  ],
+  "temporal_boundary": {
+    "near_confirm_windows": 880,
+    "different_display_windows": 973,
+    "near_confirm_with_display_difference": 845,
+    "median_short_of_confirmation_ms": 0.26679999427869916,
+    "affected_group_count": 64,
+    "example": [
+      {
+        "fusion": "F1",
+        "rule": "R0",
+        "input_policy": "I2",
+        "episode_id": "0",
+        "label": "baby_cry",
+        "audio_end_s": "5.0",
+        "elapsed_seconds": 0.4988456999999471,
+        "short_of_confirmation_ms": 1.1543000000528991,
+        "display_differs": false
+      },
+      {
+        "fusion": "F1",
+        "rule": "R0",
+        "input_policy": "I2",
+        "episode_id": "1",
+        "label": "baby_cry",
+        "audio_end_s": "3.5",
+        "elapsed_seconds": 0.49965500002144836,
+        "short_of_confirmation_ms": 0.3449999785516411,
+        "display_differs": true
+      },
+      {
+        "fusion": "F1",
+        "rule": "R0",
+        "input_policy": "I2",
+        "episode_id": "2",
+        "label": "baby_cry",
+        "audio_end_s": "6.0",
+        "elapsed_seconds": 0.4996861999970861,
+        "short_of_confirmation_ms": 0.31380000291392207,
+        "display_differs": false
+      }
+    ]
+  },
+  "bounded": [
+    {
+      "fusion": "F1",
+      "rule": "R0",
+      "windows": 4704,
+      "certified_windows": 2545,
+      "mean_saved_ms": 2.190400744105003,
+      "median_saved_ms": 1.5817500243429095,
+      "p95_saved_ms": 5.354569977498612,
+      "mean_saved_when_early_ms": 4.04858353645184
+    },
+    {
+      "fusion": "F1",
+      "rule": "R2",
+      "windows": 4704,
+      "certified_windows": 2318,
+      "mean_saved_ms": 1.9908063990145335,
+      "median_saved_ms": 0.0,
+      "p95_saved_ms": 5.307134990289341,
+      "mean_saved_when_early_ms": 4.0400143662486485
+    },
+    {
+      "fusion": "F2",
+      "rule": "R0",
+      "windows": 4704,
+      "certified_windows": 2590,
+      "mean_saved_ms": 2.2306558250457615,
+      "median_saved_ms": 1.9158500217599794,
+      "p95_saved_ms": 5.361315020127221,
+      "mean_saved_when_early_ms": 4.051353282245276
+    },
+    {
+      "fusion": "F2",
+      "rule": "R2",
+      "windows": 4704,
+      "certified_windows": 1867,
+      "mean_saved_ms": 1.5926237458720638,
+      "median_saved_ms": 0.0,
+      "p95_saved_ms": 5.209385002672206,
+      "mean_saved_when_early_ms": 4.012695286867803
+    }
+  ]
+}

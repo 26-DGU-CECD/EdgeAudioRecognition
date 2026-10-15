@@ -1,0 +1,3 @@
+# WSL2/Linux x86-64 ONLY. Requires NVIDIA GPU access inside WSL2.
+-r requirements-yamnet.txt
+tensorflow[and-cuda]==2.20.0

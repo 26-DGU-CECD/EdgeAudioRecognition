@@ -1,0 +1,504 @@
+{
+  "class_names": [
+    "baby_cry",
+    "background",
+    "bicycle",
+    "car_horn",
+    "cat_meow",
+    "cry",
+    "dog_bark",
+    "fire_alarm",
+    "glass_breaking",
+    "gun",
+    "knock",
+    "scream",
+    "siren",
+    "water"
+  ],
+  "archive_root_files": [
+    [
+      "build_auto_specialist_metadata.py",
+      "class_names.example.txt",
+      "common_audio.py",
+      "common_metadata.py",
+      "compare_all_results.py",
+      "config.py",
+      "ensemble_specialists.py",
+      "export_yamnet_predictions.py",
+      "metadata.csv",
+      "README.md",
+      "requirements-torch.txt",
+      "requirements-yamnet.txt",
+      "requirements.txt",
+      "run_auto_yamnet_sweep.py",
+      "run_predefined_torch_sweep.py",
+      "specialist_data_utils.py",
+      "train_efficientat_auto.py",
+      "train_efficientat_predefined.py",
+      "train_mobilenetv4_predefined.py",
+      "train_mobilenetv4_specialist.py",
+      "train_yamnet.py",
+      "train_yamnet_specialist.py"
+    ],
+    [
+      "audit_dataset.py",
+      "build_metadata.py",
+      "build_predefined_specialist_metadata.py",
+      "build_specialist_metadata.py",
+      "class_names.txt",
+      "common_torch.py",
+      "compare_specialist_ratio_sweep.py",
+      "ensemble_full.py",
+      "evaluation_utils.py",
+      "export_torch_predictions.py",
+      "metadata.example.csv",
+      "README_D_E_F.md",
+      "README_HARDCODED_PATHS.md",
+      "requirements-common.txt",
+      "run_auto_torch_sweep.py",
+      "run_predefined_yamnet_sweep.py",
+      "run_specialist_ensemble_sweep.py",
+      "train_efficientat.py",
+      "train_efficientat_specialist.py",
+      "train_mobilenetv4.py",
+      "train_mobilenetv4_auto.py",
+      "train_yamnet_auto.py",
+      "train_yamnet_predefined.py"
+    ]
+  ],
+  "npz_file_counts": [
+    53,
+    51
+  ],
+  "wav_file_counts": [
+    1,
+    0
+  ],
+  "metadata": {
+    "columns": [
+      "path",
+      "label",
+      "split",
+      "source_class",
+      "source_status",
+      "group_id"
+    ],
+    "split_counts": {
+      "train": 190703,
+      "test": 23838,
+      "val": 23847
+    },
+    "group_count": 26877,
+    "groups_crossing_splits": 0,
+    "labels_by_split": {
+      "train": {
+        "baby_cry": 6732,
+        "background": 37315,
+        "bicycle": 8991,
+        "car_horn": 1845,
+        "cat_meow": 6660,
+        "cry": 15354,
+        "dog_bark": 3132,
+        "fire_alarm": 14760,
+        "glass_breaking": 29529,
+        "gun": 8810,
+        "knock": 999,
+        "scream": 5895,
+        "siren": 34571,
+        "water": 16110
+      },
+      "test": {
+        "baby_cry": 846,
+        "background": 4665,
+        "bicycle": 1125,
+        "car_horn": 234,
+        "cat_meow": 828,
+        "cry": 1917,
+        "dog_bark": 387,
+        "fire_alarm": 1845,
+        "glass_breaking": 3690,
+        "gun": 1101,
+        "knock": 126,
+        "scream": 738,
+        "siren": 4320,
+        "water": 2016
+      },
+      "val": {
+        "baby_cry": 846,
+        "background": 4659,
+        "bicycle": 1125,
+        "car_horn": 234,
+        "cat_meow": 828,
+        "cry": 1917,
+        "dog_bark": 396,
+        "fire_alarm": 1845,
+        "glass_breaking": 3690,
+        "gun": 1101,
+        "knock": 126,
+        "scream": 738,
+        "siren": 4326,
+        "water": 2016
+      }
+    }
+  },
+  "ensemble_test_metrics": {
+    "runs/D_full_ensemble/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.8428139944626227,
+      "macro_f1": 0.8555427308648822
+    },
+    "runs/F_predefined_weighted_ensemble/nonexpert_015/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.8263277120563806,
+      "macro_f1": 0.8268656226748343
+    },
+    "runs/F_predefined_weighted_ensemble/nonexpert_100/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.8449953855189194,
+      "macro_f1": 0.8594589882004474
+    },
+    "runs/G_auto_weighted_ensemble/nonexpert_015/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.8394160583941606,
+      "macro_f1": 0.847528722516674
+    },
+    "runs/F_predefined_weighted_ensemble/nonexpert_030/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.8357664233576643,
+      "macro_f1": 0.8402071036939943
+    },
+    "runs/F_predefined_weighted_ensemble/nonexpert_050/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.8407584528903431,
+      "macro_f1": 0.8471535707150925
+    },
+    "runs/F_predefined_weighted_ensemble/nonexpert_070/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.8434432418827083,
+      "macro_f1": 0.8539891982348976
+    },
+    "runs/G_auto_weighted_ensemble/nonexpert_030/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.8397516570182062,
+      "macro_f1": 0.8484641985024187
+    },
+    "runs/G_auto_weighted_ensemble/nonexpert_050/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.8428139944626227,
+      "macro_f1": 0.8512665493984422
+    },
+    "runs/G_auto_weighted_ensemble/nonexpert_070/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.8424364460105713,
+      "macro_f1": 0.8523787440676663
+    }
+  },
+  "baseline_test_metrics": {
+    "runs/C_mobilenetv4/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.7503146237100428,
+      "macro_f1": 0.7511533866762269
+    },
+    "runs/A_efficientat/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.8317392398691166,
+      "macro_f1": 0.8354541498903243
+    },
+    "runs/B_yamnet/test_metrics.json": {
+      "split": "test",
+      "accuracy": 0.7725899823810722,
+      "macro_f1": 0.7444907716030997
+    }
+  },
+  "automatic_assignment": {
+    "assignment": "automatic",
+    "selection_source": "A/B/C baseline validation per-class F1 only",
+    "ratio_tag": "nonexpert_070",
+    "nonexpert_fraction": 0.7,
+    "expert_classes": {
+      "efficientat": [
+        "bicycle",
+        "car_horn",
+        "cat_meow",
+        "cry",
+        "dog_bark",
+        "glass_breaking",
+        "gun",
+        "knock",
+        "scream",
+        "water"
+      ],
+      "yamnet": [
+        "siren"
+      ],
+      "mobilenetv4": [
+        "baby_cry",
+        "fire_alarm"
+      ]
+    },
+    "hard_negative_classes": {
+      "efficientat": [
+        "baby_cry",
+        "siren",
+        "fire_alarm"
+      ],
+      "yamnet": [
+        "fire_alarm",
+        "car_horn",
+        "bicycle"
+      ],
+      "mobilenetv4": [
+        "siren",
+        "cat_meow",
+        "cry"
+      ]
+    },
+    "minimum_expert_classes_per_model": 1,
+    "background_batch_fraction": 0.2,
+    "sampling_unit": "group_id",
+    "nested_subsets": true
+  },
+  "validation_npz": {
+    "efficientat": {
+      "keys": [
+        "y_true",
+        "y_pred",
+        "logits",
+        "paths"
+      ],
+      "logits_shape": [
+        23847,
+        14
+      ],
+      "paths_dtype": "<U142"
+    },
+    "yamnet": {
+      "keys": [
+        "y_true",
+        "y_pred",
+        "logits",
+        "paths"
+      ],
+      "logits_shape": [
+        23847,
+        14
+      ],
+      "paths_dtype": "<U142"
+    },
+    "mobilenetv4": {
+      "keys": [
+        "y_true",
+        "y_pred",
+        "logits",
+        "paths"
+      ],
+      "logits_shape": [
+        23847,
+        14
+      ],
+      "paths_dtype": "<U142"
+    }
+  },
+  "F70_validation": {
+    "n": 23847,
+    "accuracy": 0.8431249213737577,
+    "background_n": 4659,
+    "foreground_n": 19188,
+    "weights": {
+      "baby_cry": {
+        "efficientat": 0.40835322401741336,
+        "yamnet": 0.27420645029102575,
+        "mobilenetv4": 0.3174403256915609
+      },
+      "background": {
+        "efficientat": 0.391320729311384,
+        "yamnet": 0.35168055897089057,
+        "mobilenetv4": 0.25699871171772537
+      },
+      "bicycle": {
+        "efficientat": 0.45056063653326367,
+        "yamnet": 0.26148994575577306,
+        "mobilenetv4": 0.2879494177109632
+      },
+      "car_horn": {
+        "efficientat": 0.3622417621811756,
+        "yamnet": 0.383884028994171,
+        "mobilenetv4": 0.25387420882465334
+      },
+      "cat_meow": {
+        "efficientat": 0.3704227101591794,
+        "yamnet": 0.21125014455449695,
+        "mobilenetv4": 0.41832714528632375
+      },
+      "cry": {
+        "efficientat": 0.34336044399971166,
+        "yamnet": 0.3646153972458897,
+        "mobilenetv4": 0.2920241587543987
+      },
+      "dog_bark": {
+        "efficientat": 0.37574325224414734,
+        "yamnet": 0.35061763434231097,
+        "mobilenetv4": 0.27363911341354163
+      },
+      "fire_alarm": {
+        "efficientat": 0.32999850703167466,
+        "yamnet": 0.351863902892378,
+        "mobilenetv4": 0.3181375900759473
+      },
+      "glass_breaking": {
+        "efficientat": 0.4330797664025938,
+        "yamnet": 0.2923233368946997,
+        "mobilenetv4": 0.2745968967027065
+      },
+      "gun": {
+        "efficientat": 0.49993964468821767,
+        "yamnet": 0.21979081484256052,
+        "mobilenetv4": 0.2802695404692218
+      },
+      "knock": {
+        "efficientat": 0.41325256226995255,
+        "yamnet": 0.24421699903557573,
+        "mobilenetv4": 0.34253043869447164
+      },
+      "scream": {
+        "efficientat": 0.37747755357724466,
+        "yamnet": 0.32780789940932403,
+        "mobilenetv4": 0.29471454701343136
+      },
+      "siren": {
+        "efficientat": 0.32078953626003553,
+        "yamnet": 0.3891618022257052,
+        "mobilenetv4": 0.29004866151425934
+      },
+      "water": {
+        "efficientat": 0.3473794662466574,
+        "yamnet": 0.33022069420335537,
+        "mobilenetv4": 0.32239983954998724
+      }
+    }
+  },
+  "exploratory_validation_global_thresholds": [
+    {
+      "threshold": 0.0,
+      "accepted": 19487,
+      "accepted_precision": 0.8346076871760661,
+      "foreground_correct_accept_rate": 0.8476130915155305,
+      "background_false_accept_rate": 0.17535951921013093
+    },
+    {
+      "threshold": 0.5,
+      "accepted": 17206,
+      "accepted_precision": 0.8749854701848192,
+      "foreground_correct_accept_rate": 0.7846049614342298,
+      "background_false_accept_rate": 0.13887100236102168
+    },
+    {
+      "threshold": 0.6,
+      "accepted": 13250,
+      "accepted_precision": 0.9619622641509434,
+      "foreground_correct_accept_rate": 0.6642693350010423,
+      "background_false_accept_rate": 0.05129856192315948
+    },
+    {
+      "threshold": 0.7,
+      "accepted": 11654,
+      "accepted_precision": 0.9767461815685602,
+      "foreground_correct_accept_rate": 0.5932353554304773,
+      "background_false_accept_rate": 0.03455677183945052
+    },
+    {
+      "threshold": 0.75,
+      "accepted": 10706,
+      "accepted_precision": 0.9815991033065571,
+      "foreground_correct_accept_rate": 0.5476860537836148,
+      "background_false_accept_rate": 0.028332260141661302
+    },
+    {
+      "threshold": 0.8,
+      "accepted": 9762,
+      "accepted_precision": 0.9858635525507068,
+      "foreground_correct_accept_rate": 0.5015634771732332,
+      "background_false_accept_rate": 0.020819918437432926
+    },
+    {
+      "threshold": 0.85,
+      "accepted": 8586,
+      "accepted_precision": 0.9892848823666434,
+      "foreground_correct_accept_rate": 0.4426725036481134,
+      "background_false_accept_rate": 0.015239321742863276
+    },
+    {
+      "threshold": 0.9,
+      "accepted": 7265,
+      "accepted_precision": 0.9931176875430144,
+      "foreground_correct_accept_rate": 0.37601626016260165,
+      "background_false_accept_rate": 0.008370895041854474
+    },
+    {
+      "threshold": 0.95,
+      "accepted": 5380,
+      "accepted_precision": 0.9964684014869889,
+      "foreground_correct_accept_rate": 0.2793933708567855,
+      "background_false_accept_rate": 0.003219575016097875
+    }
+  ],
+  "same_window_partial_fusion_bounds": [
+    {
+      "received": [
+        "efficientat"
+      ],
+      "certified_fraction": 0.0,
+      "foreground_certified_fraction": 0.0,
+      "foreground_certified_with_score_lower_bound_075": 0.0,
+      "max_lower_bound": 0.3823835471331355
+    },
+    {
+      "received": [
+        "yamnet"
+      ],
+      "certified_fraction": 0.0,
+      "foreground_certified_fraction": 0.0,
+      "foreground_certified_with_score_lower_bound_075": 0.0,
+      "max_lower_bound": 0.2976542734568212
+    },
+    {
+      "received": [
+        "mobilenetv4"
+      ],
+      "certified_fraction": 0.0,
+      "foreground_certified_fraction": 0.0,
+      "foreground_certified_with_score_lower_bound_075": 0.0,
+      "max_lower_bound": 0.3199505542902366
+    },
+    {
+      "received": [
+        "efficientat",
+        "yamnet"
+      ],
+      "certified_fraction": 0.6867111167023106,
+      "foreground_certified_fraction": 0.5321004738541536,
+      "foreground_certified_with_score_lower_bound_075": 0.0,
+      "max_lower_bound": 0.6406919152543751
+    },
+    {
+      "received": [
+        "efficientat",
+        "mobilenetv4"
+      ],
+      "certified_fraction": 0.6319872520652493,
+      "foreground_certified_fraction": 0.5126011657650857,
+      "foreground_certified_with_score_lower_bound_075": 0.0,
+      "max_lower_bound": 0.6695730387468836
+    },
+    {
+      "received": [
+        "yamnet",
+        "mobilenetv4"
+      ],
+      "certified_fraction": 0.41808193902797,
+      "foreground_certified_fraction": 0.3471715519771879,
+      "foreground_certified_with_score_lower_bound_075": 0.0,
+      "max_lower_bound": 0.5760168507303658
+    }
+  ]
+}

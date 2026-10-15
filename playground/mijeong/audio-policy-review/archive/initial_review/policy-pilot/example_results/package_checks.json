@@ -1,0 +1,9 @@
+{
+  "version": "1.1",
+  "python_files_syntax_ok": 9,
+  "unit_tests_passed": 14,
+  "same_R0_frozen_policy_result_match": true,
+  "R0_metrics_unchanged": true,
+  "regrouped_models_trained": false,
+  "gpu_model_exports_executed_here": false
+}

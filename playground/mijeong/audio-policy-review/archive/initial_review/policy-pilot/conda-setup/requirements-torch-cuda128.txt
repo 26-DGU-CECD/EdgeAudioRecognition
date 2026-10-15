@@ -1,0 +1,7 @@
+# Install FIRST in audio-torch. Keep this runtime installation separate
+# from requirements-torch.txt so other libraries use the normal PyPI index.
+# Official PyTorch 2.9.1 CUDA 12.8 wheels for Windows/Linux x86-64.
+--index-url https://download.pytorch.org/whl/cu128
+torch==2.9.1
+torchvision==0.24.1
+torchaudio==2.9.1

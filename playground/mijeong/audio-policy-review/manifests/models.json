@@ -1,0 +1,233 @@
+[
+  {
+    "path": "project/runs/A_efficientat/best.pt",
+    "bytes": 2611349,
+    "sha256": "b818938d691e6d713479790cc912d7551827660ef984baea126866ee80e8574b",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/B_yamnet/best.keras",
+    "bytes": 3217796,
+    "sha256": "58da6e4d56b475d4c69be98278e5fe7955f1ecfa82c8b1d875b8a369411f24f1",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/C_mobilenetv4/best.pt",
+    "bytes": 11756523,
+    "sha256": "579603c6d94ce0b1c3cf76ddbe48c689801ff699d4870a311bf69858f06f9ccd",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_015/efficientat/best.pt",
+    "bytes": 2611349,
+    "sha256": "3cf43f5dc7cb064e5082640568472f4417608e87f373b3c9264a6d48717d496b",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_015/mobilenetv4/best.pt",
+    "bytes": 11756523,
+    "sha256": "8ec6c0f7a2615d77d9ab870ae6342e7d913eb8e350be4abea8e8ca027a8d50fe",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_015/yamnet/best.keras",
+    "bytes": 3217796,
+    "sha256": "4e314ea0d03e09e881514773c3fd1b97a1ce4ad63f47c7367529a670126b842c",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_030/efficientat/best.pt",
+    "bytes": 2611349,
+    "sha256": "7c36dc901685bc71ee84deb5b656cbf810508be921868e94d401712ec182e250",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_030/mobilenetv4/best.pt",
+    "bytes": 11756523,
+    "sha256": "b53df819326ee377e9672d43902cacab7a0c16b03ccf8cd03a0c3ff2ac86d5ec",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_030/yamnet/best.keras",
+    "bytes": 3217796,
+    "sha256": "539b4332d115eee7d3d139cb08461a9bbe4a0d7849106497808fad2fd25face7",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_050/efficientat/best.pt",
+    "bytes": 2611349,
+    "sha256": "2891ff1415d66e139bca52ac20fa68a9249e49d0456a3d128f497958ab6811c7",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_050/mobilenetv4/best.pt",
+    "bytes": 11756523,
+    "sha256": "5376eed6f081486c1a94c78360b42e94c2699ce044884831886ed68a90a9548a",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_050/yamnet/best.keras",
+    "bytes": 3217796,
+    "sha256": "0ada24ece3c9b22358e5ade2cde06be04139e30ebd959f4de3b44db43137a396",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_070/efficientat/best.pt",
+    "bytes": 2611349,
+    "sha256": "d2790f0c2d53d928d80dc5f6db180fa18f8387c8bd2cd51b2f89fe3cfb55b54c",
+    "current_v14": true,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_070/mobilenetv4/best.pt",
+    "bytes": 11756523,
+    "sha256": "1a7d73847532f8364cb86c552c72a9c664e3366b4e78f77a28d0614901e66467",
+    "current_v14": true,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_070/yamnet/best.keras",
+    "bytes": 3217796,
+    "sha256": "da2b2e6e9fc5b8c2ccf1e497104dc857589b542fc495b4576b64979d282b6f6b",
+    "current_v14": true,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_100/efficientat/best.pt",
+    "bytes": 2611349,
+    "sha256": "b818938d691e6d713479790cc912d7551827660ef984baea126866ee80e8574b",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_100/mobilenetv4/best.pt",
+    "bytes": 11756523,
+    "sha256": "579603c6d94ce0b1c3cf76ddbe48c689801ff699d4870a311bf69858f06f9ccd",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/E_predefined_specialists/nonexpert_100/yamnet/best.keras",
+    "bytes": 3217796,
+    "sha256": "bdd707d24eccc6d7f59bd4fa29715d6313a113fe16a871c2b219b29603407b1d",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_015/efficientat/best.pt",
+    "bytes": 2611349,
+    "sha256": "c932a85f00855bfeccf2506e934e40672f8fc7a419ec24bed32bc48bd0dc26e8",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_015/mobilenetv4/best.pt",
+    "bytes": 11756523,
+    "sha256": "358ea47870bd917e21db0ae714683dbf8cf5d354fc81ca6c98bb3c1ddfa00bed",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_015/yamnet/best.keras",
+    "bytes": 3217796,
+    "sha256": "979d8b49d56992af76c6de9704143b59a5c5d70b607f741dab8acbb2eaa1ce0a",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_030/efficientat/best.pt",
+    "bytes": 2611349,
+    "sha256": "c932a85f00855bfeccf2506e934e40672f8fc7a419ec24bed32bc48bd0dc26e8",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_030/mobilenetv4/best.pt",
+    "bytes": 11756523,
+    "sha256": "4d7b18539bf3e44247b9f40b00ce843151e3ec28dd822fe09bc7eb5ad0fed407",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_030/yamnet/best.keras",
+    "bytes": 3217796,
+    "sha256": "9932e5921d7e2e2c22763b357ab3c0fba4e0804c293bc741cdbf65783d02afe2",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_050/efficientat/best.pt",
+    "bytes": 2611349,
+    "sha256": "c932a85f00855bfeccf2506e934e40672f8fc7a419ec24bed32bc48bd0dc26e8",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_050/mobilenetv4/best.pt",
+    "bytes": 11756523,
+    "sha256": "e3da735533abe0ae8fd3b22d1ed3a51a1f6d73b1349c44d31df6bed10ac9dd63",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_050/yamnet/best.keras",
+    "bytes": 3217796,
+    "sha256": "a1e5414c5ed8a4c1083c4f22f30243d82e6ac5f79af281d03cedf2a8dca61b94",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_070/efficientat/best.pt",
+    "bytes": 2611349,
+    "sha256": "0b209e5f51a01e9573ad409cbab304c37d2d1ff41a8d2bacd684319dfa5c44fd",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_070/mobilenetv4/best.pt",
+    "bytes": 11756523,
+    "sha256": "e882222ca6d02d0c29cc030cf69e3a5225c552e31aba7795e07959ac059cbc82",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_070/yamnet/best.keras",
+    "bytes": 3217796,
+    "sha256": "c03dedeb8bcc167b5ee52dca7880692b1d43848d2172fbf19804135d2b3d7a5f",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_100/efficientat/best.pt",
+    "bytes": 2611349,
+    "sha256": "b818938d691e6d713479790cc912d7551827660ef984baea126866ee80e8574b",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/runs/G_auto_specialists/nonexpert_100/mobilenetv4/best.pt",
+    "bytes": 11756523,
+    "sha256": "579603c6d94ce0b1c3cf76ddbe48c689801ff699d4870a311bf69858f06f9ccd",
+    "current_v14": false,
+    "role": "trained_checkpoint"
+  },
+  {
+    "path": "project/third_party/EfficientAT/resources/mn04_as_mAP_432.pt",
+    "bytes": 4066513,
+    "sha256": "899a8c6217063f6941793102a2780b3dd788ab11fce468d9cf5f0577c453321c",
+    "current_v14": false,
+    "role": "vendor_pretrained_backbone"
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "unit_tests_passed": 42,
+  "static_rows_exact_match": 9,
+  "adaptive_fifo_rows_exact_match": 12,
+  "python_files_parsed": 4,
+  "powershell_parser_errors": 0,
+  "git_probe": "isolated local index; no commit or push",
+  "git_lfs_pt_npz_pointer_verified": true,
+  "git_config_manifest_byte_preservation_verified": true,
+  "gitignore_local_embedding_audio_verified": true
+}

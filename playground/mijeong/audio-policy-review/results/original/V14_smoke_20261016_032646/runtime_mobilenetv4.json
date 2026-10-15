@@ -1,0 +1,30 @@
+{
+  "torch": "2.9.1+cu128",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "model": "mobilenetv4",
+  "fingerprint": "07b5f1357b7b74da99738f529c86361afc5c41f884ca71389153f37e9289a629",
+  "head_class_names": [
+    "baby_cry",
+    "background",
+    "bicycle",
+    "car_horn",
+    "cat_meow",
+    "cry",
+    "dog_bark",
+    "fire_alarm",
+    "glass_breaking",
+    "gun",
+    "knock",
+    "scream",
+    "siren",
+    "water"
+  ],
+  "checkpoint_file": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\mobilenetv4\\best.pt",
+  "batch_size": 1,
+  "windows": 126,
+  "preprocess_ms_p50": 0.7681999850319698,
+  "model_ms_p50": 3.573800000594929,
+  "service_ms_p95": 6.99457499285927,
+  "scope": "Isolated worker replay, not simultaneous 3-model scheduling or actual UI latency."
+}

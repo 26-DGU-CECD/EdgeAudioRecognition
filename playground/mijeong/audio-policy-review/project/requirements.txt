@@ -1,0 +1,5 @@
+# Do not install TensorFlow and PyTorch into one environment for this project.
+# Use one of the following instead:
+#   pip install -r requirements-torch.txt
+#   pip install -r requirements-yamnet.txt
+-r requirements-common.txt

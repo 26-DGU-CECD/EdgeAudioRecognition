@@ -1,0 +1,14 @@
+﻿label,threshold,origin
+baby_cry,0.30000000000000004,frozen_transfer
+bicycle,0.45,frozen_transfer
+car_horn,0.4,frozen_transfer
+cat_meow,0.45,frozen_transfer
+cry,0.625,frozen_transfer
+dog_bark,0.0,frozen_transfer
+fire_alarm,,frozen_transfer
+glass_breaking,0.675,frozen_transfer
+gun,0.55,frozen_transfer
+knock,,frozen_transfer
+scream,0.0,frozen_transfer
+siren,0.55,frozen_transfer
+water,0.55,frozen_transfer

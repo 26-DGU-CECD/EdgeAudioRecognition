@@ -1,0 +1,31 @@
+{
+  "source_package": "C:\\Users\\PLASS\\Desktop\\audio-policy-review-20261015T164106Z-1-001\\audio-policy-review\\audio_policy_pilot_v1_4",
+  "sha_entries_checked": 45,
+  "sha_mismatches": 0,
+  "python_syntax_files": 20,
+  "unit_tests_passed": 42,
+  "static_comparisons": 9,
+  "max_reference_metric_difference": 0.0,
+  "group_split": {
+    "fusion_fit": {
+      "clips": 5892,
+      "groups": 658
+    },
+    "policy_fit": {
+      "clips": 6073,
+      "groups": 693
+    },
+    "evaluation": {
+      "clips": 11882,
+      "groups": 1338
+    }
+  },
+  "group_overlap": 0,
+  "prepared_source_files": 14,
+  "prepared_episodes": 14,
+  "missing_selected_files": [],
+  "checkpoint_paths_exist": true,
+  "inference_executed": false,
+  "audio_preflight_executed": false,
+  "note": "Tests ran on an unmodified writable copy. No desktop source files or original results were changed."
+}

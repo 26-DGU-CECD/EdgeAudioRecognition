@@ -1,0 +1,61 @@
+{
+  "arguments": {
+    "out": "C:\\Users\\PLASS\\Documents\\Codex\\2026-10-16\\r\\outputs\\v1_4_expanded_next\\experiment",
+    "result_tag": "C_temporal_fifo",
+    "fusions": [
+      "F1",
+      "F2"
+    ],
+    "rules": [
+      "R0",
+      "R2"
+    ],
+    "inputs": [
+      "I2",
+      "I3"
+    ],
+    "temporal": [
+      "T0",
+      "T1",
+      "T2"
+    ],
+    "async_policy": "wait_all",
+    "timing": "independent_worker_sim",
+    "fast_hop": 0.5,
+    "slow_hop": 1.0,
+    "adaptive_confidence": 0.75,
+    "adaptive_margin": 0.2,
+    "urgent_labels": [
+      "siren",
+      "fire_alarm",
+      "scream",
+      "cry",
+      "car_horn"
+    ],
+    "confirm_seconds": 0.5,
+    "transient_labels": [
+      "gun",
+      "glass_breaking",
+      "knock"
+    ],
+    "strong_score": 0.9,
+    "strong_margin": 0.2,
+    "max_result_age": 2.0
+  },
+  "fingerprint": "28f12f9d8527322b674d2521ec5b3f153461dc49ee0b9daf8b2c78985b1f3418",
+  "checkpoint_sha256": {
+    "efficientat": "d2790f0c2d53d928d80dc5f6db180fa18f8387c8bd2cd51b2f89fe3cfb55b54c",
+    "yamnet": "da2b2e6e9fc5b8c2ccf1e497104dc857589b542fc495b4576b64979d282b6f6b",
+    "mobilenetv4": "1a7d73847532f8364cb86c552c72a9c664e3366b4e78f77a28d0614901e66467"
+  },
+  "source_scope": "supplied_specialist_cache_reference; NOT verified best historical run",
+  "model_jobs_cancelled": false,
+  "limitations": [
+    "Audio-clock values exclude processing. Independent-worker FIFO timing is a SIMULATION from isolated timings, not measured shared-device latency.",
+    "Clip insertion is not actual event onset. Repeated phases are correlated. No formal risk guarantee.",
+    "Static clip thresholds transferred to rolling windows are not calibrated for streaming false-alert rates.",
+    "All model jobs execute even when a bounded decision is early. No inference FLOP savings are claimed.",
+    "Adaptive input uses only completed selected-window outputs, never skipped/future predictions.",
+    "Actual Bluetooth transport is outside scope; actual concurrent workers/UI timing require device validation."
+  ]
+}

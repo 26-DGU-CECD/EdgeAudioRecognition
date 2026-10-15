@@ -1,0 +1,842 @@
+{
+  "source": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\policy_results\\V14_smoke_20261016_032646",
+  "split": {
+    "fusion_fit": {
+      "clips": 5892,
+      "groups": 658
+    },
+    "policy_fit": {
+      "clips": 6073,
+      "groups": 693
+    },
+    "evaluation": {
+      "clips": 11882,
+      "groups": 1338
+    }
+  },
+  "split_by_label": {
+    "fusion_fit": {
+      "baby_cry": {
+        "clips": 270,
+        "groups": 30
+      },
+      "background": {
+        "clips": 1184,
+        "groups": 190
+      },
+      "bicycle": {
+        "clips": 288,
+        "groups": 32
+      },
+      "car_horn": {
+        "clips": 45,
+        "groups": 5
+      },
+      "cat_meow": {
+        "clips": 126,
+        "groups": 14
+      },
+      "cry": {
+        "clips": 450,
+        "groups": 50
+      },
+      "dog_bark": {
+        "clips": 117,
+        "groups": 13
+      },
+      "fire_alarm": {
+        "clips": 513,
+        "groups": 57
+      },
+      "glass_breaking": {
+        "clips": 918,
+        "groups": 102
+      },
+      "gun": {
+        "clips": 297,
+        "groups": 33
+      },
+      "knock": {
+        "clips": 27,
+        "groups": 3
+      },
+      "scream": {
+        "clips": 198,
+        "groups": 22
+      },
+      "siren": {
+        "clips": 1009,
+        "groups": 113
+      },
+      "water": {
+        "clips": 450,
+        "groups": 50
+      }
+    },
+    "policy_fit": {
+      "baby_cry": {
+        "clips": 180,
+        "groups": 20
+      },
+      "background": {
+        "clips": 1236,
+        "groups": 202
+      },
+      "bicycle": {
+        "clips": 279,
+        "groups": 31
+      },
+      "car_horn": {
+        "clips": 27,
+        "groups": 3
+      },
+      "cat_meow": {
+        "clips": 225,
+        "groups": 25
+      },
+      "cry": {
+        "clips": 522,
+        "groups": 58
+      },
+      "dog_bark": {
+        "clips": 99,
+        "groups": 11
+      },
+      "fire_alarm": {
+        "clips": 441,
+        "groups": 49
+      },
+      "glass_breaking": {
+        "clips": 936,
+        "groups": 104
+      },
+      "gun": {
+        "clips": 253,
+        "groups": 30
+      },
+      "knock": {
+        "clips": 0,
+        "groups": 0
+      },
+      "scream": {
+        "clips": 198,
+        "groups": 22
+      },
+      "siren": {
+        "clips": 1200,
+        "groups": 135
+      },
+      "water": {
+        "clips": 477,
+        "groups": 53
+      }
+    },
+    "evaluation": {
+      "baby_cry": {
+        "clips": 396,
+        "groups": 44
+      },
+      "background": {
+        "clips": 2239,
+        "groups": 363
+      },
+      "bicycle": {
+        "clips": 558,
+        "groups": 62
+      },
+      "car_horn": {
+        "clips": 162,
+        "groups": 18
+      },
+      "cat_meow": {
+        "clips": 477,
+        "groups": 53
+      },
+      "cry": {
+        "clips": 945,
+        "groups": 105
+      },
+      "dog_bark": {
+        "clips": 180,
+        "groups": 20
+      },
+      "fire_alarm": {
+        "clips": 891,
+        "groups": 99
+      },
+      "glass_breaking": {
+        "clips": 1836,
+        "groups": 204
+      },
+      "gun": {
+        "clips": 551,
+        "groups": 64
+      },
+      "knock": {
+        "clips": 99,
+        "groups": 11
+      },
+      "scream": {
+        "clips": 342,
+        "groups": 38
+      },
+      "siren": {
+        "clips": 2117,
+        "groups": 239
+      },
+      "water": {
+        "clips": 1089,
+        "groups": 121
+      }
+    }
+  },
+  "group_overlap": {
+    "fusion_fit/policy_fit": 0,
+    "fusion_fit/evaluation": 0,
+    "policy_fit/evaluation": 0
+  },
+  "manifest": {
+    "episodes": 14,
+    "groups": 14,
+    "class_counts": {
+      "baby_cry": 1,
+      "background": 1,
+      "bicycle": 1,
+      "car_horn": 1,
+      "cat_meow": 1,
+      "cry": 1,
+      "dog_bark": 1,
+      "fire_alarm": 1,
+      "glass_breaking": 1,
+      "gun": 1,
+      "knock": 1,
+      "scream": 1,
+      "siren": 1,
+      "water": 1
+    },
+    "phases": [
+      0.0
+    ],
+    "all_groups_in_evaluation": true
+  },
+  "replay": [
+    {
+      "fusion": "F0",
+      "input": "I0",
+      "missed": [
+        "baby_cry",
+        "gun",
+        "water"
+      ],
+      "wrong_label_episodes": [
+        "baby_cry"
+      ],
+      "prefix_alerts": [],
+      "first_correct_by_label": {
+        "baby_cry": "",
+        "bicycle": "2.0",
+        "car_horn": "2.0",
+        "cat_meow": "2.0",
+        "cry": "2.0",
+        "dog_bark": "2.0",
+        "fire_alarm": "2.0",
+        "glass_breaking": "2.0",
+        "gun": "",
+        "knock": "2.0",
+        "scream": "2.0",
+        "siren": "2.0",
+        "water": ""
+      },
+      "calls": 126
+    },
+    {
+      "fusion": "F0",
+      "input": "I1",
+      "missed": [
+        "gun",
+        "water"
+      ],
+      "wrong_label_episodes": [
+        "baby_cry",
+        "bicycle"
+      ],
+      "prefix_alerts": [],
+      "first_correct_by_label": {
+        "baby_cry": "1.0",
+        "bicycle": "2.0",
+        "car_horn": "2.0",
+        "cat_meow": "1.0",
+        "cry": "2.0",
+        "dog_bark": "1.0",
+        "fire_alarm": "2.0",
+        "glass_breaking": "1.0",
+        "gun": "",
+        "knock": "1.0",
+        "scream": "2.0",
+        "siren": "2.0",
+        "water": "3.0"
+      },
+      "calls": 210
+    },
+    {
+      "fusion": "F0",
+      "input": "I2",
+      "missed": [
+        "gun"
+      ],
+      "wrong_label_episodes": [
+        "baby_cry",
+        "bicycle",
+        "siren"
+      ],
+      "prefix_alerts": [],
+      "first_correct_by_label": {
+        "baby_cry": "1.0",
+        "bicycle": "1.5",
+        "car_horn": "1.5",
+        "cat_meow": "1.0",
+        "cry": "1.5",
+        "dog_bark": "1.0",
+        "fire_alarm": "1.5",
+        "glass_breaking": "1.0",
+        "gun": "",
+        "knock": "1.0",
+        "scream": "1.5",
+        "siren": "1.5",
+        "water": "1.5"
+      },
+      "calls": 378
+    },
+    {
+      "fusion": "F1",
+      "input": "I0",
+      "missed": [
+        "baby_cry",
+        "gun"
+      ],
+      "wrong_label_episodes": [
+        "baby_cry"
+      ],
+      "prefix_alerts": [],
+      "first_correct_by_label": {
+        "baby_cry": "",
+        "bicycle": "2.0",
+        "car_horn": "2.0",
+        "cat_meow": "2.0",
+        "cry": "2.0",
+        "dog_bark": "2.0",
+        "fire_alarm": "2.0",
+        "glass_breaking": "2.0",
+        "gun": "",
+        "knock": "2.0",
+        "scream": "2.0",
+        "siren": "2.0",
+        "water": "2.0"
+      },
+      "calls": 126
+    },
+    {
+      "fusion": "F1",
+      "input": "I1",
+      "missed": [
+        "gun"
+      ],
+      "wrong_label_episodes": [
+        "baby_cry",
+        "bicycle",
+        "fire_alarm"
+      ],
+      "prefix_alerts": [],
+      "first_correct_by_label": {
+        "baby_cry": "1.0",
+        "bicycle": "2.0",
+        "car_horn": "1.0",
+        "cat_meow": "1.0",
+        "cry": "2.0",
+        "dog_bark": "1.0",
+        "fire_alarm": "2.0",
+        "glass_breaking": "1.0",
+        "gun": "",
+        "knock": "1.0",
+        "scream": "2.0",
+        "siren": "1.0",
+        "water": "2.0"
+      },
+      "calls": 210
+    },
+    {
+      "fusion": "F1",
+      "input": "I2",
+      "missed": [
+        "gun"
+      ],
+      "wrong_label_episodes": [
+        "baby_cry",
+        "bicycle",
+        "fire_alarm",
+        "glass_breaking"
+      ],
+      "prefix_alerts": [],
+      "first_correct_by_label": {
+        "baby_cry": "0.5",
+        "bicycle": "1.5",
+        "car_horn": "1.0",
+        "cat_meow": "0.5",
+        "cry": "1.5",
+        "dog_bark": "1.0",
+        "fire_alarm": "1.5",
+        "glass_breaking": "1.0",
+        "gun": "",
+        "knock": "0.5",
+        "scream": "1.5",
+        "siren": "1.0",
+        "water": "1.5"
+      },
+      "calls": 378
+    },
+    {
+      "fusion": "F2",
+      "input": "I0",
+      "missed": [
+        "baby_cry",
+        "gun"
+      ],
+      "wrong_label_episodes": [
+        "baby_cry"
+      ],
+      "prefix_alerts": [],
+      "first_correct_by_label": {
+        "baby_cry": "",
+        "bicycle": "2.0",
+        "car_horn": "2.0",
+        "cat_meow": "2.0",
+        "cry": "2.0",
+        "dog_bark": "2.0",
+        "fire_alarm": "2.0",
+        "glass_breaking": "2.0",
+        "gun": "",
+        "knock": "2.0",
+        "scream": "2.0",
+        "siren": "2.0",
+        "water": "2.0"
+      },
+      "calls": 126
+    },
+    {
+      "fusion": "F2",
+      "input": "I1",
+      "missed": [
+        "gun"
+      ],
+      "wrong_label_episodes": [
+        "baby_cry",
+        "bicycle"
+      ],
+      "prefix_alerts": [],
+      "first_correct_by_label": {
+        "baby_cry": "1.0",
+        "bicycle": "2.0",
+        "car_horn": "1.0",
+        "cat_meow": "1.0",
+        "cry": "2.0",
+        "dog_bark": "1.0",
+        "fire_alarm": "2.0",
+        "glass_breaking": "1.0",
+        "gun": "",
+        "knock": "1.0",
+        "scream": "2.0",
+        "siren": "1.0",
+        "water": "2.0"
+      },
+      "calls": 210
+    },
+    {
+      "fusion": "F2",
+      "input": "I2",
+      "missed": [
+        "gun"
+      ],
+      "wrong_label_episodes": [
+        "baby_cry",
+        "bicycle",
+        "fire_alarm",
+        "glass_breaking"
+      ],
+      "prefix_alerts": [],
+      "first_correct_by_label": {
+        "baby_cry": "1.0",
+        "bicycle": "1.5",
+        "car_horn": "1.0",
+        "cat_meow": "0.5",
+        "cry": "1.5",
+        "dog_bark": "1.0",
+        "fire_alarm": "1.5",
+        "glass_breaking": "1.0",
+        "gun": "",
+        "knock": "0.5",
+        "scream": "1.5",
+        "siren": "1.0",
+        "water": "1.5"
+      },
+      "calls": 378
+    }
+  ],
+  "static_key_labels": [
+    {
+      "policy": "R0",
+      "label": "fire_alarm",
+      "support": "891",
+      "accepted": "1226",
+      "precision": "0.5",
+      "recall": "0.6879910213243546",
+      "f1": "0.5791213982050071",
+      "fusion": "F0"
+    },
+    {
+      "policy": "R0",
+      "label": "knock",
+      "support": "99",
+      "accepted": "69",
+      "precision": "0.8985507246376812",
+      "recall": "0.6262626262626263",
+      "f1": "0.7380952380952381",
+      "fusion": "F0"
+    },
+    {
+      "policy": "R1",
+      "label": "fire_alarm",
+      "support": "891",
+      "accepted": "0",
+      "precision": "",
+      "recall": "0.0",
+      "f1": "0.0",
+      "fusion": "F0"
+    },
+    {
+      "policy": "R1",
+      "label": "knock",
+      "support": "99",
+      "accepted": "38",
+      "precision": "0.9210526315789473",
+      "recall": "0.35353535353535354",
+      "f1": "0.5109489051094891",
+      "fusion": "F0"
+    },
+    {
+      "policy": "R2",
+      "label": "fire_alarm",
+      "support": "891",
+      "accepted": "920",
+      "precision": "0.5076086956521739",
+      "recall": "0.5241301907968574",
+      "f1": "0.5157371617890668",
+      "fusion": "F0"
+    },
+    {
+      "policy": "R2",
+      "label": "knock",
+      "support": "99",
+      "accepted": "38",
+      "precision": "0.9210526315789473",
+      "recall": "0.35353535353535354",
+      "f1": "0.5109489051094891",
+      "fusion": "F0"
+    },
+    {
+      "policy": "R0",
+      "label": "fire_alarm",
+      "support": "891",
+      "accepted": "1455",
+      "precision": "0.49896907216494846",
+      "recall": "0.8148148148148148",
+      "f1": "0.618925831202046",
+      "fusion": "F1"
+    },
+    {
+      "policy": "R0",
+      "label": "knock",
+      "support": "99",
+      "accepted": "87",
+      "precision": "0.9425287356321839",
+      "recall": "0.8282828282828283",
+      "f1": "0.8817204301075269",
+      "fusion": "F1"
+    },
+    {
+      "policy": "R1",
+      "label": "fire_alarm",
+      "support": "891",
+      "accepted": "169",
+      "precision": "0.5621301775147929",
+      "recall": "0.10662177328843996",
+      "f1": "0.1792452830188679",
+      "fusion": "F1"
+    },
+    {
+      "policy": "R1",
+      "label": "knock",
+      "support": "99",
+      "accepted": "62",
+      "precision": "0.967741935483871",
+      "recall": "0.6060606060606061",
+      "f1": "0.7453416149068323",
+      "fusion": "F1"
+    },
+    {
+      "policy": "R2",
+      "label": "fire_alarm",
+      "support": "891",
+      "accepted": "932",
+      "precision": "0.5085836909871244",
+      "recall": "0.531986531986532",
+      "f1": "0.5200219418540867",
+      "fusion": "F1"
+    },
+    {
+      "policy": "R2",
+      "label": "knock",
+      "support": "99",
+      "accepted": "62",
+      "precision": "0.967741935483871",
+      "recall": "0.6060606060606061",
+      "f1": "0.7453416149068323",
+      "fusion": "F1"
+    },
+    {
+      "policy": "R0",
+      "label": "fire_alarm",
+      "support": "891",
+      "accepted": "1442",
+      "precision": "0.5013869625520111",
+      "recall": "0.8114478114478114",
+      "f1": "0.6198028289755679",
+      "fusion": "F2"
+    },
+    {
+      "policy": "R0",
+      "label": "knock",
+      "support": "99",
+      "accepted": "90",
+      "precision": "0.9444444444444444",
+      "recall": "0.8585858585858586",
+      "f1": "0.8994708994708994",
+      "fusion": "F2"
+    },
+    {
+      "policy": "R1",
+      "label": "fire_alarm",
+      "support": "891",
+      "accepted": "200",
+      "precision": "0.535",
+      "recall": "0.12008978675645342",
+      "f1": "0.19615032080659944",
+      "fusion": "F2"
+    },
+    {
+      "policy": "R1",
+      "label": "knock",
+      "support": "99",
+      "accepted": "68",
+      "precision": "0.9705882352941176",
+      "recall": "0.6666666666666666",
+      "f1": "0.7904191616766467",
+      "fusion": "F2"
+    },
+    {
+      "policy": "R2",
+      "label": "fire_alarm",
+      "support": "891",
+      "accepted": "973",
+      "precision": "0.5118191161356629",
+      "recall": "0.5589225589225589",
+      "f1": "0.5343347639484979",
+      "fusion": "F2"
+    },
+    {
+      "policy": "R2",
+      "label": "knock",
+      "support": "99",
+      "accepted": "68",
+      "precision": "0.9705882352941176",
+      "recall": "0.6666666666666666",
+      "f1": "0.7904191616766467",
+      "fusion": "F2"
+    }
+  ],
+  "runtime": {
+    "efficientat": {
+      "torch": "2.9.1+cu128",
+      "device": "cuda",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "model": "efficientat",
+      "fingerprint": "07b5f1357b7b74da99738f529c86361afc5c41f884ca71389153f37e9289a629",
+      "head_class_names": [
+        "baby_cry",
+        "background",
+        "bicycle",
+        "car_horn",
+        "cat_meow",
+        "cry",
+        "dog_bark",
+        "fire_alarm",
+        "glass_breaking",
+        "gun",
+        "knock",
+        "scream",
+        "siren",
+        "water"
+      ],
+      "checkpoint_file": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\efficientat\\best.pt",
+      "batch_size": 1,
+      "windows": 126,
+      "preprocess_ms_p50": 0.8018999942578375,
+      "model_ms_p50": 5.423300011898391,
+      "service_ms_p95": 9.76299999456387,
+      "scope": "Isolated worker replay, not simultaneous 3-model scheduling or actual UI latency."
+    },
+    "mobilenetv4": {
+      "torch": "2.9.1+cu128",
+      "device": "cuda",
+      "gpu": "NVIDIA GeForce RTX 4090",
+      "model": "mobilenetv4",
+      "fingerprint": "07b5f1357b7b74da99738f529c86361afc5c41f884ca71389153f37e9289a629",
+      "head_class_names": [
+        "baby_cry",
+        "background",
+        "bicycle",
+        "car_horn",
+        "cat_meow",
+        "cry",
+        "dog_bark",
+        "fire_alarm",
+        "glass_breaking",
+        "gun",
+        "knock",
+        "scream",
+        "siren",
+        "water"
+      ],
+      "checkpoint_file": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\mobilenetv4\\best.pt",
+      "batch_size": 1,
+      "windows": 126,
+      "preprocess_ms_p50": 0.7681999850319698,
+      "model_ms_p50": 3.573800000594929,
+      "service_ms_p95": 6.99457499285927,
+      "scope": "Isolated worker replay, not simultaneous 3-model scheduling or actual UI latency."
+    },
+    "yamnet": {
+      "tensorflow": "2.20.0",
+      "gpu_devices": [],
+      "model": "yamnet",
+      "fingerprint": "07b5f1357b7b74da99738f529c86361afc5c41f884ca71389153f37e9289a629",
+      "head_class_names": [
+        "baby_cry",
+        "background",
+        "bicycle",
+        "car_horn",
+        "cat_meow",
+        "cry",
+        "dog_bark",
+        "fire_alarm",
+        "glass_breaking",
+        "gun",
+        "knock",
+        "scream",
+        "siren",
+        "water"
+      ],
+      "checkpoint_file": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\yamnet\\best.keras",
+      "batch_size": 1,
+      "windows": 126,
+      "preprocess_ms_p50": 0.9017499978654087,
+      "model_ms_p50": 11.83354998647701,
+      "service_ms_p95": 14.659374981420115,
+      "scope": "Isolated worker replay, not simultaneous 3-model scheduling or actual UI latency."
+    }
+  },
+  "cache_shapes": {
+    "efficientat": {
+      "keys": [
+        126
+      ],
+      "logits": [
+        126,
+        14
+      ],
+      "preprocessing_s": [
+        126
+      ],
+      "inference_s": [
+        126
+      ],
+      "fingerprint": [],
+      "head_class_names": [
+        14
+      ],
+      "checkpoint_sha256": []
+    },
+    "mobilenetv4": {
+      "keys": [
+        126
+      ],
+      "logits": [
+        126,
+        14
+      ],
+      "preprocessing_s": [
+        126
+      ],
+      "inference_s": [
+        126
+      ],
+      "fingerprint": [],
+      "head_class_names": [
+        14
+      ],
+      "checkpoint_sha256": []
+    },
+    "yamnet": {
+      "keys": [
+        126
+      ],
+      "logits": [
+        126,
+        14
+      ],
+      "preprocessing_s": [
+        126
+      ],
+      "inference_s": [
+        126
+      ],
+      "fingerprint": [],
+      "head_class_names": [
+        14
+      ],
+      "checkpoint_sha256": []
+    }
+  },
+  "trace_fields": [
+    "audio_end_s",
+    "decision_time_s",
+    "result_age_s",
+    "displayed_id",
+    "raw_top_id",
+    "accepted",
+    "confirmation_reason",
+    "models_ready_at_decision",
+    "ignored_stale_window",
+    "early_wait_saved_s",
+    "score_lower",
+    "score_upper",
+    "episode_id",
+    "fusion",
+    "rule",
+    "input_policy",
+    "temporal",
+    "timing",
+    "async_policy"
+  ],
+  "trace_rows": 714,
+  "integrity_checks": "passed: config/manifest fingerprint, cache checkpoint hashes, head order, finite logits, exact window keys, episode summary reconciliation, zero audio-clock ages, preflight manifest hash"
+}

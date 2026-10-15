@@ -1,0 +1,5 @@
+﻿foreground_episodes,foreground_groups,hit_by_clip_2s,missed_by_clip_2s,first_correct_s_p50_detected_only,first_correct_s_p95_detected_only,wrong_label_episode_rate,background_episode_alert_rate,display_changes,nonempty_label_switches,scheduled_windows,scheduled_model_calls,early_certified_windows,total_early_wait_saved_s,stale_output_rejections,superseded_output_windows,fusion,rule,input_policy,temporal,timing,async_policy
+416,104,0.7307692307692307,112,1.5056320500152651,2.0111265399842524,0.3942307692307692,0.125,1064,176,4704,14112,2545,10.303645100269932,0,0,F1,R0,I2,T0,independent_worker_sim,bounded
+416,104,0.5769230769230769,176,1.5101548500097124,2.0113407999888295,0.10576923076923077,0.125,792,8,4704,14112,2318,9.364753300964367,0,0,F1,R2,I2,T0,independent_worker_sim,bounded
+416,104,0.7307692307692307,112,1.5057928500027629,2.0111195799981942,0.40384615384615385,0.125,1036,164,4704,14112,2590,10.493005001015263,0,0,F2,R0,I2,T0,independent_worker_sim,bounded
+416,104,0.5865384615384616,172,1.5106169999780832,2.0114530250022655,0.09615384615384616,0.125,768,8,4704,14112,1867,7.491702100582188,0,0,F2,R2,I2,T0,independent_worker_sim,bounded

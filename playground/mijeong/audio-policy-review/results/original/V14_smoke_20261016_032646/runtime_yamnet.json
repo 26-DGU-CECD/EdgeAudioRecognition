@@ -1,0 +1,29 @@
+{
+  "tensorflow": "2.20.0",
+  "gpu_devices": [],
+  "model": "yamnet",
+  "fingerprint": "07b5f1357b7b74da99738f529c86361afc5c41f884ca71389153f37e9289a629",
+  "head_class_names": [
+    "baby_cry",
+    "background",
+    "bicycle",
+    "car_horn",
+    "cat_meow",
+    "cry",
+    "dog_bark",
+    "fire_alarm",
+    "glass_breaking",
+    "gun",
+    "knock",
+    "scream",
+    "siren",
+    "water"
+  ],
+  "checkpoint_file": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\yamnet\\best.keras",
+  "batch_size": 1,
+  "windows": 126,
+  "preprocess_ms_p50": 0.9017499978654087,
+  "model_ms_p50": 11.83354998647701,
+  "service_ms_p95": 14.659374981420115,
+  "scope": "Isolated worker replay, not simultaneous 3-model scheduling or actual UI latency."
+}

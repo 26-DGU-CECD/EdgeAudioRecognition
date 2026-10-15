@@ -1,0 +1,4080 @@
+{
+  "sample_rate": 16000,
+  "window_seconds": 2.0,
+  "base_hop_seconds": 0.5,
+  "warmup_seconds": 2.0,
+  "tail_seconds": 2.0,
+  "input_policies": {
+    "I0": 2.0,
+    "I1": 1.0,
+    "I2": 0.5
+  },
+  "phase_offsets_seconds": [
+    0.0,
+    0.5,
+    1.0,
+    1.5
+  ],
+  "config_file": "selection_config.json",
+  "audio_config": {
+    "highpass_hz": 80.0,
+    "highpass_order": 2,
+    "silence_frame_ms": 100.0,
+    "silence_threshold_dbfs": -30.0,
+    "target_rms_dbfs": -20.0,
+    "max_normalize_gain_db": 20.0
+  },
+  "annotation": "Controlled replay: 2s + phase offset silence, original first 2s clip, 2s silence. Clip insertion time is known; actual event onset is NOT known. Not a natural continuous-audio benchmark. Repeated phases of a clip are NOT independent samples.",
+  "selection": "One clip per recorded group from static evaluation groups; each clip repeated at declared phases.",
+  "recorded_groups": 112,
+  "class_counts": {
+    "baby_cry": 32,
+    "background": 32,
+    "bicycle": 32,
+    "car_horn": 32,
+    "cat_meow": 32,
+    "cry": 32,
+    "dog_bark": 32,
+    "fire_alarm": 32,
+    "glass_breaking": 32,
+    "gun": 32,
+    "knock": 32,
+    "scream": 32,
+    "siren": 32,
+    "water": 32
+  },
+  "episodes": [
+    {
+      "episode_id": 0,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\F24DE44B-762C-4149-AC92-96A5E57ED118-1430816936-1.0-m-04-hu_3_aug2-drc_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "f24de44b_762c_4149_ac92_96a5e57ed118_1430816936_1_0_m_04_hu_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 1,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\F24DE44B-762C-4149-AC92-96A5E57ED118-1430816936-1.0-m-04-hu_3_aug2-drc_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "f24de44b_762c_4149_ac92_96a5e57ed118_1430816936_1_0_m_04_hu_3",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 2,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\F24DE44B-762C-4149-AC92-96A5E57ED118-1430816936-1.0-m-04-hu_3_aug2-drc_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "f24de44b_762c_4149_ac92_96a5e57ed118_1430816936_1_0_m_04_hu_3",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 3,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\F24DE44B-762C-4149-AC92-96A5E57ED118-1430816936-1.0-m-04-hu_3_aug2-drc_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "f24de44b_762c_4149_ac92_96a5e57ed118_1430816936_1_0_m_04_hu_3",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 4,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\FF2CD2F6-404D-4626-8718-6E6C751F63B8-1431104337-1.0-m-04-hu_4_orig_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "ff2cd2f6_404d_4626_8718_6e6c751f63b8_1431104337_1_0_m_04_hu_4",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 5,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\FF2CD2F6-404D-4626-8718-6E6C751F63B8-1431104337-1.0-m-04-hu_4_orig_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "ff2cd2f6_404d_4626_8718_6e6c751f63b8_1431104337_1_0_m_04_hu_4",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 6,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\FF2CD2F6-404D-4626-8718-6E6C751F63B8-1431104337-1.0-m-04-hu_4_orig_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "ff2cd2f6_404d_4626_8718_6e6c751f63b8_1431104337_1_0_m_04_hu_4",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 7,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\FF2CD2F6-404D-4626-8718-6E6C751F63B8-1431104337-1.0-m-04-hu_4_orig_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "ff2cd2f6_404d_4626_8718_6e6c751f63b8_1431104337_1_0_m_04_hu_4",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 8,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\8c66887c-8251-49fa-903b-c02d56405f58-1436856065644-1.7-m-26-hu_3_aug1-shf-agn_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "8c66887c_8251_49fa_903b_c02d56405f58_1436856065644_1_7_m_26_hu_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 9,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\8c66887c-8251-49fa-903b-c02d56405f58-1436856065644-1.7-m-26-hu_3_aug1-shf-agn_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "8c66887c_8251_49fa_903b_c02d56405f58_1436856065644_1_7_m_26_hu_3",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 10,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\8c66887c-8251-49fa-903b-c02d56405f58-1436856065644-1.7-m-26-hu_3_aug1-shf-agn_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "8c66887c_8251_49fa_903b_c02d56405f58_1436856065644_1_7_m_26_hu_3",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 11,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\8c66887c-8251-49fa-903b-c02d56405f58-1436856065644-1.7-m-26-hu_3_aug1-shf-agn_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "8c66887c_8251_49fa_903b_c02d56405f58_1436856065644_1_7_m_26_hu_3",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 12,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\C249BCDD-0F65-4D6A-82BE-43C4006E3DDB-1436891742-1.1-m-72-hu_5_aug1-drc-agn_musan-snr10.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "c249bcdd_0f65_4d6a_82be_43c4006e3ddb_1436891742_1_1_m_72_hu_5",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 13,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\C249BCDD-0F65-4D6A-82BE-43C4006E3DDB-1436891742-1.1-m-72-hu_5_aug1-drc-agn_musan-snr10.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "c249bcdd_0f65_4d6a_82be_43c4006e3ddb_1436891742_1_1_m_72_hu_5",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 14,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\C249BCDD-0F65-4D6A-82BE-43C4006E3DDB-1436891742-1.1-m-72-hu_5_aug1-drc-agn_musan-snr10.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "c249bcdd_0f65_4d6a_82be_43c4006e3ddb_1436891742_1_1_m_72_hu_5",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 15,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\C249BCDD-0F65-4D6A-82BE-43C4006E3DDB-1436891742-1.1-m-72-hu_5_aug1-drc-agn_musan-snr10.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "c249bcdd_0f65_4d6a_82be_43c4006e3ddb_1436891742_1_1_m_72_hu_5",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 16,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\92d08bbe-553f-4844-85b1-15d572f06ea2-1436873183951-1.7-m-04-hu_2_aug1-shf-gan_musan-snr15.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "92d08bbe_553f_4844_85b1_15d572f06ea2_1436873183951_1_7_m_04_hu_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 17,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\92d08bbe-553f-4844-85b1-15d572f06ea2-1436873183951-1.7-m-04-hu_2_aug1-shf-gan_musan-snr15.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "92d08bbe_553f_4844_85b1_15d572f06ea2_1436873183951_1_7_m_04_hu_2",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 18,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\92d08bbe-553f-4844-85b1-15d572f06ea2-1436873183951-1.7-m-04-hu_2_aug1-shf-gan_musan-snr15.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "92d08bbe_553f_4844_85b1_15d572f06ea2_1436873183951_1_7_m_04_hu_2",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 19,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\92d08bbe-553f-4844-85b1-15d572f06ea2-1436873183951-1.7-m-04-hu_2_aug1-shf-gan_musan-snr15.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "92d08bbe_553f_4844_85b1_15d572f06ea2_1436873183951_1_7_m_04_hu_2",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 20,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\8c920fd0-fa9f-4926-bcac-074767dcbfcd-1436850948195-1.7-m-04-hu_3_orig_musan-snr10.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "8c920fd0_fa9f_4926_bcac_074767dcbfcd_1436850948195_1_7_m_04_hu_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 21,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\8c920fd0-fa9f-4926-bcac-074767dcbfcd-1436850948195-1.7-m-04-hu_3_orig_musan-snr10.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "8c920fd0_fa9f_4926_bcac_074767dcbfcd_1436850948195_1_7_m_04_hu_3",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 22,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\8c920fd0-fa9f-4926-bcac-074767dcbfcd-1436850948195-1.7-m-04-hu_3_orig_musan-snr10.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "8c920fd0_fa9f_4926_bcac_074767dcbfcd_1436850948195_1_7_m_04_hu_3",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 23,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\8c920fd0-fa9f-4926-bcac-074767dcbfcd-1436850948195-1.7-m-04-hu_3_orig_musan-snr10.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "8c920fd0_fa9f_4926_bcac_074767dcbfcd_1436850948195_1_7_m_04_hu_3",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 24,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\1309B82C-F146-46F0-A723-45345AFA6EA8-1432801703-1.1-f-26-dc_4_orig_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "1309b82c_f146_46f0_a723_45345afa6ea8_1432801703_1_1_f_26_dc_4",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 25,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\1309B82C-F146-46F0-A723-45345AFA6EA8-1432801703-1.1-f-26-dc_4_orig_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "1309b82c_f146_46f0_a723_45345afa6ea8_1432801703_1_1_f_26_dc_4",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 26,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\1309B82C-F146-46F0-A723-45345AFA6EA8-1432801703-1.1-f-26-dc_4_orig_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "1309b82c_f146_46f0_a723_45345afa6ea8_1432801703_1_1_f_26_dc_4",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 27,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\1309B82C-F146-46F0-A723-45345AFA6EA8-1432801703-1.1-f-26-dc_4_orig_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "1309b82c_f146_46f0_a723_45345afa6ea8_1432801703_1_1_f_26_dc_4",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 28,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\9090c7a3-bebc-4485-aafc-64e4298da3ac-1430109146143-1.7-f-26-hu_2_orig_musan-snr15.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "9090c7a3_bebc_4485_aafc_64e4298da3ac_1430109146143_1_7_f_26_hu_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 29,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\9090c7a3-bebc-4485-aafc-64e4298da3ac-1430109146143-1.7-f-26-hu_2_orig_musan-snr15.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "9090c7a3_bebc_4485_aafc_64e4298da3ac_1430109146143_1_7_f_26_hu_2",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 30,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\9090c7a3-bebc-4485-aafc-64e4298da3ac-1430109146143-1.7-f-26-hu_2_orig_musan-snr15.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "9090c7a3_bebc_4485_aafc_64e4298da3ac_1430109146143_1_7_f_26_hu_2",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 31,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\9090c7a3-bebc-4485-aafc-64e4298da3ac-1430109146143-1.7-f-26-hu_2_orig_musan-snr15.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "9090c7a3_bebc_4485_aafc_64e4298da3ac_1430109146143_1_7_f_26_hu_2",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 32,
+      "path": "D:\\Sound_Dataset_aug\\background\\경보__S-211103_S_103_D_008_0001_16_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "경보_s_211103_s_103_d_008_0001_16",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 33,
+      "path": "D:\\Sound_Dataset_aug\\background\\경보__S-211103_S_103_D_008_0001_16_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "경보_s_211103_s_103_d_008_0001_16",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 34,
+      "path": "D:\\Sound_Dataset_aug\\background\\경보__S-211103_S_103_D_008_0001_16_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "경보_s_211103_s_103_d_008_0001_16",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 35,
+      "path": "D:\\Sound_Dataset_aug\\background\\경보__S-211103_S_103_D_008_0001_16_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "경보_s_211103_s_103_d_008_0001_16",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 36,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_020_0001_24_orig_musan-snr20.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_020_0001_24",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 37,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_020_0001_24_orig_musan-snr20.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_020_0001_24",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 38,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_020_0001_24_orig_musan-snr20.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_020_0001_24",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 39,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_020_0001_24_orig_musan-snr20.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_020_0001_24",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 40,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_007_0001_10_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_007_0001_10",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 41,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_007_0001_10_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_007_0001_10",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 42,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_007_0001_10_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_007_0001_10",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 43,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_007_0001_10_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_007_0001_10",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 44,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211026_L_306_C_003_0001_8_aug1-gan_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211026_l_306_c_003_0001_8",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 45,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211026_L_306_C_003_0001_8_aug1-gan_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211026_l_306_c_003_0001_8",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 46,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211026_L_306_C_003_0001_8_aug1-gan_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211026_l_306_c_003_0001_8",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 47,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211026_L_306_C_003_0001_8_aug1-gan_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211026_l_306_c_003_0001_8",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 48,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_018_0001_25_aug1-shf-gan_musan-snr10.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_018_0001_25",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 49,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_018_0001_25_aug1-shf-gan_musan-snr10.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_018_0001_25",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 50,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_018_0001_25_aug1-shf-gan_musan-snr10.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_018_0001_25",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 51,
+      "path": "D:\\Sound_Dataset_aug\\background\\물소리__S-211030_L_306_C_018_0001_25_aug1-shf-gan_musan-snr10.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "물소리_s_211030_l_306_c_018_0001_25",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 52,
+      "path": "D:\\Sound_Dataset_aug\\background\\총__S-211104_W_101_D_246_0001_2_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "총_s_211104_w_101_d_246_0001_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 53,
+      "path": "D:\\Sound_Dataset_aug\\background\\총__S-211104_W_101_D_246_0001_2_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "총_s_211104_w_101_d_246_0001_2",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 54,
+      "path": "D:\\Sound_Dataset_aug\\background\\총__S-211104_W_101_D_246_0001_2_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "총_s_211104_w_101_d_246_0001_2",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 55,
+      "path": "D:\\Sound_Dataset_aug\\background\\총__S-211104_W_101_D_246_0001_2_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "총_s_211104_w_101_d_246_0001_2",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 56,
+      "path": "D:\\Sound_Dataset_aug\\background\\경보__S-211113_S_103_C_005_0001_24_aug1-shf-gan_musan-snr20.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "경보_s_211113_s_103_c_005_0001_24",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 57,
+      "path": "D:\\Sound_Dataset_aug\\background\\경보__S-211113_S_103_C_005_0001_24_aug1-shf-gan_musan-snr20.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "경보_s_211113_s_103_c_005_0001_24",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 58,
+      "path": "D:\\Sound_Dataset_aug\\background\\경보__S-211113_S_103_C_005_0001_24_aug1-shf-gan_musan-snr20.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "경보_s_211113_s_103_c_005_0001_24",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 59,
+      "path": "D:\\Sound_Dataset_aug\\background\\경보__S-211113_S_103_C_005_0001_24_aug1-shf-gan_musan-snr20.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "경보_s_211113_s_103_c_005_0001_24",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 60,
+      "path": "D:\\Sound_Dataset_aug\\background\\S-211014_S_103_C_150_0001_10_aug2-shf-agn_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "s_211014_s_103_c_150_0001_10",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 61,
+      "path": "D:\\Sound_Dataset_aug\\background\\S-211014_S_103_C_150_0001_10_aug2-shf-agn_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "s_211014_s_103_c_150_0001_10",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 62,
+      "path": "D:\\Sound_Dataset_aug\\background\\S-211014_S_103_C_150_0001_10_aug2-shf-agn_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "s_211014_s_103_c_150_0001_10",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 63,
+      "path": "D:\\Sound_Dataset_aug\\background\\S-211014_S_103_C_150_0001_10_aug2-shf-agn_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "s_211014_s_103_c_150_0001_10",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 64,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_019_0001_15_aug2-drc-gan_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_019_0001_15",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 65,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_019_0001_15_aug2-drc-gan_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_019_0001_15",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 66,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_019_0001_15_aug2-drc-gan_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_019_0001_15",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 67,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_019_0001_15_aug2-drc-gan_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_019_0001_15",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 68,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_018_0001_9_orig_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_018_0001_9",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 69,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_018_0001_9_orig_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_018_0001_9",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 70,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_018_0001_9_orig_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_018_0001_9",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 71,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_018_0001_9_orig_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_018_0001_9",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 72,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_025_0001_17_aug1-agn_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_025_0001_17",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 73,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_025_0001_17_aug1-agn_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_025_0001_17",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 74,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_025_0001_17_aug1-agn_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_025_0001_17",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 75,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_025_0001_17_aug1-agn_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_025_0001_17",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 76,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_025_0001_12_aug2-shf-ngt_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_025_0001_12",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 77,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_025_0001_12_aug2-shf-ngt_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_025_0001_12",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 78,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_025_0001_12_aug2-shf-ngt_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_025_0001_12",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 79,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_025_0001_12_aug2-shf-ngt_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_025_0001_12",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 80,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_008_0001_8_aug2-drc_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_008_0001_8",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 81,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_008_0001_8_aug2-drc_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_008_0001_8",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 82,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_008_0001_8_aug2-drc_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_008_0001_8",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 83,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_008_0001_8_aug2-drc_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_008_0001_8",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 84,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_D_004_0001_7_aug1-drc_musan-snr10.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_d_004_0001_7",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 85,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_D_004_0001_7_aug1-drc_musan-snr10.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_d_004_0001_7",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 86,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_D_004_0001_7_aug1-drc_musan-snr10.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_d_004_0001_7",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 87,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_D_004_0001_7_aug1-drc_musan-snr10.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_d_004_0001_7",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 88,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_C_007_0001_19_aug2-drc_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_c_007_0001_19",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 89,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_C_007_0001_19_aug2-drc_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_c_007_0001_19",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 90,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_C_007_0001_19_aug2-drc_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_c_007_0001_19",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 91,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_C_007_0001_19_aug2-drc_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_c_007_0001_19",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 92,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_C_007_0001_23_aug1-drc_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_c_007_0001_23",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 93,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_C_007_0001_23_aug1-drc_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_c_007_0001_23",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 94,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_C_007_0001_23_aug1-drc_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_c_007_0001_23",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 95,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211017_S_202_C_007_0001_23_aug1-drc_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211017_s_202_c_007_0001_23",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 96,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175845-A-43_0_aug2-gan_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175845_a_43_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 97,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175845-A-43_0_aug2-gan_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175845_a_43_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 98,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175845-A-43_0_aug2-gan_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175845_a_43_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 99,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175845-A-43_0_aug2-gan_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175845_a_43_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 100,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\1.자동차_88426_1_8_orig_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "1_자동차_88426_1_8",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 101,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\1.자동차_88426_1_8_orig_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "1_자동차_88426_1_8",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 102,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\1.자동차_88426_1_8_orig_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "1_자동차_88426_1_8",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 103,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\1.자동차_88426_1_8_orig_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "1_자동차_88426_1_8",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 104,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\1.자동차_88426_1_23_orig_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "1_자동차_88426_1_23",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 105,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\1.자동차_88426_1_23_orig_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "1_자동차_88426_1_23",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 106,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\1.자동차_88426_1_23_orig_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "1_자동차_88426_1_23",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 107,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\1.자동차_88426_1_23_orig_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "1_자동차_88426_1_23",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 108,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_2-42101-A-43_2_orig_musan-snr20.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_2_42101_a_43_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 109,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_2-42101-A-43_2_orig_musan-snr20.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_2_42101_a_43_2",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 110,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_2-42101-A-43_2_orig_musan-snr20.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_2_42101_a_43_2",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 111,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_2-42101-A-43_2_orig_musan-snr20.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_2_42101_a_43_2",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 112,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_1-254507-A-43_3_aug2-ngt_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_1_254507_a_43_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 113,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_1-254507-A-43_3_aug2-ngt_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_1_254507_a_43_3",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 114,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_1-254507-A-43_3_aug2-ngt_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_1_254507_a_43_3",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 115,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_1-254507-A-43_3_aug2-ngt_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_1_254507_a_43_3",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 116,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_3-155234-A-43_0_aug1-gan_musan-snr15.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_3_155234_a_43_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 117,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_3-155234-A-43_0_aug1-gan_musan-snr15.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_3_155234_a_43_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 118,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_3-155234-A-43_0_aug1-gan_musan-snr15.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_3_155234_a_43_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 119,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_3-155234-A-43_0_aug1-gan_musan-snr15.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_3_155234_a_43_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 120,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175856-A-43_0_orig_musan-snr15.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175856_a_43_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 121,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175856-A-43_0_orig_musan-snr15.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175856_a_43_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 122,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175856-A-43_0_orig_musan-snr15.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175856_a_43_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 123,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175856-A-43_0_orig_musan-snr15.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175856_a_43_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 124,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175845-A-43_3_aug1-shf_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175845_a_43_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 125,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175845-A-43_3_aug1-shf_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175845_a_43_3",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 126,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175845-A-43_3_aug1-shf_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175845_a_43_3",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 127,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175845-A-43_3_aug1-shf_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175845_a_43_3",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 128,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_42_7_orig_musan-snr15.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_42_7",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 129,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_42_7_orig_musan-snr15.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_42_7",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 130,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_42_7_orig_musan-snr15.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_42_7",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 131,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_42_7_orig_musan-snr15.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_42_7",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 132,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_6_8_aug1-shf-gan_musan-snr15.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_6_8",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 133,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_6_8_aug1-shf-gan_musan-snr15.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_6_8",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 134,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_6_8_aug1-shf-gan_musan-snr15.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_6_8",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 135,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_6_8_aug1-shf-gan_musan-snr15.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_6_8",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 136,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_72_7_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_72_7",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 137,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_72_7_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_72_7",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 138,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_72_7_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_72_7",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 139,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_72_7_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_72_7",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 140,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_34_0_aug1-shf-drc_musan-snr20.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_34_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 141,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_34_0_aug1-shf-drc_musan-snr20.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_34_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 142,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_34_0_aug1-shf-drc_musan-snr20.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_34_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 143,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_34_0_aug1-shf-drc_musan-snr20.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_34_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 144,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_28_0_aug1-drc-agn_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_28_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 145,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_28_0_aug1-drc-agn_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_28_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 146,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_28_0_aug1-drc-agn_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_28_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 147,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_28_0_aug1-drc-agn_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_28_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 148,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_47_3_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_47_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 149,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_47_3_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_47_3",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 150,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_47_3_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_47_3",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 151,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_47_3_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_47_3",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 152,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_159_0_aug2-shf_musan-snr20.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_159_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 153,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_159_0_aug2-shf_musan-snr20.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_159_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 154,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_159_0_aug2-shf_musan-snr20.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_159_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 155,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_159_0_aug2-shf_musan-snr20.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_159_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 156,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_164_8_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_164_8",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 157,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_164_8_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_164_8",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 158,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_164_8_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_164_8",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 159,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_164_8_orig_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_164_8",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 160,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211107_H_302_C_002_0001_11_aug1-shf-ngt_musan-snr20.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211107_h_302_c_002_0001_11",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 161,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211107_H_302_C_002_0001_11_aug1-shf-ngt_musan-snr20.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211107_h_302_c_002_0001_11",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 162,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211107_H_302_C_002_0001_11_aug1-shf-ngt_musan-snr20.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211107_h_302_c_002_0001_11",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 163,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211107_H_302_C_002_0001_11_aug1-shf-ngt_musan-snr20.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211107_h_302_c_002_0001_11",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 164,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211022_H_302_C_001_0001_4_orig_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211022_h_302_c_001_0001_4",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 165,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211022_H_302_C_001_0001_4_orig_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211022_h_302_c_001_0001_4",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 166,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211022_H_302_C_001_0001_4_orig_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211022_h_302_c_001_0001_4",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 167,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211022_H_302_C_001_0001_4_orig_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211022_h_302_c_001_0001_4",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 168,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211101_H_302_C_002_0001_17_aug1-drc-gan_musan-snr20.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211101_h_302_c_002_0001_17",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 169,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211101_H_302_C_002_0001_17_aug1-drc-gan_musan-snr20.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211101_h_302_c_002_0001_17",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 170,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211101_H_302_C_002_0001_17_aug1-drc-gan_musan-snr20.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211101_h_302_c_002_0001_17",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 171,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211101_H_302_C_002_0001_17_aug1-drc-gan_musan-snr20.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211101_h_302_c_002_0001_17",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 172,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211104_H_302_C_010_0001_0_aug1-drc-gan_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211104_h_302_c_010_0001_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 173,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211104_H_302_C_010_0001_0_aug1-drc-gan_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211104_h_302_c_010_0001_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 174,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211104_H_302_C_010_0001_0_aug1-drc-gan_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211104_h_302_c_010_0001_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 175,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211104_H_302_C_010_0001_0_aug1-drc-gan_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211104_h_302_c_010_0001_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 176,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211023_H_302_C_006_0001_9_aug2-drc_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211023_h_302_c_006_0001_9",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 177,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211023_H_302_C_006_0001_9_aug2-drc_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211023_h_302_c_006_0001_9",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 178,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211023_H_302_C_006_0001_9_aug2-drc_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211023_h_302_c_006_0001_9",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 179,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211023_H_302_C_006_0001_9_aug2-drc_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211023_h_302_c_006_0001_9",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 180,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211106_H_302_C_004_0001_6_aug2-gan_musan-snr10.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211106_h_302_c_004_0001_6",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 181,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211106_H_302_C_004_0001_6_aug2-gan_musan-snr10.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211106_h_302_c_004_0001_6",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 182,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211106_H_302_C_004_0001_6_aug2-gan_musan-snr10.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211106_h_302_c_004_0001_6",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 183,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211106_H_302_C_004_0001_6_aug2-gan_musan-snr10.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211106_h_302_c_004_0001_6",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 184,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211023_H_302_C_008_0001_20_aug2-ngt_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211023_h_302_c_008_0001_20",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 185,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211023_H_302_C_008_0001_20_aug2-ngt_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211023_h_302_c_008_0001_20",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 186,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211023_H_302_C_008_0001_20_aug2-ngt_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211023_h_302_c_008_0001_20",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 187,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211023_H_302_C_008_0001_20_aug2-ngt_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211023_h_302_c_008_0001_20",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 188,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211027_H_302_C_002_0001_1_orig_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211027_h_302_c_002_0001_1",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 189,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211027_H_302_C_002_0001_1_orig_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211027_h_302_c_002_0001_1",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 190,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211027_H_302_C_002_0001_1_orig_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211027_h_302_c_002_0001_1",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 191,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211027_H_302_C_002_0001_1_orig_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211027_h_302_c_002_0001_1",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 192,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_26_3_aug1-shf-gan_musan-snr15.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_26_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 193,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_26_3_aug1-shf-gan_musan-snr15.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_26_3",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 194,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_26_3_aug1-shf-gan_musan-snr15.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_26_3",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 195,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_26_3_aug1-shf-gan_musan-snr15.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_26_3",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 196,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_44_1_aug1-gan_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_44_1",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 197,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_44_1_aug1-gan_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_44_1",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 198,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_44_1_aug1-gan_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_44_1",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 199,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_44_1_aug1-gan_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_44_1",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 200,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_94_0_orig_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_94_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 201,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_94_0_orig_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_94_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 202,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_94_0_orig_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_94_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 203,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_94_0_orig_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_94_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 204,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_38_0_aug1-ngt_musan-snr10.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_38_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 205,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_38_0_aug1-ngt_musan-snr10.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_38_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 206,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_38_0_aug1-ngt_musan-snr10.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_38_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 207,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_38_0_aug1-ngt_musan-snr10.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_38_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 208,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_97_0_orig_musan-snr10.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_97_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 209,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_97_0_orig_musan-snr10.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_97_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 210,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_97_0_orig_musan-snr10.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_97_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 211,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_97_0_orig_musan-snr10.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_97_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 212,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_26_5_aug2-ngt_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_26_5",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 213,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_26_5_aug2-ngt_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_26_5",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 214,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_26_5_aug2-ngt_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_26_5",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 215,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_26_5_aug2-ngt_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_26_5",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 216,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_18_9_aug2-ngt-gan_musan-snr15.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_18_9",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 217,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_18_9_aug2-ngt-gan_musan-snr15.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_18_9",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 218,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_18_9_aug2-ngt-gan_musan-snr15.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_18_9",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 219,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_18_9_aug2-ngt-gan_musan-snr15.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_18_9",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 220,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_46_1_aug2-ngt-agn_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_46_1",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 221,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_46_1_aug2-ngt-agn_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_46_1",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 222,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_46_1_aug2-ngt-agn_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_46_1",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 223,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_46_1_aug2-ngt-agn_musan-snr20.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_46_1",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 224,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_020_0001_16_aug2-drc_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_020_0001_16",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 225,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_020_0001_16_aug2-drc_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_020_0001_16",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 226,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_020_0001_16_aug2-drc_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_020_0001_16",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 227,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_020_0001_16_aug2-drc_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_020_0001_16",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 228,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_250_0001_7_orig_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_250_0001_7",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 229,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_250_0001_7_orig_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_250_0001_7",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 230,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_250_0001_7_orig_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_250_0001_7",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 231,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_250_0001_7_orig_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_250_0001_7",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 232,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_008_0001_19_orig_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_008_0001_19",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 233,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_008_0001_19_orig_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_008_0001_19",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 234,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_008_0001_19_orig_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_008_0001_19",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 235,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_008_0001_19_orig_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_008_0001_19",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 236,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_165_0001_8_orig_musan-snr20.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_165_0001_8",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 237,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_165_0001_8_orig_musan-snr20.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_165_0001_8",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 238,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_165_0001_8_orig_musan-snr20.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_165_0001_8",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 239,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_165_0001_8_orig_musan-snr20.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_165_0001_8",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 240,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_236_0001_11_orig_musan-snr20.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_236_0001_11",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 241,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_236_0001_11_orig_musan-snr20.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_236_0001_11",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 242,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_236_0001_11_orig_musan-snr20.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_236_0001_11",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 243,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_236_0001_11_orig_musan-snr20.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_236_0001_11",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 244,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_021_0001_3_orig_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_021_0001_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 245,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_021_0001_3_orig_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_021_0001_3",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 246,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_021_0001_3_orig_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_021_0001_3",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 247,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_021_0001_3_orig_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_021_0001_3",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 248,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_138_0001_1_aug1-agn_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_138_0001_1",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 249,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_138_0001_1_aug1-agn_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_138_0001_1",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 250,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_138_0001_1_aug1-agn_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_138_0001_1",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 251,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_138_0001_1_aug1-agn_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_138_0001_1",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 252,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211106_S_103_C_015_0001_22_aug2-ngt_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211106_s_103_c_015_0001_22",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 253,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211106_S_103_C_015_0001_22_aug2-ngt_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211106_s_103_c_015_0001_22",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 254,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211106_S_103_C_015_0001_22_aug2-ngt_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211106_s_103_c_015_0001_22",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 255,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211106_S_103_C_015_0001_22_aug2-ngt_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211106_s_103_c_015_0001_22",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 256,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_022_0001_2_aug2-shf_musan-snr15.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_022_0001_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 257,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_022_0001_2_aug2-shf_musan-snr15.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_022_0001_2",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 258,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_022_0001_2_aug2-shf_musan-snr15.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_022_0001_2",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 259,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_022_0001_2_aug2-shf_musan-snr15.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_022_0001_2",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 260,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_059_0001_14_aug2-drc_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_059_0001_14",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 261,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_059_0001_14_aug2-drc_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_059_0001_14",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 262,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_059_0001_14_aug2-drc_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_059_0001_14",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 263,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_059_0001_14_aug2-drc_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_059_0001_14",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 264,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_018_0001_11_aug1-agn_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_018_0001_11",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 265,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_018_0001_11_aug1-agn_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_018_0001_11",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 266,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_018_0001_11_aug1-agn_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_018_0001_11",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 267,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_018_0001_11_aug1-agn_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_018_0001_11",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 268,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211107_O_201_D_015_0001_20_aug2-gan-agn_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211107_o_201_d_015_0001_20",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 269,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211107_O_201_D_015_0001_20_aug2-gan-agn_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211107_o_201_d_015_0001_20",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 270,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211107_O_201_D_015_0001_20_aug2-gan-agn_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211107_o_201_d_015_0001_20",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 271,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211107_O_201_D_015_0001_20_aug2-gan-agn_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211107_o_201_d_015_0001_20",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 272,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_D_031_0001_19_aug1-drc-agn_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_d_031_0001_19",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 273,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_D_031_0001_19_aug1-drc-agn_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_d_031_0001_19",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 274,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_D_031_0001_19_aug1-drc-agn_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_d_031_0001_19",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 275,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_D_031_0001_19_aug1-drc-agn_musan-snr20.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_d_031_0001_19",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 276,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_017_0001_1_aug2-ngt-agn_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_017_0001_1",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 277,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_017_0001_1_aug2-ngt-agn_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_017_0001_1",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 278,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_017_0001_1_aug2-ngt-agn_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_017_0001_1",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 279,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_017_0001_1_aug2-ngt-agn_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_017_0001_1",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 280,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211112_O_201_C_060_0001_7_aug2-ngt_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211112_o_201_c_060_0001_7",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 281,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211112_O_201_C_060_0001_7_aug2-ngt_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211112_o_201_c_060_0001_7",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 282,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211112_O_201_C_060_0001_7_aug2-ngt_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211112_o_201_c_060_0001_7",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 283,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211112_O_201_C_060_0001_7_aug2-ngt_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211112_o_201_c_060_0001_7",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 284,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_044_0001_2_orig_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_044_0001_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 285,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_044_0001_2_orig_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_044_0001_2",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 286,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_044_0001_2_orig_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_044_0001_2",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 287,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_044_0001_2_orig_musan-snr10.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_044_0001_2",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 288,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-210930_W_102_D_500_0001_2_aug2-gan-agn_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_210930_w_102_d_500_0001_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 289,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-210930_W_102_D_500_0001_2_aug2-gan-agn_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_210930_w_102_d_500_0001_2",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 290,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-210930_W_102_D_500_0001_2_aug2-gan-agn_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_210930_w_102_d_500_0001_2",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 291,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-210930_W_102_D_500_0001_2_aug2-gan-agn_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_210930_w_102_d_500_0001_2",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 292,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211216_W_101_D_028_0001_11_aug1-shf-agn_musan-snr10.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211216_w_101_d_028_0001_11",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 293,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211216_W_101_D_028_0001_11_aug1-shf-agn_musan-snr10.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211216_w_101_d_028_0001_11",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 294,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211216_W_101_D_028_0001_11_aug1-shf-agn_musan-snr10.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211216_w_101_d_028_0001_11",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 295,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211216_W_101_D_028_0001_11_aug1-shf-agn_musan-snr10.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211216_w_101_d_028_0001_11",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 296,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_265_0001_4_aug2-drc_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_265_0001_4",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 297,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_265_0001_4_aug2-drc_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_265_0001_4",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 298,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_265_0001_4_aug2-drc_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_265_0001_4",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 299,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_265_0001_4_aug2-drc_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_265_0001_4",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 300,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_036_0001_3_orig_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_036_0001_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 301,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_036_0001_3_orig_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_036_0001_3",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 302,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_036_0001_3_orig_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_036_0001_3",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 303,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_036_0001_3_orig_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_036_0001_3",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 304,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_034_0001_5_aug2-shf_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_034_0001_5",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 305,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_034_0001_5_aug2-shf_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_034_0001_5",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 306,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_034_0001_5_aug2-shf_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_034_0001_5",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 307,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211104_W_101_D_034_0001_5_aug2-shf_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211104_w_101_d_034_0001_5",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 308,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211216_W_101_D_006_0001_7_aug1-ngt_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211216_w_101_d_006_0001_7",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 309,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211216_W_101_D_006_0001_7_aug1-ngt_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211216_w_101_d_006_0001_7",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 310,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211216_W_101_D_006_0001_7_aug1-ngt_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211216_w_101_d_006_0001_7",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 311,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211216_W_101_D_006_0001_7_aug1-ngt_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211216_w_101_d_006_0001_7",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 312,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211109_W_102_D_068_0001_5_orig_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211109_w_102_d_068_0001_5",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 313,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211109_W_102_D_068_0001_5_orig_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211109_w_102_d_068_0001_5",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 314,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211109_W_102_D_068_0001_5_orig_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211109_w_102_d_068_0001_5",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 315,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211109_W_102_D_068_0001_5_orig_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211109_w_102_d_068_0001_5",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 316,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211024_W_101_D_088_0001_0_orig_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211024_w_101_d_088_0001_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 317,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211024_W_101_D_088_0001_0_orig_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211024_w_101_d_088_0001_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 318,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211024_W_101_D_088_0001_0_orig_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211024_w_101_d_088_0001_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 319,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211024_W_101_D_088_0001_0_orig_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211024_w_101_d_088_0001_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 320,
+      "path": "D:\\Sound_Dataset_aug\\knock\\happiness_32_0_orig_musan-snr20.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "happiness_32_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 321,
+      "path": "D:\\Sound_Dataset_aug\\knock\\happiness_32_0_orig_musan-snr20.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "happiness_32_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 322,
+      "path": "D:\\Sound_Dataset_aug\\knock\\happiness_32_0_orig_musan-snr20.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "happiness_32_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 323,
+      "path": "D:\\Sound_Dataset_aug\\knock\\happiness_32_0_orig_musan-snr20.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "happiness_32_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 324,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_3-180147-A-30_2_aug1-drc_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_3_180147_a_30_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 325,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_3-180147-A-30_2_aug1-drc_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_3_180147_a_30_2",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 326,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_3-180147-A-30_2_aug1-drc_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_3_180147_a_30_2",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 327,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_3-180147-A-30_2_aug1-drc_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_3_180147_a_30_2",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 328,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_5-251426-A-30_1_aug1-shf-ngt_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_5_251426_a_30_1",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 329,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_5-251426-A-30_1_aug1-shf-ngt_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_5_251426_a_30_1",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 330,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_5-251426-A-30_1_aug1-shf-ngt_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_5_251426_a_30_1",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 331,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_5-251426-A-30_1_aug1-shf-ngt_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_5_251426_a_30_1",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 332,
+      "path": "D:\\Sound_Dataset_aug\\knock\\happiness_0_0_aug1-shf-drc_musan-snr20.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "happiness_0_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 333,
+      "path": "D:\\Sound_Dataset_aug\\knock\\happiness_0_0_aug1-shf-drc_musan-snr20.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "happiness_0_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 334,
+      "path": "D:\\Sound_Dataset_aug\\knock\\happiness_0_0_aug1-shf-drc_musan-snr20.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "happiness_0_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 335,
+      "path": "D:\\Sound_Dataset_aug\\knock\\happiness_0_0_aug1-shf-drc_musan-snr20.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "happiness_0_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 336,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_3-170574-A-30_0_aug1-ngt_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_3_170574_a_30_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 337,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_3-170574-A-30_0_aug1-ngt_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_3_170574_a_30_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 338,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_3-170574-A-30_0_aug1-ngt_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_3_170574_a_30_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 339,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_3-170574-A-30_0_aug1-ngt_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_3_170574_a_30_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 340,
+      "path": "D:\\Sound_Dataset_aug\\knock\\sadness_24_0_aug1-shf-gan_musan-snr10.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "sadness_24_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 341,
+      "path": "D:\\Sound_Dataset_aug\\knock\\sadness_24_0_aug1-shf-gan_musan-snr10.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "sadness_24_0",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 342,
+      "path": "D:\\Sound_Dataset_aug\\knock\\sadness_24_0_aug1-shf-gan_musan-snr10.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "sadness_24_0",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 343,
+      "path": "D:\\Sound_Dataset_aug\\knock\\sadness_24_0_aug1-shf-gan_musan-snr10.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "sadness_24_0",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 344,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_2-134915-A-30_1_aug2-shf_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_2_134915_a_30_1",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 345,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_2-134915-A-30_1_aug2-shf_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_2_134915_a_30_1",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 346,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_2-134915-A-30_1_aug2-shf_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_2_134915_a_30_1",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 347,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_2-134915-A-30_1_aug2-shf_musan-snr15.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_2_134915_a_30_1",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 348,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_4-261068-A-30_3_aug1-drc_musan-snr10.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_4_261068_a_30_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 349,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_4-261068-A-30_3_aug1-drc_musan-snr10.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_4_261068_a_30_3",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 350,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_4-261068-A-30_3_aug1-drc_musan-snr10.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_4_261068_a_30_3",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 351,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_4-261068-A-30_3_aug1-drc_musan-snr10.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_4_261068_a_30_3",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 352,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211027_H_303_C_009_0001_1_orig_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211027_h_303_c_009_0001_1",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 353,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211027_H_303_C_009_0001_1_orig_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211027_h_303_c_009_0001_1",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 354,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211027_H_303_C_009_0001_1_orig_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211027_h_303_c_009_0001_1",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 355,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211027_H_303_C_009_0001_1_orig_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211027_h_303_c_009_0001_1",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 356,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211020_H_303_C_006_0001_11_aug2-agn_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211020_h_303_c_006_0001_11",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 357,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211020_H_303_C_006_0001_11_aug2-agn_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211020_h_303_c_006_0001_11",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 358,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211020_H_303_C_006_0001_11_aug2-agn_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211020_h_303_c_006_0001_11",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 359,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211020_H_303_C_006_0001_11_aug2-agn_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211020_h_303_c_006_0001_11",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 360,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211106_H_303_C_005_0001_17_orig_musan-snr15.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211106_h_303_c_005_0001_17",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 361,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211106_H_303_C_005_0001_17_orig_musan-snr15.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211106_h_303_c_005_0001_17",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 362,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211106_H_303_C_005_0001_17_orig_musan-snr15.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211106_h_303_c_005_0001_17",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 363,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211106_H_303_C_005_0001_17_orig_musan-snr15.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211106_h_303_c_005_0001_17",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 364,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_003_0001_23_aug2-gan_musan-snr20.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_003_0001_23",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 365,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_003_0001_23_aug2-gan_musan-snr20.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_003_0001_23",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 366,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_003_0001_23_aug2-gan_musan-snr20.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_003_0001_23",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 367,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_003_0001_23_aug2-gan_musan-snr20.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_003_0001_23",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 368,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_018_0001_14_orig_musan-snr15.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_018_0001_14",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 369,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_018_0001_14_orig_musan-snr15.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_018_0001_14",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 370,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_018_0001_14_orig_musan-snr15.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_018_0001_14",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 371,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_018_0001_14_orig_musan-snr15.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_018_0001_14",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 372,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211023_H_303_C_003_0001_1_aug1-shf-drc_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211023_h_303_c_003_0001_1",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 373,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211023_H_303_C_003_0001_1_aug1-shf-drc_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211023_h_303_c_003_0001_1",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 374,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211023_H_303_C_003_0001_1_aug1-shf-drc_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211023_h_303_c_003_0001_1",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 375,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211023_H_303_C_003_0001_1_aug1-shf-drc_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211023_h_303_c_003_0001_1",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 376,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_003_0001_8_aug2-drc_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_003_0001_8",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 377,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_003_0001_8_aug2-drc_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_003_0001_8",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 378,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_003_0001_8_aug2-drc_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_003_0001_8",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 379,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211107_H_303_C_003_0001_8_aug2-drc_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211107_h_303_c_003_0001_8",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 380,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211106_H_303_C_007_0001_2_orig_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211106_h_303_c_007_0001_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 381,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211106_H_303_C_007_0001_2_orig_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211106_h_303_c_007_0001_2",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 382,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211106_H_303_C_007_0001_2_orig_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211106_h_303_c_007_0001_2",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 383,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211106_H_303_C_007_0001_2_orig_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211106_h_303_c_007_0001_2",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 384,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211124_S_101_L_009_0001_27_orig_musan-snr20.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211124_s_101_l_009_0001_27",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 385,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211124_S_101_L_009_0001_27_orig_musan-snr20.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211124_s_101_l_009_0001_27",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 386,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211124_S_101_L_009_0001_27_orig_musan-snr20.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211124_s_101_l_009_0001_27",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 387,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211124_S_101_L_009_0001_27_orig_musan-snr20.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211124_s_101_l_009_0001_27",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 388,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211115_S_101_C_022_0001_25_aug1-drc_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211115_s_101_c_022_0001_25",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 389,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211115_S_101_C_022_0001_25_aug1-drc_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211115_s_101_c_022_0001_25",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 390,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211115_S_101_C_022_0001_25_aug1-drc_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211115_s_101_c_022_0001_25",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 391,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211115_S_101_C_022_0001_25_aug1-drc_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211115_s_101_c_022_0001_25",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 392,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211127_S_102_C_065_0001_2_aug1-gan-agn_musan-snr10.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211127_s_102_c_065_0001_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 393,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211127_S_102_C_065_0001_2_aug1-gan-agn_musan-snr10.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211127_s_102_c_065_0001_2",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 394,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211127_S_102_C_065_0001_2_aug1-gan-agn_musan-snr10.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211127_s_102_c_065_0001_2",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 395,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211127_S_102_C_065_0001_2_aug1-gan-agn_musan-snr10.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211127_s_102_c_065_0001_2",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 396,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211127_S_102_C_013_0001_12_aug1-drc_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211127_s_102_c_013_0001_12",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 397,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211127_S_102_C_013_0001_12_aug1-drc_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211127_s_102_c_013_0001_12",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 398,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211127_S_102_C_013_0001_12_aug1-drc_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211127_s_102_c_013_0001_12",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 399,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211127_S_102_C_013_0001_12_aug1-drc_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211127_s_102_c_013_0001_12",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 400,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211113_S_103_D_017_0001_21_orig_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211113_s_103_d_017_0001_21",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 401,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211113_S_103_D_017_0001_21_orig_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211113_s_103_d_017_0001_21",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 402,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211113_S_103_D_017_0001_21_orig_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211113_s_103_d_017_0001_21",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 403,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211113_S_103_D_017_0001_21_orig_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211113_s_103_d_017_0001_21",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 404,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211024_S_101_C_041_0001_8_aug2-agn_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211024_s_101_c_041_0001_8",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 405,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211024_S_101_C_041_0001_8_aug2-agn_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211024_s_101_c_041_0001_8",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 406,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211024_S_101_C_041_0001_8_aug2-agn_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211024_s_101_c_041_0001_8",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 407,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211024_S_101_C_041_0001_8_aug2-agn_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211024_s_101_c_041_0001_8",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 408,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211115_S_101_C_002_0001_8_aug2-ngt-gan_musan-snr20.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211115_s_101_c_002_0001_8",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 409,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211115_S_101_C_002_0001_8_aug2-ngt-gan_musan-snr20.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211115_s_101_c_002_0001_8",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 410,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211115_S_101_C_002_0001_8_aug2-ngt-gan_musan-snr20.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211115_s_101_c_002_0001_8",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 411,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211115_S_101_C_002_0001_8_aug2-ngt-gan_musan-snr20.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211115_s_101_c_002_0001_8",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 412,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211014_S_103_C_259_0001_10_aug2-shf_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211014_s_103_c_259_0001_10",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 413,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211014_S_103_C_259_0001_10_aug2-shf_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211014_s_103_c_259_0001_10",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 414,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211014_S_103_C_259_0001_10_aug2-shf_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211014_s_103_c_259_0001_10",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 415,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211014_S_103_C_259_0001_10_aug2-shf_musan-snr15.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211014_s_103_c_259_0001_10",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 416,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211129_L_307_C_010_0001_25_aug2-shf-agn_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211129_l_307_c_010_0001_25",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 417,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211129_L_307_C_010_0001_25_aug2-shf-agn_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211129_l_307_c_010_0001_25",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 418,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211129_L_307_C_010_0001_25_aug2-shf-agn_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211129_l_307_c_010_0001_25",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 419,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211129_L_307_C_010_0001_25_aug2-shf-agn_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211129_l_307_c_010_0001_25",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 420,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_306_C_006_0001_8_aug1-drc_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_306_c_006_0001_8",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 421,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_306_C_006_0001_8_aug1-drc_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_306_c_006_0001_8",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 422,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_306_C_006_0001_8_aug1-drc_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_306_c_006_0001_8",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 423,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_306_C_006_0001_8_aug1-drc_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_306_c_006_0001_8",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 424,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211124_L_307_C_023_0001_13_aug1-shf-ngt_musan-snr15.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211124_l_307_c_023_0001_13",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 425,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211124_L_307_C_023_0001_13_aug1-shf-ngt_musan-snr15.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211124_l_307_c_023_0001_13",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 426,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211124_L_307_C_023_0001_13_aug1-shf-ngt_musan-snr15.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211124_l_307_c_023_0001_13",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 427,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211124_L_307_C_023_0001_13_aug1-shf-ngt_musan-snr15.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211124_l_307_c_023_0001_13",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 428,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_307_C_011_0001_15_orig_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_307_c_011_0001_15",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 429,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_307_C_011_0001_15_orig_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_307_c_011_0001_15",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 430,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_307_C_011_0001_15_orig_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_307_c_011_0001_15",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 431,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_307_C_011_0001_15_orig_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_307_c_011_0001_15",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 432,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211104_L_306_C_005_0001_8_orig_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211104_l_306_c_005_0001_8",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 433,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211104_L_306_C_005_0001_8_orig_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211104_l_306_c_005_0001_8",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 434,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211104_L_306_C_005_0001_8_orig_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211104_l_306_c_005_0001_8",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 435,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211104_L_306_C_005_0001_8_orig_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211104_l_306_c_005_0001_8",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 436,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211029_L_306_C_007_0001_25_aug1-gan-agn_musan-snr20.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211029_l_306_c_007_0001_25",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 437,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211029_L_306_C_007_0001_25_aug1-gan-agn_musan-snr20.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211029_l_306_c_007_0001_25",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 438,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211029_L_306_C_007_0001_25_aug1-gan-agn_musan-snr20.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211029_l_306_c_007_0001_25",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 439,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211029_L_306_C_007_0001_25_aug1-gan-agn_musan-snr20.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211029_l_306_c_007_0001_25",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 440,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_307_C_017_0001_18_aug2-shf-ngt_musan-snr20.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_307_c_017_0001_18",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 441,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_307_C_017_0001_18_aug2-shf-ngt_musan-snr20.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_307_c_017_0001_18",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 442,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_307_C_017_0001_18_aug2-shf-ngt_musan-snr20.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_307_c_017_0001_18",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 443,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211113_L_307_C_017_0001_18_aug2-shf-ngt_musan-snr20.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211113_l_307_c_017_0001_18",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    },
+    {
+      "episode_id": 444,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211106_L_307_C_002_0001_2_aug1-shf-agn_musan-snr15.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211106_l_307_c_002_0001_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 445,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211106_L_307_C_002_0001_2_aug1-shf-agn_musan-snr15.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211106_l_307_c_002_0001_2",
+      "phase_offset_seconds": 0.5,
+      "clip_insert_seconds": 2.5
+    },
+    {
+      "episode_id": 446,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211106_L_307_C_002_0001_2_aug1-shf-agn_musan-snr15.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211106_l_307_c_002_0001_2",
+      "phase_offset_seconds": 1.0,
+      "clip_insert_seconds": 3.0
+    },
+    {
+      "episode_id": 447,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211106_L_307_C_002_0001_2_aug1-shf-agn_musan-snr15.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211106_l_307_c_002_0001_2",
+      "phase_offset_seconds": 1.5,
+      "clip_insert_seconds": 3.5
+    }
+  ]
+}
