@@ -1,0 +1,23 @@
+{
+  "episodes": 14,
+  "class_counts": {
+    "baby_cry": 1,
+    "background": 1,
+    "bicycle": 1,
+    "car_horn": 1,
+    "cat_meow": 1,
+    "cry": 1,
+    "dog_bark": 1,
+    "fire_alarm": 1,
+    "glass_breaking": 1,
+    "gun": 1,
+    "knock": 1,
+    "scream": 1,
+    "siren": 1,
+    "water": 1
+  },
+  "original_metadata_sha256": "90f87756883b22de10049df00cc1d68d8775a16295a5a687ab3ec75d255b4286",
+  "checkpoint_files_exist": true,
+  "calibration_group_overlap": 0,
+  "scope": "Preparation only; audio hashes checked, no preprocessing or model inference executed."
+}

@@ -1,0 +1,17 @@
+{
+  "scope": "C:\\Users\\PLASS\\Documents\\Codex\\2026-10-16\\r\\outputs\\audio-policy-team-share\\results",
+  "removed_files": 29,
+  "reasons": {
+    "regenerable_trace": 9,
+    "exact_duplicate_input": 11,
+    "exact_duplicate_reference": 6,
+    "exact_duplicate_static_comparison": 3
+  },
+  "retained_original_result_files_unchanged": 75,
+  "original_source_files_unchanged": 29,
+  "canonical_duplicate_hash_checks": "passed",
+  "adaptive_fifo_rows_reproduced": 12,
+  "trace_regeneration": "passed",
+  "before_mib": 59.514530181884766,
+  "after_mib": 9.38003158569336
+}

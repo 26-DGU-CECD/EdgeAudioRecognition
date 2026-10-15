@@ -1,0 +1,876 @@
+{
+  "project_root": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF",
+  "metadata_path": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\metadata.csv",
+  "metadata_sha256": "90f87756883b22de10049df00cc1d68d8775a16295a5a687ab3ec75d255b4286",
+  "old_dataset_root": "/home/plass/YAMNet/aug_data",
+  "metadata_rows": 238388,
+  "split_counts": {
+    "train": 190703,
+    "test": 23838,
+    "val": 23847
+  },
+  "class_names": [
+    "baby_cry",
+    "background",
+    "bicycle",
+    "car_horn",
+    "cat_meow",
+    "cry",
+    "dog_bark",
+    "fire_alarm",
+    "glass_breaking",
+    "gun",
+    "knock",
+    "scream",
+    "siren",
+    "water"
+  ],
+  "original_metadata_unchanged": true,
+  "roots": [
+    {
+      "root": "C:\\Users\\PLASS\\Desktop\\alarm_aug_dataset",
+      "audio_file_count": 5711,
+      "top_folder_audio_counts": {
+        "경보": 2189,
+        "물소리": 238,
+        "비명": 94,
+        "울음": 186,
+        "유리깨지는소리": 482,
+        "자전거": 81,
+        "총": 1670,
+        "화재경보": 771
+      },
+      "traversal_errors": [],
+      "metadata_clips": 238388,
+      "relative_path_matches": 0,
+      "unique_basename_matches": 0,
+      "ambiguous_basename_matches": 0,
+      "by_label": {
+        "baby_cry": {
+          "metadata_clips": 8424,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "background": {
+          "metadata_clips": 46639,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "bicycle": {
+          "metadata_clips": 11241,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "car_horn": {
+          "metadata_clips": 2313,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "cat_meow": {
+          "metadata_clips": 8316,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "cry": {
+          "metadata_clips": 19188,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "dog_bark": {
+          "metadata_clips": 3915,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "fire_alarm": {
+          "metadata_clips": 18450,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "glass_breaking": {
+          "metadata_clips": 36909,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "gun": {
+          "metadata_clips": 11012,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "knock": {
+          "metadata_clips": 1251,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "scream": {
+          "metadata_clips": 7371,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "siren": {
+          "metadata_clips": 43217,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        },
+        "water": {
+          "metadata_clips": 20142,
+          "relative_path_matches": 0,
+          "unique_basename_matches": 0,
+          "ambiguous_basename_matches": 0
+        }
+      },
+      "missing_examples": [
+        {
+          "label": "baby_cry",
+          "original_path": "/home/plass/YAMNet/aug_data/baby_cry/03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug1-ngt-agn_musan-snr10.wav",
+          "expected_local_path": "C:\\Users\\PLASS\\Desktop\\alarm_aug_dataset\\baby_cry\\03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug1-ngt-agn_musan-snr10.wav"
+        },
+        {
+          "label": "baby_cry",
+          "original_path": "/home/plass/YAMNet/aug_data/baby_cry/03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug1-ngt-agn_musan-snr15.wav",
+          "expected_local_path": "C:\\Users\\PLASS\\Desktop\\alarm_aug_dataset\\baby_cry\\03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug1-ngt-agn_musan-snr15.wav"
+        },
+        {
+          "label": "baby_cry",
+          "original_path": "/home/plass/YAMNet/aug_data/baby_cry/03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug1-ngt-agn_musan-snr20.wav",
+          "expected_local_path": "C:\\Users\\PLASS\\Desktop\\alarm_aug_dataset\\baby_cry\\03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug1-ngt-agn_musan-snr20.wav"
+        },
+        {
+          "label": "baby_cry",
+          "original_path": "/home/plass/YAMNet/aug_data/baby_cry/03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug2-shf-drc_musan-snr10.wav",
+          "expected_local_path": "C:\\Users\\PLASS\\Desktop\\alarm_aug_dataset\\baby_cry\\03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug2-shf-drc_musan-snr10.wav"
+        },
+        {
+          "label": "baby_cry",
+          "original_path": "/home/plass/YAMNet/aug_data/baby_cry/03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug2-shf-drc_musan-snr15.wav",
+          "expected_local_path": "C:\\Users\\PLASS\\Desktop\\alarm_aug_dataset\\baby_cry\\03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug2-shf-drc_musan-snr15.wav"
+        }
+      ],
+      "filename_only_mapping_examples": [],
+      "dataset_labels": {
+        "columns": [
+          "file_path",
+          "label"
+        ],
+        "rows": 3240,
+        "label_counts": {
+          "경보": 2189,
+          "비명": 94,
+          "울음": 186,
+          "화재경보": 771
+        },
+        "declared_audio_paths_found": 3240,
+        "sha256": "b9c92d77e9d8f5c64023a2c7a922e624c17b565c635e937e8a836b7181b5bf57"
+      },
+      "header_samples": [
+        {
+          "relative_path": "경보/S-210915_S_101_D_002_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 906304,
+          "duration_seconds": 28.322,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.35028076171875
+        },
+        {
+          "relative_path": "경보/S-211007_S_101_D_001_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 180703,
+          "duration_seconds": 5.64696875,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.99359130859375
+        },
+        {
+          "relative_path": "물소리/S-210821_L_306_L_032_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 306944,
+          "duration_seconds": 9.592,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.2332763671875
+        },
+        {
+          "relative_path": "물소리/S-210821_L_306_L_033_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 271007,
+          "duration_seconds": 8.46896875,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 3.0517578125e-05
+        },
+        {
+          "relative_path": "비명/S-211019_H_303_C_009_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 154815,
+          "duration_seconds": 4.83796875,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.806488037109375
+        },
+        {
+          "relative_path": "비명/S-211019_H_303_C_010_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 195775,
+          "duration_seconds": 6.11796875,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.11932373046875
+        },
+        {
+          "relative_path": "울음/S-211017_H_302_C_007_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 329503,
+          "duration_seconds": 10.29696875,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.367889404296875
+        },
+        {
+          "relative_path": "울음/S-211017_H_302_C_008_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 496704,
+          "duration_seconds": 15.522,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.498565673828125
+        },
+        {
+          "relative_path": "유리깨지는소리/S-211016_O_201_D_001_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 865344,
+          "duration_seconds": 27.042,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.292510986328125
+        },
+        {
+          "relative_path": "유리깨지는소리/S-211016_O_201_D_002_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 739936,
+          "duration_seconds": 23.123,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.996673583984375
+        },
+        {
+          "relative_path": "자전거/S-211016_S_202_D_004_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 901279,
+          "duration_seconds": 28.16496875,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.958831787109375
+        },
+        {
+          "relative_path": "자전거/S-211016_S_202_D_005_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 908800,
+          "duration_seconds": 28.4,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.772613525390625
+        },
+        {
+          "relative_path": "총/S-210908_W_102_D_039_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 737439,
+          "duration_seconds": 23.04496875,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.83306884765625
+        },
+        {
+          "relative_path": "총/S-210908_W_102_D_040_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 818527,
+          "duration_seconds": 25.57896875,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.826995849609375
+        },
+        {
+          "relative_path": "화재경보/S-211014_S_103_C_125_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 479136,
+          "duration_seconds": 14.973,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.33856201171875
+        },
+        {
+          "relative_path": "화재경보/S-211014_S_103_C_126_0001.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 1,
+          "channels": 1,
+          "sample_rate": 32000,
+          "frames": 293567,
+          "duration_seconds": 9.17396875,
+          "bits_per_sample": 16,
+          "sampled_frames": 64000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.325836181640625
+        }
+      ],
+      "header_scope": "At most two lexicographically first audio files per top folder. RIFF header plus first two seconds of supported PCM/float samples; no full-file decode or model preprocessing."
+    },
+    {
+      "root": "D:\\Sound_Dataset_aug",
+      "audio_file_count": 238388,
+      "top_folder_audio_counts": {
+        "baby_cry": 8424,
+        "background": 46639,
+        "bicycle": 11241,
+        "car_horn": 2313,
+        "cat_meow": 8316,
+        "cry": 19188,
+        "dog_bark": 3915,
+        "fire_alarm": 18450,
+        "glass_breaking": 36909,
+        "gun": 11012,
+        "knock": 1251,
+        "scream": 7371,
+        "siren": 43217,
+        "water": 20142
+      },
+      "traversal_errors": [],
+      "metadata_clips": 238388,
+      "relative_path_matches": 238388,
+      "unique_basename_matches": 224618,
+      "ambiguous_basename_matches": 13770,
+      "by_label": {
+        "baby_cry": {
+          "metadata_clips": 8424,
+          "relative_path_matches": 8424,
+          "unique_basename_matches": 8424,
+          "ambiguous_basename_matches": 0
+        },
+        "background": {
+          "metadata_clips": 46639,
+          "relative_path_matches": 46639,
+          "unique_basename_matches": 45204,
+          "ambiguous_basename_matches": 1435
+        },
+        "bicycle": {
+          "metadata_clips": 11241,
+          "relative_path_matches": 11241,
+          "unique_basename_matches": 11241,
+          "ambiguous_basename_matches": 0
+        },
+        "car_horn": {
+          "metadata_clips": 2313,
+          "relative_path_matches": 2313,
+          "unique_basename_matches": 2313,
+          "ambiguous_basename_matches": 0
+        },
+        "cat_meow": {
+          "metadata_clips": 8316,
+          "relative_path_matches": 8316,
+          "unique_basename_matches": 8316,
+          "ambiguous_basename_matches": 0
+        },
+        "cry": {
+          "metadata_clips": 19188,
+          "relative_path_matches": 19188,
+          "unique_basename_matches": 19188,
+          "ambiguous_basename_matches": 0
+        },
+        "dog_bark": {
+          "metadata_clips": 3915,
+          "relative_path_matches": 3915,
+          "unique_basename_matches": 3915,
+          "ambiguous_basename_matches": 0
+        },
+        "fire_alarm": {
+          "metadata_clips": 18450,
+          "relative_path_matches": 18450,
+          "unique_basename_matches": 11565,
+          "ambiguous_basename_matches": 6885
+        },
+        "glass_breaking": {
+          "metadata_clips": 36909,
+          "relative_path_matches": 36909,
+          "unique_basename_matches": 36909,
+          "ambiguous_basename_matches": 0
+        },
+        "gun": {
+          "metadata_clips": 11012,
+          "relative_path_matches": 11012,
+          "unique_basename_matches": 11012,
+          "ambiguous_basename_matches": 0
+        },
+        "knock": {
+          "metadata_clips": 1251,
+          "relative_path_matches": 1251,
+          "unique_basename_matches": 1251,
+          "ambiguous_basename_matches": 0
+        },
+        "scream": {
+          "metadata_clips": 7371,
+          "relative_path_matches": 7371,
+          "unique_basename_matches": 7371,
+          "ambiguous_basename_matches": 0
+        },
+        "siren": {
+          "metadata_clips": 43217,
+          "relative_path_matches": 43217,
+          "unique_basename_matches": 37767,
+          "ambiguous_basename_matches": 5450
+        },
+        "water": {
+          "metadata_clips": 20142,
+          "relative_path_matches": 20142,
+          "unique_basename_matches": 20142,
+          "ambiguous_basename_matches": 0
+        }
+      },
+      "missing_examples": [],
+      "filename_only_mapping_examples": [],
+      "dataset_labels": null,
+      "header_samples": [
+        {
+          "relative_path": "baby_cry/03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug1-ngt-agn_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.6683521866798401
+        },
+        {
+          "relative_path": "baby_cry/03ADDCFB-354E-416D-BF32-260CF47F7060-1433658024-1.1-f-04-ti_0_aug1-ngt-agn_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.5762296915054321
+        },
+        {
+          "relative_path": "background/S-210915_S_101_D_002_0001_0_aug1-gan_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.17372827231884003
+        },
+        {
+          "relative_path": "background/S-210915_S_101_D_002_0001_0_aug1-gan_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.1806361824274063
+        },
+        {
+          "relative_path": "bicycle/S-211016_S_202_D_004_0001_0_aug1-drc-gan_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.6361804604530334
+        },
+        {
+          "relative_path": "bicycle/S-211016_S_202_D_004_0001_0_aug1-drc-gan_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.6373898386955261
+        },
+        {
+          "relative_path": "car_horn/1.자동차_88221_1_0_aug1-gan-agn_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.36363083124160767
+        },
+        {
+          "relative_path": "car_horn/1.자동차_88221_1_0_aug1-gan-agn_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.19961979985237122
+        },
+        {
+          "relative_path": "cat_meow/ESC50_1-79113-A-5_0_aug1-ngt_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.10385638475418091
+        },
+        {
+          "relative_path": "cat_meow/ESC50_1-79113-A-5_0_aug1-ngt_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.1483670175075531
+        },
+        {
+          "relative_path": "cry/S-211017_H_302_C_007_0001_0_aug1-ngt-agn_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.38658013939857483
+        },
+        {
+          "relative_path": "cry/S-211017_H_302_C_007_0001_0_aug1-ngt-agn_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.3738280236721039
+        },
+        {
+          "relative_path": "dog_bark/ESC50_1-32318-A-0_0_aug1-drc_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 1.0
+        },
+        {
+          "relative_path": "dog_bark/ESC50_1-32318-A-0_0_aug1-drc_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 1.0
+        },
+        {
+          "relative_path": "fire_alarm/S-211014_S_103_C_125_0001_0_aug1-drc-gan_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.35186395049095154
+        },
+        {
+          "relative_path": "fire_alarm/S-211014_S_103_C_125_0001_0_aug1-drc-gan_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.2513817250728607
+        },
+        {
+          "relative_path": "glass_breaking/S-211024_O_201_C_001_0001_0_aug1-gan_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 1.0
+        },
+        {
+          "relative_path": "glass_breaking/S-211024_O_201_C_001_0001_0_aug1-gan_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 1.0
+        },
+        {
+          "relative_path": "gun/S-210908_W_102_D_083_0001_0_aug1-shf-gan_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 1.0
+        },
+        {
+          "relative_path": "gun/S-210908_W_102_D_083_0001_0_aug1-shf-gan_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 1.0
+        },
+        {
+          "relative_path": "knock/ESC50_1-101336-A-30_0_aug1-shf-drc_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.48002856969833374
+        },
+        {
+          "relative_path": "knock/ESC50_1-101336-A-30_0_aug1-shf-drc_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.48182213306427
+        },
+        {
+          "relative_path": "scream/S-211019_H_303_C_009_0001_0_aug1-drc_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.4528729021549225
+        },
+        {
+          "relative_path": "scream/S-211019_H_303_C_009_0001_0_aug1-drc_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.4379584491252899
+        },
+        {
+          "relative_path": "siren/S-210915_S_101_D_002_0001_18_aug2-gan_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.429434597492218
+        },
+        {
+          "relative_path": "siren/S-211014_S_101_C_003_0001_13_orig_musan-snr20.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.28386223316192627
+        },
+        {
+          "relative_path": "water/S-210821_L_306_L_035_0001_0_aug1-ngt-gan_musan-snr10.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.20593582093715668
+        },
+        {
+          "relative_path": "water/S-210821_L_306_L_035_0001_0_aug1-ngt-gan_musan-snr15.wav",
+          "status": "wav_header_and_first_2s_samples_read",
+          "format_code": 3,
+          "channels": 1,
+          "sample_rate": 16000,
+          "frames": 32000,
+          "duration_seconds": 2.0,
+          "bits_per_sample": 32,
+          "sampled_frames": 32000,
+          "samples_all_finite": true,
+          "sample_abs_peak": 0.20015831291675568
+        }
+      ],
+      "header_scope": "At most two lexicographically first audio files per top folder. RIFF header plus first two seconds of supported PCM/float samples; no full-file decode or model preprocessing."
+    }
+  ],
+  "limitations": [
+    "Matching paths or filenames do not establish content identity with the historical training audio.",
+    "No relabeling, copying, training, new model inference, or checkpoint changes were performed.",
+    "Sampled files do not establish full-dataset decode health or event onset annotations."
+  ]
+}

@@ -1,0 +1,3 @@
+path,label,split,source_class,source_status,group_id
+/path/to/dataset/train/baby_cry/source_a_orig.wav,baby_cry,train,baby_cry,target_label,source_a
+/path/to/dataset/train/background/source_a_aug_03.wav,background,train,baby_cry,token_match,source_a

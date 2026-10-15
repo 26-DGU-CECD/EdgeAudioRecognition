@@ -1,0 +1,7 @@
+{
+  "dataset_root": "D:/Sound_Dataset_aug",
+  "metadata_original_root": "/home/plass/YAMNet/aug_data",
+  "project_directory": "project",
+  "policy_directory": "src/policy_v1_4",
+  "new_results_directory": ".local/runs"
+}

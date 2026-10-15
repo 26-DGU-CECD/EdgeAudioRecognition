@@ -1,0 +1,31 @@
+{
+  "version": "1.4",
+  "local_date": "2026-10-16",
+  "tests_passed": 42,
+  "implemented": [
+    "F0_owner_max",
+    "F1_mean_soft_vote",
+    "F2_classwise_weighted_soft_vote",
+    "R0_R1_R2_recall_backoff",
+    "I0_I1_I2_I3_adaptive",
+    "T0_T1_T2_confirmation",
+    "A1_partial_vote_certificate",
+    "asynchronous_callback_adapter",
+    "adaptive_audio_buffer"
+  ],
+  "run_on_supplied_predictions": "9 static fusion/acceptance reference comparisons",
+  "not_run": [
+    "original_audio_new_inference",
+    "shared_GPU_live_workers",
+    "Raspberry_Pi_5_or_Orin_Nano_latency"
+  ],
+  "not_implemented": [
+    "policy_NN_RL",
+    "model_internal_early_exits",
+    "short_context_training",
+    "formal_risk_control",
+    "worker_cancellation",
+    "microphone_UI_integration"
+  ],
+  "historical_best_run_verified": false
+}

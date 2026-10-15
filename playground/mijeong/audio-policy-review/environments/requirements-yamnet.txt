@@ -1,0 +1,9 @@
+# Windows native: TensorFlow CPU. Linux: base TensorFlow requirements.
+# Do not install in the PyTorch environment.
+-r requirements-common.txt
+# TensorFlow Hub 0.16.1 imports pkg_resources; preserve the source pin.
+setuptools==81.0.0
+tensorflow==2.20.0
+tensorflow-hub==0.16.1
+# Pin Hub's dependency to the same TensorFlow minor series.
+tf-keras==2.20.1

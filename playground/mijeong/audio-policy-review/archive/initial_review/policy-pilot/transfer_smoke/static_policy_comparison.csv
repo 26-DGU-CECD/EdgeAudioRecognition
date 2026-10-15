@@ -1,0 +1,4 @@
+﻿policy,evaluation_clips,accepted,accepted_precision,foreground_correct_accept_rate,foreground_accept_rate,background_false_accept_rate,rejected_foreground,experiment_id,policy_parameter_mode
+O0,11882,9771,0.8365571589397196,0.8476615161256871,0.9729337343150471,0.1737382760160786,261,R0_predefined_nonexpert_070,frozen_transfer
+O1,11882,6690,0.9645739910313902,0.669190086072799,0.6819454526599605,0.05091558731576597,3067,R0_predefined_nonexpert_070,frozen_transfer
+O2,11882,6991,0.9530825346874553,0.6909675412216115,0.7125375920356736,0.053595355069227336,2772,R0_predefined_nonexpert_070,frozen_transfer

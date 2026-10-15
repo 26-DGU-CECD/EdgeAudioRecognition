@@ -1,0 +1,31 @@
+{
+  "experiment_id": "R2_custom_template_NOT_SELECTED",
+  "assignment_type": "custom",
+  "nonexpert_fraction": 0.7,
+  "specialist_dir": "runs/R2_custom_specialists/nonexpert_070",
+  "ensemble_dir": "runs/R2_custom_weighted_ensemble/nonexpert_070",
+  "expert_classes": {
+    "efficientat": [
+      "bicycle",
+      "baby_cry",
+      "gun",
+      "glass_breaking"
+    ],
+    "yamnet": [
+      "siren",
+      "fire_alarm",
+      "scream",
+      "cry",
+      "car_horn"
+    ],
+    "mobilenetv4": [
+      "water",
+      "knock",
+      "dog_bark",
+      "cat_meow"
+    ]
+  },
+  "selection_basis": "TBD: validation-screened acoustic/confusion/context candidate",
+  "ready_for_evaluation": false,
+  "note": "Current R0 ownership is an example only. Replace after validation and retraining."
+}

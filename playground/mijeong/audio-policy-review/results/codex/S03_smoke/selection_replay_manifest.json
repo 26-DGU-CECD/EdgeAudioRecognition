@@ -1,0 +1,230 @@
+{
+  "schema": "owned_max_replay_v1",
+  "project_root": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF",
+  "selection_config_source": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\policy_results\\S01_20261016_022757\\selection_config.json",
+  "selection_config_sha256": "2906072eb78e6c4d9ba5ea7be7fd10cf1706b918acdd64017fdf54baaa0048fc",
+  "class_names": [
+    "baby_cry",
+    "background",
+    "bicycle",
+    "car_horn",
+    "cat_meow",
+    "cry",
+    "dog_bark",
+    "fire_alarm",
+    "glass_breaking",
+    "gun",
+    "knock",
+    "scream",
+    "siren",
+    "water"
+  ],
+  "dataset_root": "D:\\Sound_Dataset_aug",
+  "old_dataset_root": "/home/plass/YAMNet/aug_data",
+  "checkpoint_files": {
+    "efficientat": {
+      "path": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\efficientat\\best.pt",
+      "sha256": "d2790f0c2d53d928d80dc5f6db180fa18f8387c8bd2cd51b2f89fe3cfb55b54c"
+    },
+    "yamnet": {
+      "path": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\yamnet\\best.keras",
+      "sha256": "da2b2e6e9fc5b8c2ccf1e497104dc857589b542fc495b4576b64979d282b6f6b"
+    },
+    "mobilenetv4": {
+      "path": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\mobilenetv4\\best.pt",
+      "sha256": "1a7d73847532f8364cb86c552c72a9c664e3366b4e78f77a28d0614901e66467"
+    }
+  },
+  "project_sources": {
+    "class_names.txt": "c2637c74d28b153372fdadc1f6f01b00820ffb71a4ca52e0b966c1174bb9e5f7",
+    "common_audio.py": "31936c4aace9e7309bef7cdc5dd877a869235d5333e3a0a1467d1d28b17df1d9",
+    "common_torch.py": "21b80a56c2ab3b11b9439721724c95ca429992519a9649455f624967e0087d86",
+    "common_metadata.py": "32915ac3c9089441bbdfc892051082c8dfb91f620420f32392de2e37e83cb3d7",
+    "evaluation_utils.py": "89068a0529c3bc447d229217be5a360cbd370ab0f43e5fe4ffb58d760b8f2b40",
+    "config.py": "2293c0ad6d3a4bfa8b324397b6ad932f25aef54d436d83945f7e6a083f1e2f75",
+    "train_efficientat.py": "e86e912ae2ea44d42f2fc4237e7176654b219f8198fadba2c0c59e196f775a51",
+    "train_mobilenetv4.py": "7e157319582116c0821807018397f1d3a3f9926519f4fb37b1042013011035c5",
+    "third_party/EfficientAT/models/mn/model.py": "471b2c482248d782b93881c5e834c0edc23c1e7e6f42a437e4c096b9d8ed4c3e",
+    "third_party/EfficientAT/models/mn/utils.py": "deb551bd854f90ca1473d731de1d7586af9449fc95fd2432f4cc9d0ccd38c11b",
+    "third_party/EfficientAT/models/mn/block_types.py": "e13ae49b6885217d6936d9203567aad1b6cb2f1229979d6d1ae77b836f3d1344",
+    "third_party/EfficientAT/models/mn/attention_pooling.py": "52b6903d5d62b3639ec609166cd08c36342588bd7988fe41ac72f3cfc496ce4f",
+    "third_party/EfficientAT/helpers/utils.py": "5d1e0e9198d098b92837fea0d002f116e2d0e2df9d9ee16775e519c45c171011",
+    "third_party/EfficientAT/metadata/class_labels_indices.csv": "cdd1049833c4b86127c2773ac0d14a2754b6a6d0d1798002ed5c66e699708429"
+  },
+  "sample_rate": 16000,
+  "window_seconds": 2.0,
+  "base_hop_seconds": 0.5,
+  "warmup_seconds": 2.0,
+  "tail_seconds": 2.0,
+  "input_policies": {
+    "I0": 2.0,
+    "I1": 1.0,
+    "I2": 0.5
+  },
+  "audio_config": {
+    "highpass_hz": 80.0,
+    "highpass_order": 2,
+    "silence_frame_ms": 100.0,
+    "silence_threshold_dbfs": -30.0,
+    "target_rms_dbfs": -20.0,
+    "max_normalize_gain_db": 20.0
+  },
+  "selection": "One clip per recorded group, only the frozen selection run evaluation groups.",
+  "annotation": "Controlled 2s zeros + first 2s of source clip + 2s zeros; insertion-aligned smoke replay, not real event onset, natural background, or UI latency.",
+  "requested_max_per_class": 1,
+  "class_counts": {
+    "baby_cry": 1,
+    "background": 1,
+    "bicycle": 1,
+    "car_horn": 1,
+    "cat_meow": 1,
+    "cry": 1,
+    "dog_bark": 1,
+    "fire_alarm": 1,
+    "glass_breaking": 1,
+    "gun": 1,
+    "knock": 1,
+    "scream": 1,
+    "siren": 1,
+    "water": 1
+  },
+  "missing_audio_count": 0,
+  "episodes": [
+    {
+      "episode_id": 0,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\1309B82C-F146-46F0-A723-45345AFA6EA8-1432801703-1.1-f-26-dc_4_aug1-shf-drc_musan-snr15.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/baby_cry/1309B82C-F146-46F0-A723-45345AFA6EA8-1432801703-1.1-f-26-dc_4_aug1-shf-drc_musan-snr15.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "1309b82c_f146_46f0_a723_45345afa6ea8_1432801703_1_1_f_26_dc_4",
+      "audio_sha256": "5ce9d37a6914f6fb0e338d21db02eeed5229ceca60623e7717adbb03c614a2ed"
+    },
+    {
+      "episode_id": 1,
+      "path": "D:\\Sound_Dataset_aug\\background\\총__S-211103_W_101_D_120_0001_7_aug1-shf-gan_musan-snr20.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/background/총__S-211103_W_101_D_120_0001_7_aug1-shf-gan_musan-snr20.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "총_s_211103_w_101_d_120_0001_7",
+      "audio_sha256": "3333a5084bbb7166936f6639bd4e8455cebba0f3b0187b4254db6ec984d73025"
+    },
+    {
+      "episode_id": 2,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_001_0001_4_orig_musan-snr20.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/bicycle/S-211105_S_202_C_001_0001_4_orig_musan-snr20.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_001_0001_4",
+      "audio_sha256": "5e47aedf957aea36d809468be40f9b5d8410732da6c87e48c34d3b3526d76df5"
+    },
+    {
+      "episode_id": 3,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\1.자동차_88426_1_27_orig_musan-snr10.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/car_horn/1.자동차_88426_1_27_orig_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "1_자동차_88426_1_27",
+      "audio_sha256": "8401605f2bdb195f7df2f126b56aa182a7f0cfc3d17f4f461a5f235befc5840a"
+    },
+    {
+      "episode_id": 4,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_78_11_aug1-agn_musan-snr10.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/cat_meow/cat_78_11_aug1-agn_musan-snr10.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_78_11",
+      "audio_sha256": "227c949f4125807de6af02992229a28819394a6c05dfba867ca00732f9e1fa00"
+    },
+    {
+      "episode_id": 5,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211027_H_302_C_004_0001_16_aug1-drc-gan_musan-snr15.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/cry/S-211027_H_302_C_004_0001_16_aug1-drc-gan_musan-snr15.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211027_h_302_c_004_0001_16",
+      "audio_sha256": "7af71c27f6e49dc8dd68d8e8350db36dd1a3169f423b5021293adb1134faa2bf"
+    },
+    {
+      "episode_id": 6,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_109_1_aug1-shf_musan-snr15.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/dog_bark/dog_barking_109_1_aug1-shf_musan-snr15.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_109_1",
+      "audio_sha256": "6823a4a9428b6c5f0344472171516cc107d92f670935bba385fba43aa3ed070b"
+    },
+    {
+      "episode_id": 7,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_251_0001_8_orig_musan-snr10.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/fire_alarm/S-211014_S_103_C_251_0001_8_orig_musan-snr10.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211014_s_103_c_251_0001_8",
+      "audio_sha256": "3f5a65086901117d2fbe1d9c4e884e26a7f5ce887604d040cb2851b96c157f73"
+    },
+    {
+      "episode_id": 8,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_045_0001_11_aug1-drc_musan-snr15.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/glass_breaking/S-211110_O_201_C_045_0001_11_aug1-drc_musan-snr15.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_045_0001_11",
+      "audio_sha256": "51d646bf8a341ccac5b0065a2b3288f2313d81a1c61bcbd1ec9bdf3dc1ed8151"
+    },
+    {
+      "episode_id": 9,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211103_W_101_D_071_0001_15_aug2-drc-agn_musan-snr15.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/gun/S-211103_W_101_D_071_0001_15_aug2-drc-agn_musan-snr15.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_211103_w_101_d_071_0001_15",
+      "audio_sha256": "f3dafbe6a1fa6388e6e33436d0798139109987baea3e92c324a850bf017ca7e2"
+    },
+    {
+      "episode_id": 10,
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_4-261068-A-30_3_orig_musan-snr10.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/knock/ESC50_4-261068-A-30_3_orig_musan-snr10.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "esc50_4_261068_a_30_3",
+      "audio_sha256": "6d7f1b263d14b48e20425879a06ac0aa40f2e9ec4832985554f018878454d77d"
+    },
+    {
+      "episode_id": 11,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211023_H_303_C_003_0001_9_aug2-drc_musan-snr15.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/scream/S-211023_H_303_C_003_0001_9_aug2-drc_musan-snr15.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211023_h_303_c_003_0001_9",
+      "audio_sha256": "66a2458d925d558ba8f917a19aa750b5ecfcb916ef34727f37bb792720bc36b4"
+    },
+    {
+      "episode_id": 12,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211107_S_102_C_034_0001_3_aug2-shf_musan-snr20.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/siren/S-211107_S_102_C_034_0001_3_aug2-shf_musan-snr20.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211107_s_102_c_034_0001_3",
+      "audio_sha256": "e145f6b66adbdc83e0adf086786569a2b05fa53d7fb0ff77e7255816fc5e5edc"
+    },
+    {
+      "episode_id": 13,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211030_L_306_C_002_0001_28_aug2-gan_musan-snr15.wav",
+      "original_path": "/home/plass/YAMNet/aug_data/water/S-211030_L_306_C_002_0001_28_aug2-gan_musan-snr15.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211030_l_306_c_002_0001_28",
+      "audio_sha256": "7f64686f5dc3a772ffe114dcffe8a85b1dd6caf7c59051d2a8a9bc85c38fe4e5"
+    }
+  ],
+  "replay_sources": {
+    "policy_core.py": "d8cf0399e2966e960457725eb9e47d2210b83c2cad7f4ddbd05bc30f8b2df7db",
+    "selection_core.py": "250e3c1b30ff721db880d222325f658a787a0c2a8461d35947dcae88def43ad9",
+    "project_io.py": "de8afa810a02f23f1e06b82fb7f99b9fd471f495152a6d6aedb954646b901a7b",
+    "selection_replay_io.py": "cf94d75753cbf49970e1db680174e77bfa7e8d48b28047f3aa2360408023e09b",
+    "prepare_selection_replay.py": "11c8bb06a54c979ded996fd7276df2f2d2c572e84aa4dcd26f526245847a6ab3",
+    "export_selection_replay.py": "ceec57d368a622d2f835336f5576774abcf33c41c916f75e791af81bcfc7c033",
+    "evaluate_selection_replay.py": "a122d636102199ee15bd12b05ac4136c85002fbc8f3bb6ef8e059d3f779a11e1",
+    "check_selection_reference.py": "c80134c3dc38dfa4e504460ff7267a6648a160cc774be06541d77522ea44edc7"
+  }
+}

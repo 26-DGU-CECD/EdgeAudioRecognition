@@ -1,0 +1,4 @@
+-r requirements-common.txt
+setuptools==81.0.0
+tensorflow==2.20.0
+tensorflow-hub==0.16.1

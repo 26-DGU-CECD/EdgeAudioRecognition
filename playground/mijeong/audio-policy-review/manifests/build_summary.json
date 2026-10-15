@@ -1,0 +1,30 @@
+{
+  "created_utc": "2026-10-15T19:26:39.679255+00:00",
+  "destination_at_build": "C:\\Users\\PLASS\\Documents\\Codex\\2026-10-16\\r\\outputs\\audio-policy-team-share",
+  "included_files": 897,
+  "omitted_embedding_files": 30,
+  "omitted_embedding_bytes": 1954031346,
+  "trained_checkpoints": 32,
+  "model_bytes": 194291065,
+  "observed_environments": {
+    "audio-policy": {
+      "python": "3.11.17",
+      "packages": 51
+    },
+    "audio-yamnet": {
+      "python": "3.11.17",
+      "packages": 60
+    }
+  },
+  "missing_optional_sources": [],
+  "raw_dataset_copied": false,
+  "git_push_performed": false,
+  "results_compaction": {
+    "before_files": 105,
+    "before_bytes": 62405508,
+    "removed_files": 29,
+    "removed_bytes": 52569832,
+    "after_files": 76,
+    "after_bytes": 9835676
+  }
+}

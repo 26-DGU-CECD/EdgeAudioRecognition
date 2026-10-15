@@ -1,0 +1,171 @@
+{
+  "sample_rate": 16000,
+  "window_seconds": 2.0,
+  "base_hop_seconds": 0.5,
+  "warmup_seconds": 2.0,
+  "tail_seconds": 2.0,
+  "input_policies": {
+    "I0": 2.0,
+    "I1": 1.0,
+    "I2": 0.5
+  },
+  "phase_offsets_seconds": [
+    0.0
+  ],
+  "config_file": "selection_config.json",
+  "audio_config": {
+    "highpass_hz": 80.0,
+    "highpass_order": 2,
+    "silence_frame_ms": 100.0,
+    "silence_threshold_dbfs": -30.0,
+    "target_rms_dbfs": -20.0,
+    "max_normalize_gain_db": 20.0
+  },
+  "annotation": "Controlled replay: 2s + phase offset silence, original first 2s clip, 2s silence. Clip insertion time is known; actual event onset is NOT known. Not a natural continuous-audio benchmark. Repeated phases of a clip are NOT independent samples.",
+  "selection": "One clip per recorded group from static evaluation groups; each clip repeated at declared phases.",
+  "recorded_groups": 14,
+  "class_counts": {
+    "baby_cry": 1,
+    "background": 1,
+    "bicycle": 1,
+    "car_horn": 1,
+    "cat_meow": 1,
+    "cry": 1,
+    "dog_bark": 1,
+    "fire_alarm": 1,
+    "glass_breaking": 1,
+    "gun": 1,
+    "knock": 1,
+    "scream": 1,
+    "siren": 1,
+    "water": 1
+  },
+  "episodes": [
+    {
+      "episode_id": 0,
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\F24DE44B-762C-4149-AC92-96A5E57ED118-1430816936-1.0-m-04-hu_3_aug2-drc_musan-snr20.wav",
+      "label": "baby_cry",
+      "label_id": 0,
+      "group_id": "f24de44b_762c_4149_ac92_96a5e57ed118_1430816936_1_0_m_04_hu_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 1,
+      "path": "D:\\Sound_Dataset_aug\\background\\경보__S-211103_S_103_D_008_0001_16_orig_musan-snr15.wav",
+      "label": "background",
+      "label_id": 1,
+      "group_id": "경보_s_211103_s_103_d_008_0001_16",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 2,
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_019_0001_15_aug2-drc-gan_musan-snr15.wav",
+      "label": "bicycle",
+      "label_id": 2,
+      "group_id": "s_211105_s_202_c_019_0001_15",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 3,
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\ESC50_4-175845-A-43_0_aug2-gan_musan-snr10.wav",
+      "label": "car_horn",
+      "label_id": 3,
+      "group_id": "esc50_4_175845_a_43_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 4,
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_42_7_orig_musan-snr15.wav",
+      "label": "cat_meow",
+      "label_id": 4,
+      "group_id": "cat_42_7",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 5,
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211107_H_302_C_002_0001_11_aug1-shf-ngt_musan-snr20.wav",
+      "label": "cry",
+      "label_id": 5,
+      "group_id": "s_211107_h_302_c_002_0001_11",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 6,
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_26_3_aug1-shf-gan_musan-snr15.wav",
+      "label": "dog_bark",
+      "label_id": 6,
+      "group_id": "dog_barking_26_3",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 7,
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211107_S_103_C_020_0001_16_aug2-drc_musan-snr15.wav",
+      "label": "fire_alarm",
+      "label_id": 7,
+      "group_id": "s_211107_s_103_c_020_0001_16",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 8,
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_022_0001_2_aug2-shf_musan-snr15.wav",
+      "label": "glass_breaking",
+      "label_id": 8,
+      "group_id": "s_211110_o_201_c_022_0001_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 9,
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-210930_W_102_D_500_0001_2_aug2-gan-agn_musan-snr20.wav",
+      "label": "gun",
+      "label_id": 9,
+      "group_id": "s_210930_w_102_d_500_0001_2",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 10,
+      "path": "D:\\Sound_Dataset_aug\\knock\\happiness_32_0_orig_musan-snr20.wav",
+      "label": "knock",
+      "label_id": 10,
+      "group_id": "happiness_32_0",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 11,
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211027_H_303_C_009_0001_1_orig_musan-snr10.wav",
+      "label": "scream",
+      "label_id": 11,
+      "group_id": "s_211027_h_303_c_009_0001_1",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 12,
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211124_S_101_L_009_0001_27_orig_musan-snr20.wav",
+      "label": "siren",
+      "label_id": 12,
+      "group_id": "s_211124_s_101_l_009_0001_27",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    },
+    {
+      "episode_id": 13,
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211129_L_307_C_010_0001_25_aug2-shf-agn_musan-snr10.wav",
+      "label": "water",
+      "label_id": 13,
+      "group_id": "s_211129_l_307_c_010_0001_25",
+      "phase_offset_seconds": 0.0,
+      "clip_insert_seconds": 2.0
+    }
+  ]
+}

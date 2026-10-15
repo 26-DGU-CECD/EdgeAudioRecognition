@@ -1,0 +1,15 @@
+﻿path,labels,group_ids,phase_episodes,status,error,sample_rate,channels,duration_s,shorter_than_2s,decoded_prefix_samples,decoded_prefix_peak
+D:\Sound_Dataset_aug\baby_cry\F24DE44B-762C-4149-AC92-96A5E57ED118-1430816936-1.0-m-04-hu_3_aug2-drc_musan-snr20.wav,baby_cry,f24de44b_762c_4149_ac92_96a5e57ed118_1430816936_1_0_m_04_hu_3,1,ok,,16000,1,2.0,False,32000,0.5780490040779114
+D:\Sound_Dataset_aug\background\경보__S-211103_S_103_D_008_0001_16_orig_musan-snr15.wav,background,경보_s_211103_s_103_d_008_0001_16,1,ok,,16000,1,2.0,False,32000,0.09730599820613861
+D:\Sound_Dataset_aug\bicycle\S-211105_S_202_C_019_0001_15_aug2-drc-gan_musan-snr15.wav,bicycle,s_211105_s_202_c_019_0001_15,1,ok,,16000,1,2.0,False,32000,0.4193322956562042
+D:\Sound_Dataset_aug\car_horn\ESC50_4-175845-A-43_0_aug2-gan_musan-snr10.wav,car_horn,esc50_4_175845_a_43_0,1,ok,,16000,1,2.0,False,32000,0.7903520464897156
+D:\Sound_Dataset_aug\cat_meow\cat_42_7_orig_musan-snr15.wav,cat_meow,cat_42_7,1,ok,,16000,1,2.0,False,32000,0.3649519681930542
+D:\Sound_Dataset_aug\cry\S-211107_H_302_C_002_0001_11_aug1-shf-ngt_musan-snr20.wav,cry,s_211107_h_302_c_002_0001_11,1,ok,,16000,1,2.0,False,32000,0.5609551072120667
+D:\Sound_Dataset_aug\dog_bark\dog_barking_26_3_aug1-shf-gan_musan-snr15.wav,dog_bark,dog_barking_26_3,1,ok,,16000,1,2.0,False,32000,1.0
+D:\Sound_Dataset_aug\fire_alarm\S-211107_S_103_C_020_0001_16_aug2-drc_musan-snr15.wav,fire_alarm,s_211107_s_103_c_020_0001_16,1,ok,,16000,1,2.0,False,32000,0.41829371452331543
+D:\Sound_Dataset_aug\glass_breaking\S-211110_O_201_C_022_0001_2_aug2-shf_musan-snr15.wav,glass_breaking,s_211110_o_201_c_022_0001_2,1,ok,,16000,1,2.0,False,32000,0.8978843688964844
+D:\Sound_Dataset_aug\gun\S-210930_W_102_D_500_0001_2_aug2-gan-agn_musan-snr20.wav,gun,s_210930_w_102_d_500_0001_2,1,ok,,16000,1,2.0,False,32000,0.07376667112112045
+D:\Sound_Dataset_aug\knock\happiness_32_0_orig_musan-snr20.wav,knock,happiness_32_0,1,ok,,16000,1,2.0,False,32000,1.0
+D:\Sound_Dataset_aug\scream\S-211027_H_303_C_009_0001_1_orig_musan-snr10.wav,scream,s_211027_h_303_c_009_0001_1,1,ok,,16000,1,2.0,False,32000,0.8096382021903992
+D:\Sound_Dataset_aug\siren\S-211124_S_101_L_009_0001_27_orig_musan-snr20.wav,siren,s_211124_s_101_l_009_0001_27,1,ok,,16000,1,2.0,False,32000,0.18497921526432037
+D:\Sound_Dataset_aug\water\S-211129_L_307_C_010_0001_25_aug2-shf-agn_musan-snr10.wav,water,s_211129_l_307_c_010_0001_25,1,ok,,16000,1,2.0,False,32000,0.7168819308280945

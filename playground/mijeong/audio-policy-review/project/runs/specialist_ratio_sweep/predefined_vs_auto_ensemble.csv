@@ -1,0 +1,9 @@
+assignment,nonexpert_fraction,ratio_percent,system,accuracy,macro_f1
+automatic,0.7,70.0,G_auto_weighted_ensemble,0.8424364460105713,0.8523787440676663
+automatic,0.5,50.0,G_auto_weighted_ensemble,0.8428139944626227,0.8512665493984422
+automatic,0.3,30.0,G_auto_weighted_ensemble,0.8397516570182062,0.8484641985024187
+automatic,0.15,15.0,G_auto_weighted_ensemble,0.8394160583941606,0.847528722516674
+predefined,0.7,70.0,F_predefined_weighted_ensemble,0.8434432418827083,0.8539891982348976
+predefined,0.5,50.0,F_predefined_weighted_ensemble,0.8407584528903431,0.8471535707150925
+predefined,0.3,30.0,F_predefined_weighted_ensemble,0.8357664233576643,0.8402071036939943
+predefined,0.15,15.0,F_predefined_weighted_ensemble,0.8263277120563806,0.8268656226748343

@@ -1,0 +1,34 @@
+{
+  "assignment": "predefined",
+  "ratio_tag": "nonexpert_030",
+  "nonexpert_fraction": 0.3,
+  "expert_classes": {
+    "efficientat": [
+      "bicycle",
+      "baby_cry",
+      "gun",
+      "glass_breaking"
+    ],
+    "yamnet": [
+      "siren",
+      "fire_alarm",
+      "scream",
+      "cry",
+      "car_horn"
+    ],
+    "mobilenetv4": [
+      "water",
+      "knock",
+      "dog_bark",
+      "cat_meow"
+    ]
+  },
+  "hard_negative_classes": {
+    "efficientat": [],
+    "yamnet": [],
+    "mobilenetv4": []
+  },
+  "background_batch_fraction": 0.2,
+  "sampling_unit": "group_id",
+  "nested_subsets": true
+}

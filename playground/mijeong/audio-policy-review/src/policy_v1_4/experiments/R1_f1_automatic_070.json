@@ -1,0 +1,30 @@
+{
+  "experiment_id": "R1_automatic_nonexpert_070",
+  "assignment_type": "automatic",
+  "nonexpert_fraction": 0.7,
+  "specialist_dir": "runs/G_auto_specialists/nonexpert_070",
+  "ensemble_dir": "runs/G_auto_weighted_ensemble/nonexpert_070",
+  "expert_classes": {
+    "efficientat": [
+      "bicycle",
+      "car_horn",
+      "cat_meow",
+      "cry",
+      "dog_bark",
+      "glass_breaking",
+      "gun",
+      "knock",
+      "scream",
+      "water"
+    ],
+    "yamnet": [
+      "siren"
+    ],
+    "mobilenetv4": [
+      "baby_cry",
+      "fire_alarm"
+    ]
+  },
+  "selection_basis": "baseline_validation_per_class_f1",
+  "assignment_sha256": "6cee5090e418bb84b6288a6b5b71572c63149f7c767e1b50ecce5dacb062ddba"
+}

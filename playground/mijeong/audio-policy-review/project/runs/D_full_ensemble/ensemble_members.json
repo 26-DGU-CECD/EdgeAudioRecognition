@@ -1,0 +1,13 @@
+{
+  "method": "equal soft voting",
+  "members": [
+    "efficientat",
+    "yamnet",
+    "mobilenetv4"
+  ],
+  "weights": {
+    "efficientat": 0.3333333333333333,
+    "yamnet": 0.3333333333333333,
+    "mobilenetv4": 0.3333333333333333
+  }
+}

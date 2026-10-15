@@ -1,0 +1,177 @@
+{
+  "schema": "owned_max_selection_v1",
+  "scope": "supplied_cached_specialists_adaptation_reference; NOT verified best no-voting run",
+  "selection_spec": {
+    "experiment_id": "R0_predefined_nonexpert_070",
+    "expert_classes": {
+      "efficientat": [
+        "bicycle",
+        "baby_cry",
+        "gun",
+        "glass_breaking"
+      ],
+      "yamnet": [
+        "siren",
+        "fire_alarm",
+        "scream",
+        "cry",
+        "car_horn"
+      ],
+      "mobilenetv4": [
+        "water",
+        "knock",
+        "dog_bark",
+        "cat_meow"
+      ]
+    },
+    "model_class_names": {
+      "efficientat": [
+        "baby_cry",
+        "background",
+        "bicycle",
+        "car_horn",
+        "cat_meow",
+        "cry",
+        "dog_bark",
+        "fire_alarm",
+        "glass_breaking",
+        "gun",
+        "knock",
+        "scream",
+        "siren",
+        "water"
+      ],
+      "yamnet": [
+        "baby_cry",
+        "background",
+        "bicycle",
+        "car_horn",
+        "cat_meow",
+        "cry",
+        "dog_bark",
+        "fire_alarm",
+        "glass_breaking",
+        "gun",
+        "knock",
+        "scream",
+        "siren",
+        "water"
+      ],
+      "mobilenetv4": [
+        "baby_cry",
+        "background",
+        "bicycle",
+        "car_horn",
+        "cat_meow",
+        "cry",
+        "dog_bark",
+        "fire_alarm",
+        "glass_breaking",
+        "gun",
+        "knock",
+        "scream",
+        "siren",
+        "water"
+      ]
+    },
+    "score_type": "softmax_logits"
+  },
+  "prediction_provenance": {
+    "efficientat": {
+      "path": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\efficientat\\val_predictions.npz",
+      "sha256": "4535e613e949a57f721ecd886f77b5cc38d803b5e073e87a38336bac5d90d5f8"
+    },
+    "yamnet": {
+      "path": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\yamnet\\val_predictions.npz",
+      "sha256": "85acd78331fbd4f955491490e58346aeeb1ad85fd733d26c882fdaeb141ef110"
+    },
+    "mobilenetv4": {
+      "path": "C:\\Users\\PLASS\\Desktop\\audio_experiments_DEF\\runs\\E_predefined_specialists\\nonexpert_070\\mobilenetv4\\val_predictions.npz",
+      "sha256": "dcf4363ad02cd82e6adc9c488d1fa575e25bf6b9598586e8bcafa1d0fec9f0a7"
+    }
+  },
+  "metadata_sha256": "90f87756883b22de10049df00cc1d68d8775a16295a5a687ab3ec75d255b4286",
+  "class_names": [
+    "baby_cry",
+    "background",
+    "bicycle",
+    "car_horn",
+    "cat_meow",
+    "cry",
+    "dog_bark",
+    "fire_alarm",
+    "glass_breaking",
+    "gun",
+    "knock",
+    "scream",
+    "siren",
+    "water"
+  ],
+  "seed": 84,
+  "policies": {
+    "global_max": {
+      "global_threshold": 0.75,
+      "class_thresholds": {
+        "baby_cry": 0.86,
+        "bicycle": 0.645,
+        "car_horn": 0.485,
+        "cat_meow": 0.875,
+        "cry": 0.915,
+        "dog_bark": 0.26,
+        "fire_alarm": null,
+        "glass_breaking": 0.675,
+        "gun": 0.875,
+        "knock": null,
+        "scream": 0.5,
+        "siren": 0.715,
+        "water": 0.71
+      }
+    },
+    "exclude": {
+      "global_threshold": 0.79,
+      "class_thresholds": {
+        "baby_cry": 0.86,
+        "bicycle": 0.68,
+        "car_horn": 0.61,
+        "cat_meow": 0.875,
+        "cry": 0.915,
+        "dog_bark": 0.55,
+        "fire_alarm": null,
+        "glass_breaking": 0.675,
+        "gun": 0.875,
+        "knock": null,
+        "scream": 0.47500000000000003,
+        "siren": 0.735,
+        "water": 0.855
+      }
+    },
+    "per_model_gate": {
+      "global_threshold": 0.79,
+      "class_thresholds": {
+        "baby_cry": 0.86,
+        "bicycle": 0.68,
+        "car_horn": 0.61,
+        "cat_meow": 0.875,
+        "cry": 0.915,
+        "dog_bark": 0.55,
+        "fire_alarm": null,
+        "glass_breaking": 0.675,
+        "gun": 0.875,
+        "knock": null,
+        "scream": 0.47500000000000003,
+        "siren": 0.735,
+        "water": 0.855
+      }
+    }
+  },
+  "target_precision": 0.95,
+  "minimum_accepted": 20,
+  "calibration_clips": 11955,
+  "evaluation_clips": 11892,
+  "calibration_groups": 1350,
+  "evaluation_groups": 1339,
+  "group_overlap": 0,
+  "score_renormalization": false,
+  "voting": false,
+  "calibration_scope": "Exploratory held-out part of validation; source training/assignment may use validation. No independent risk guarantee, real-time timing, or event onset measurements."
+}

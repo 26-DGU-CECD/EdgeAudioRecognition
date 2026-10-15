@@ -1,0 +1,162 @@
+{
+  "fingerprint": "a0318d035d5e4cf03bfa217ed34b66e9f9b931df3e8d03c6ba348386f64056a7",
+  "episodes_checked": 14,
+  "checkpoint_hashes_checked": true,
+  "files": [
+    {
+      "label": "baby_cry",
+      "path": "D:\\Sound_Dataset_aug\\baby_cry\\1309B82C-F146-46F0-A723-45345AFA6EA8-1432801703-1.1-f-26-dc_4_aug1-shf-drc_musan-snr15.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 1.0
+    },
+    {
+      "label": "background",
+      "path": "D:\\Sound_Dataset_aug\\background\\총__S-211103_W_101_D_120_0001_7_aug1-shf-gan_musan-snr20.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.024829300120472908
+    },
+    {
+      "label": "bicycle",
+      "path": "D:\\Sound_Dataset_aug\\bicycle\\S-211105_S_202_C_001_0001_4_orig_musan-snr20.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.27554112672805786
+    },
+    {
+      "label": "car_horn",
+      "path": "D:\\Sound_Dataset_aug\\car_horn\\1.자동차_88426_1_27_orig_musan-snr10.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.1515170931816101
+    },
+    {
+      "label": "cat_meow",
+      "path": "D:\\Sound_Dataset_aug\\cat_meow\\cat_78_11_aug1-agn_musan-snr10.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.5181168913841248
+    },
+    {
+      "label": "cry",
+      "path": "D:\\Sound_Dataset_aug\\cry\\S-211027_H_302_C_004_0001_16_aug1-drc-gan_musan-snr15.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.22588348388671875
+    },
+    {
+      "label": "dog_bark",
+      "path": "D:\\Sound_Dataset_aug\\dog_bark\\dog_barking_109_1_aug1-shf_musan-snr15.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.6460274457931519
+    },
+    {
+      "label": "fire_alarm",
+      "path": "D:\\Sound_Dataset_aug\\fire_alarm\\S-211014_S_103_C_251_0001_8_orig_musan-snr10.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.31209972500801086
+    },
+    {
+      "label": "glass_breaking",
+      "path": "D:\\Sound_Dataset_aug\\glass_breaking\\S-211110_O_201_C_045_0001_11_aug1-drc_musan-snr15.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.7478115558624268
+    },
+    {
+      "label": "gun",
+      "path": "D:\\Sound_Dataset_aug\\gun\\S-211103_W_101_D_071_0001_15_aug2-drc-agn_musan-snr15.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.22372452914714813
+    },
+    {
+      "label": "knock",
+      "path": "D:\\Sound_Dataset_aug\\knock\\ESC50_4-261068-A-30_3_orig_musan-snr10.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 1.0
+    },
+    {
+      "label": "scream",
+      "path": "D:\\Sound_Dataset_aug\\scream\\S-211023_H_303_C_003_0001_9_aug2-drc_musan-snr15.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.281388521194458
+    },
+    {
+      "label": "siren",
+      "path": "D:\\Sound_Dataset_aug\\siren\\S-211107_S_102_C_034_0001_3_aug2-shf_musan-snr20.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.7642410397529602
+    },
+    {
+      "label": "water",
+      "path": "D:\\Sound_Dataset_aug\\water\\S-211030_L_306_C_002_0001_28_aug2-gan_musan-snr15.wav",
+      "sample_rate": 16000,
+      "channels": 1,
+      "format_code": 3,
+      "duration_seconds": 2.0,
+      "sampled_frames": 32000,
+      "samples_all_finite": true,
+      "sampled_abs_peak": 0.9824010729789734
+    }
+  ],
+  "scope": "Source file access, WAV header and first 2s samples only; no model or preprocessing execution."
+}

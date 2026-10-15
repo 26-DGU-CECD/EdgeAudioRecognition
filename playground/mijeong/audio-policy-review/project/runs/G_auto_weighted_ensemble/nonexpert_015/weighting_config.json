@@ -1,0 +1,30 @@
+{
+  "assignment": "automatic",
+  "ratio_tag": "nonexpert_015",
+  "nonexpert_fraction": 0.15,
+  "basis": "specialist validation per-class F1",
+  "floor": 0.05,
+  "power": 2.0,
+  "expert_boost": 1.25,
+  "expert_classes": {
+    "efficientat": [
+      "bicycle",
+      "car_horn",
+      "cat_meow",
+      "cry",
+      "dog_bark",
+      "glass_breaking",
+      "gun",
+      "knock",
+      "scream",
+      "water"
+    ],
+    "yamnet": [
+      "siren"
+    ],
+    "mobilenetv4": [
+      "baby_cry",
+      "fire_alarm"
+    ]
+  }
+}

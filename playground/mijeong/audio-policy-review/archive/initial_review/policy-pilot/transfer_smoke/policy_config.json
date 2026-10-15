@@ -1,0 +1,129 @@
+{
+  "class_names": [
+    "baby_cry",
+    "background",
+    "bicycle",
+    "car_horn",
+    "cat_meow",
+    "cry",
+    "dog_bark",
+    "fire_alarm",
+    "glass_breaking",
+    "gun",
+    "knock",
+    "scream",
+    "siren",
+    "water"
+  ],
+  "assignment": "predefined",
+  "ratio": 0.7,
+  "experiment_spec": {
+    "experiment_id": "R0_predefined_nonexpert_070",
+    "assignment_type": "predefined",
+    "nonexpert_fraction": 0.7,
+    "specialist_dir": "runs/E_predefined_specialists/nonexpert_070",
+    "ensemble_dir": "runs/F_predefined_weighted_ensemble/nonexpert_070",
+    "expert_classes": {
+      "efficientat": [
+        "bicycle",
+        "baby_cry",
+        "gun",
+        "glass_breaking"
+      ],
+      "yamnet": [
+        "siren",
+        "fire_alarm",
+        "scream",
+        "cry",
+        "car_horn"
+      ],
+      "mobilenetv4": [
+        "water",
+        "knock",
+        "dog_bark",
+        "cat_meow"
+      ]
+    },
+    "selection_basis": "predefined",
+    "assignment_sha256": "6565fcf37786a5b56ceb67ea1c50e28c3a4cbcc9fe49981bd5889c4c16bec50f"
+  },
+  "evaluation_set_sha256": "974c91c6ab4f8403ef1635be7f7b1531004661e6a6d527160ef024fa3d2dae51",
+  "policy_parameter_mode": "frozen_transfer",
+  "transferred_policy_file": "example_results/policy_config.json",
+  "weights_sha256": "c4655e2164dd65a7d7fef5751ce70c56e016dad123a2b167dfae19be5c20d55e",
+  "global_threshold": 0.6,
+  "class_thresholds": {
+    "baby_cry": 0.30000000000000004,
+    "bicycle": 0.45,
+    "car_horn": 0.4,
+    "cat_meow": 0.45,
+    "cry": 0.625,
+    "dog_bark": 0.0,
+    "fire_alarm": null,
+    "glass_breaking": 0.675,
+    "gun": 0.55,
+    "knock": null,
+    "scream": 0.0,
+    "siren": 0.55,
+    "water": 0.55
+  },
+  "target_precision": 0.95,
+  "minimum_accepted": 20,
+  "seed": 42,
+  "weights": [
+    [
+      0.40835322401741336,
+      0.391320729311384,
+      0.45056063653326367,
+      0.3622417621811756,
+      0.3704227101591794,
+      0.34336044399971166,
+      0.37574325224414734,
+      0.32999850703167466,
+      0.4330797664025938,
+      0.49993964468821767,
+      0.41325256226995255,
+      0.37747755357724466,
+      0.32078953626003553,
+      0.3473794662466574
+    ],
+    [
+      0.27420645029102575,
+      0.35168055897089057,
+      0.26148994575577306,
+      0.383884028994171,
+      0.21125014455449695,
+      0.3646153972458897,
+      0.35061763434231097,
+      0.351863902892378,
+      0.2923233368946997,
+      0.21979081484256052,
+      0.24421699903557573,
+      0.32780789940932403,
+      0.3891618022257052,
+      0.33022069420335537
+    ],
+    [
+      0.3174403256915609,
+      0.25699871171772537,
+      0.2879494177109632,
+      0.25387420882465334,
+      0.41832714528632375,
+      0.2920241587543987,
+      0.27363911341354163,
+      0.3181375900759473,
+      0.2745968967027065,
+      0.2802695404692218,
+      0.34253043869447164,
+      0.29471454701343136,
+      0.29004866151425934,
+      0.32239983954998724
+    ]
+  ],
+  "calibration_clips": 11965,
+  "evaluation_clips": 11882,
+  "calibration_groups": 1351,
+  "evaluation_groups": 1338,
+  "group_overlap": 0,
+  "scope": "Exploratory validation split; original models/weights used validation. No independent risk guarantee or event latency measurement."
+}

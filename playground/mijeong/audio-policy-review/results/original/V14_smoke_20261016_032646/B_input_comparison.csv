@@ -1,0 +1,10 @@
+﻿foreground_episodes,foreground_groups,hit_by_clip_2s,missed_by_clip_2s,first_correct_s_p50_detected_only,first_correct_s_p95_detected_only,wrong_label_episode_rate,background_episode_alert_rate,display_changes,nonempty_label_switches,scheduled_windows,scheduled_model_calls,early_certified_windows,total_early_wait_saved_s,stale_output_rejections,superseded_output_windows,fusion,rule,input_policy,temporal,timing,async_policy
+13,13,0.7692307692307693,3,2.0,2.0,0.07692307692307693,0.0,22,0,42,126,0,0.0,0,0,F0,R0,I0,T0,audio_clock,wait_all
+13,13,0.8461538461538461,2,2.0,2.4499999999999993,0.15384615384615385,0.0,27,3,70,210,0,0.0,0,0,F0,R0,I1,T0,audio_clock,wait_all
+13,13,0.9230769230769231,1,1.5,1.5,0.23076923076923078,0.0,30,4,126,378,0,0.0,0,0,F0,R0,I2,T0,audio_clock,wait_all
+13,13,0.8461538461538461,2,2.0,2.0,0.07692307692307693,0.0,24,0,42,126,0,0.0,0,0,F1,R0,I0,T0,audio_clock,wait_all
+13,13,0.9230769230769231,1,1.0,2.0,0.23076923076923078,0.0,28,4,70,210,0,0.0,0,0,F1,R0,I1,T0,audio_clock,wait_all
+13,13,0.9230769230769231,1,1.0,1.5,0.3076923076923077,0.0,29,5,126,378,0,0.0,0,0,F1,R0,I2,T0,audio_clock,wait_all
+13,13,0.8461538461538461,2,2.0,2.0,0.07692307692307693,0.0,24,0,42,126,0,0.0,0,0,F2,R0,I0,T0,audio_clock,wait_all
+13,13,0.9230769230769231,1,1.0,2.0,0.15384615384615385,0.0,27,3,70,210,0,0.0,0,0,F2,R0,I1,T0,audio_clock,wait_all
+13,13,0.9230769230769231,1,1.0,1.5,0.3076923076923077,0.0,30,6,126,378,0,0.0,0,0,F2,R0,I2,T0,audio_clock,wait_all

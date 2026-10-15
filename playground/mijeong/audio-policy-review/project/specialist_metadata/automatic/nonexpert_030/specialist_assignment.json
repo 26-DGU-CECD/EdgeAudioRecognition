@@ -1,0 +1,48 @@
+{
+  "assignment": "automatic",
+  "selection_source": "A/B/C baseline validation per-class F1 only",
+  "ratio_tag": "nonexpert_030",
+  "nonexpert_fraction": 0.3,
+  "expert_classes": {
+    "efficientat": [
+      "bicycle",
+      "car_horn",
+      "cat_meow",
+      "cry",
+      "dog_bark",
+      "glass_breaking",
+      "gun",
+      "knock",
+      "scream",
+      "water"
+    ],
+    "yamnet": [
+      "siren"
+    ],
+    "mobilenetv4": [
+      "baby_cry",
+      "fire_alarm"
+    ]
+  },
+  "hard_negative_classes": {
+    "efficientat": [
+      "baby_cry",
+      "siren",
+      "fire_alarm"
+    ],
+    "yamnet": [
+      "fire_alarm",
+      "car_horn",
+      "bicycle"
+    ],
+    "mobilenetv4": [
+      "siren",
+      "cat_meow",
+      "cry"
+    ]
+  },
+  "minimum_expert_classes_per_model": 1,
+  "background_batch_fraction": 0.2,
+  "sampling_unit": "group_id",
+  "nested_subsets": true
+}

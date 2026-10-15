@@ -1,0 +1,26 @@
+{
+  "ready_for_evaluation": false,
+  "experiment_id": "replace_with_actual_best_no_voting_run",
+  "score_type": "softmax_logits",
+  "expert_classes": {
+    "efficientat": ["bicycle", "baby_cry", "gun", "glass_breaking"],
+    "yamnet": ["siren", "fire_alarm", "scream", "cry", "car_horn"],
+    "mobilenetv4": ["water", "knock", "dog_bark", "cat_meow"]
+  },
+  "model_class_names": {
+    "efficientat": ["background", "bicycle", "baby_cry", "gun", "glass_breaking"],
+    "yamnet": ["background", "siren", "fire_alarm", "scream", "cry", "car_horn"],
+    "mobilenetv4": ["background", "water", "knock", "dog_bark", "cat_meow"]
+  },
+  "prediction_files": {
+    "efficientat": "REPLACE/efficientat/val_predictions.npz",
+    "yamnet": "REPLACE/yamnet/val_predictions.npz",
+    "mobilenetv4": "REPLACE/mobilenetv4/val_predictions.npz"
+  },
+  "checkpoint_files": {
+    "efficientat": "REPLACE/efficientat/best.pt",
+    "yamnet": "REPLACE/yamnet/best.keras",
+    "mobilenetv4": "REPLACE/mobilenetv4/best.pt"
+  },
+  "note": "Head label order is illustrative only. Replace with the actual complete head labels and order; provided archived specialists have 14-class heads. y_true must be global class_names.txt IDs. Do not enable without verification."
+}

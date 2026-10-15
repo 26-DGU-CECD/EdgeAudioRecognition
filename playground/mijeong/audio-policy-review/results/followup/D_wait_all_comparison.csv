@@ -1,0 +1,5 @@
+﻿foreground_episodes,foreground_groups,hit_by_clip_2s,missed_by_clip_2s,first_correct_s_p50_detected_only,first_correct_s_p95_detected_only,wrong_label_episode_rate,background_episode_alert_rate,display_changes,nonempty_label_switches,scheduled_windows,scheduled_model_calls,early_certified_windows,total_early_wait_saved_s,stale_output_rejections,superseded_output_windows,fusion,rule,input_policy,temporal,timing,async_policy
+416,104,0.7307692307692307,112,1.5102209999895422,2.011388009985967,0.3942307692307692,0.125,1064,176,4704,14112,0,0.0,0,0,F1,R0,I2,T0,independent_worker_sim,wait_all
+416,104,0.5769230769230769,176,1.5106299000035506,2.011460925001302,0.10576923076923077,0.125,792,8,4704,14112,0,0.0,0,0,F1,R2,I2,T0,independent_worker_sim,wait_all
+416,104,0.7307692307692307,112,1.510282350005582,2.011450125003466,0.40384615384615385,0.125,1036,164,4704,14112,0,0.0,0,0,F2,R0,I2,T0,independent_worker_sim,wait_all
+416,104,0.5865384615384616,172,1.5106439499941189,2.0114530250022655,0.09615384615384616,0.125,768,8,4704,14112,0,0.0,0,0,F2,R2,I2,T0,independent_worker_sim,wait_all
