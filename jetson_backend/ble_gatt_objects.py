@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sys
+from typing import Callable, Iterable, List
 
 import dbus
 import dbus.service
@@ -10,6 +11,7 @@ from gi.repository import GLib
 from ble_constants import (
     ADVERTISEMENT_PATH,
     APP_PATH,
+    CONTROL_CHAR_UUID,
     DBUS_OM_IFACE,
     DBUS_PROP_IFACE,
     GATT_CHRC_IFACE,
@@ -17,6 +19,7 @@ from ble_constants import (
     INFERENCE_CHAR_UUID,
     LE_ADVERTISEMENT_IFACE,
 )
+from ble_result_builder import build_control_state, parse_disabled_labels
 from ble_utils import InvalidArgsException, byte_array
 
 
@@ -168,6 +171,71 @@ class InferenceCharacteristic(dbus.service.Object):
     @dbus.service.signal(DBUS_PROP_IFACE, signature="sa{sv}as")
     def PropertiesChanged(self, interface: str, changed: dict, invalidated: list) -> None:
         pass
+
+
+class ControlCharacteristic(dbus.service.Object):
+    """App -> backend settings. Write `{"disabled_labels": [...]}` in app label names.
+
+    Runs on the GLib loop thread. Never raises back to BlueZ: bad input is logged
+    and ignored so a buggy client cannot break the GATT server.
+    """
+
+    def __init__(
+        self,
+        bus: dbus.SystemBus,
+        index: int,
+        service: Service,
+        on_disabled_labels: Callable[[List[str]], None],
+        get_disabled_labels: Callable[[], Iterable[str]],
+    ):
+        self.path = f"{service.path}/char{index}"
+        self.service = service
+        self.uuid = CONTROL_CHAR_UUID
+        self.flags = ["read", "write"]
+        self.on_disabled_labels = on_disabled_labels
+        self.get_disabled_labels = get_disabled_labels
+        super().__init__(bus, self.path)
+
+    def get_path(self) -> dbus.ObjectPath:
+        return dbus.ObjectPath(self.path)
+
+    def get_properties(self) -> dict:
+        return {
+            GATT_CHRC_IFACE: {
+                "Service": self.service.get_path(),
+                "UUID": self.uuid,
+                "Flags": dbus.Array(self.flags, signature="s"),
+            }
+        }
+
+    @dbus.service.method(DBUS_PROP_IFACE, in_signature="s", out_signature="a{sv}")
+    def GetAll(self, interface: str) -> dict:
+        if interface != GATT_CHRC_IFACE:
+            raise InvalidArgsException()
+        return self.get_properties()[GATT_CHRC_IFACE]
+
+    @dbus.service.method(GATT_CHRC_IFACE, in_signature="a{sv}", out_signature="ay")
+    def ReadValue(self, options: dict) -> dbus.Array:
+        try:
+            state = build_control_state(self.get_disabled_labels())
+        except Exception as exc:  # noqa: BLE001
+            print(f"control read 오류: {exc}", file=sys.stderr, flush=True)
+            state = {"disabled_labels": []}
+        payload = json.dumps(state, separators=(",", ":"), ensure_ascii=False)
+        return byte_array(payload.encode("utf-8"))
+
+    @dbus.service.method(GATT_CHRC_IFACE, in_signature="aya{sv}")
+    def WriteValue(self, value: dbus.Array, options: dict) -> None:
+        try:
+            labels = parse_disabled_labels(bytes(value))
+        except Exception as exc:  # noqa: BLE001
+            print(f"control write 무시: {exc}", file=sys.stderr, flush=True)
+            return
+        print(f"control write: disabled_labels={labels}", flush=True)
+        try:
+            self.on_disabled_labels(labels)
+        except Exception as exc:  # noqa: BLE001
+            print(f"control 적용 오류: {exc}", file=sys.stderr, flush=True)
 
 
 class Advertisement(dbus.service.Object):

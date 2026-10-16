@@ -14,7 +14,8 @@ Key app rules this module has to satisfy:
 """
 from __future__ import annotations
 
-from typing import Dict, Iterable
+import json
+from typing import Dict, Iterable, List
 
 from decision import Decision
 
@@ -55,6 +56,37 @@ RELATIVE_DIRECTIONS = ("뒤쪽", "왼쪽", "앞쪽", "오른쪽")
 def wire_label(label: str) -> str:
     """Rename backend classes that the app's Korean label map does not know."""
     return WIRE_LABELS.get(str(label), str(label))
+
+
+def from_wire_label(label: str) -> str:
+    """Inverse of wire_label(): app label key -> backend class name."""
+    for backend, wire in WIRE_LABELS.items():
+        if wire == str(label):
+            return backend
+    return str(label)
+
+
+def parse_disabled_labels(raw: bytes) -> List[str]:
+    """Control write `{"disabled_labels": [...]}` (app names) -> backend names.
+
+    Raises ValueError on any malformed payload; unknown names pass through and
+    are dropped (with a warning) by ParallelInferenceEngine.set_disabled_labels.
+    """
+    try:
+        document = json.loads(bytes(raw).decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError(f"JSON 파싱 실패: {exc}") from exc
+    if not isinstance(document, dict):
+        raise ValueError("JSON 최상위가 객체가 아닙니다.")
+    labels = document.get("disabled_labels")
+    if not isinstance(labels, list) or not all(isinstance(x, str) for x in labels):
+        raise ValueError("disabled_labels는 문자열 배열이어야 합니다.")
+    return [from_wire_label(label.strip()) for label in labels if label.strip()]
+
+
+def build_control_state(disabled_labels: Iterable[str]) -> dict:
+    """Control read payload, in app (wire) label names."""
+    return {"disabled_labels": sorted(wire_label(label) for label in disabled_labels)}
 
 
 def risk_level(label: str) -> str:
@@ -176,8 +208,11 @@ def _build_items(probabilities: Dict[str, float]) -> list[dict]:
     return items
 
 
-def summarize_decision(decision: Decision) -> tuple[str, float]:
-    """Best detected class, or the nearest miss when nothing crossed."""
+def summarize_decision(decision: Decision) -> tuple[str | None, float]:
+    """Best detected class, or the nearest miss when nothing crossed.
+
+    Label is None when every label is disabled (nothing was evaluated).
+    """
     if decision.best_label:
         return decision.best_label, float(decision.best_probability)
     return decision.nearest_label, float(decision.nearest_probability)

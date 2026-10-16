@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import sys
 import threading
+from typing import Callable, Iterable, List
 
 import dbus
 import dbus.exceptions
@@ -12,18 +13,35 @@ from gi.repository import GLib
 from ble_adapter import find_adapter, set_adapter_powered
 from ble_constants import (
     BLUEZ_SERVICE_NAME,
+    CONTROL_CHAR_UUID,
     GATT_MANAGER_IFACE,
     INFERENCE_CHAR_UUID,
     LE_ADVERTISING_MANAGER_IFACE,
     SERVICE_UUID,
 )
-from ble_gatt_objects import Advertisement, Application, InferenceCharacteristic, Service
+from ble_gatt_objects import (
+    Advertisement,
+    Application,
+    ControlCharacteristic,
+    InferenceCharacteristic,
+    Service,
+)
 
 
 class BleInferenceServer:
-    def __init__(self, local_name: str, chunk_bytes: int):
+    def __init__(
+        self,
+        local_name: str,
+        chunk_bytes: int,
+        *,
+        on_disabled_labels: Callable[[List[str]], None],
+        get_disabled_labels: Callable[[], Iterable[str]],
+    ):
         self.local_name = local_name
         self.chunk_bytes = chunk_bytes
+        # 둘 다 GLib 루프 스레드에서 호출된다.
+        self.on_disabled_labels = on_disabled_labels
+        self.get_disabled_labels = get_disabled_labels
         self.loop: GLib.MainLoop | None = None
         self.thread: threading.Thread | None = None
         self.service_manager = None
@@ -57,6 +75,15 @@ class BleInferenceServer:
         inference_service = Service(bus, 0, SERVICE_UUID, primary=True)
         self.characteristic = InferenceCharacteristic(bus, 0, inference_service, self.chunk_bytes)
         inference_service.add_characteristic(self.characteristic)
+        inference_service.add_characteristic(
+            ControlCharacteristic(
+                bus,
+                1,
+                inference_service,
+                self.on_disabled_labels,
+                self.get_disabled_labels,
+            )
+        )
         self.application.add_service(inference_service)
         self.advertisement = Advertisement(bus, self.local_name, SERVICE_UUID)
         self.loop = GLib.MainLoop()
@@ -93,6 +120,7 @@ class BleInferenceServer:
         print(f"Advertising as {self.local_name}", flush=True)
         print(f"Service: {SERVICE_UUID}", flush=True)
         print(f"Characteristic: {INFERENCE_CHAR_UUID}", flush=True)
+        print(f"Control characteristic: {CONTROL_CHAR_UUID}", flush=True)
         print("Connect from the Flutter app and subscribe to notifications.", flush=True)
         self._mark_ready()
 

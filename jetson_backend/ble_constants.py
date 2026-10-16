@@ -16,3 +16,5 @@ ADVERTISEMENT_PATH = "/com/bugless/bleinference/advertisement0"
 # EdgeAudioRecognition / Flutter scanner compatible UUIDs.
 SERVICE_UUID = "12345678-1234-5678-1234-56789abcdef0"
 INFERENCE_CHAR_UUID = "12345678-1234-5678-1234-56789abcdef1"
+# 앱 -> 백엔드 설정. write: {"disabled_labels": [...]} (앱 라벨명 기준).
+CONTROL_CHAR_UUID = "12345678-1234-5678-1234-56789abcdef2"

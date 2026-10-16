@@ -32,6 +32,15 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         default=",".join(runtime_config.DEFAULT_DETECTORS),
         help="efficientat,yamnet,mobilenetv4 중 실행할 항목",
     )
+    parser.add_argument(
+        "--disabled-labels",
+        default="",
+        help=(
+            "시작 시 끌 라벨(쉼표 구분, 백엔드 이름 예: dog,cat,bicycle_bell). "
+            "앱의 BLE write가 오면 덮어씁니다. 모델은 로드한 채 담당 라벨이 전부 "
+            "꺼진 detector의 추론만 건너뜁니다. --detectors는 아예 로드하지 않습니다."
+        ),
+    )
     parser.add_argument("--thresholds", default=None)
     parser.add_argument("--checkpoints-dir", default=None)
     parser.add_argument("--efficientat-dir", default=None)
@@ -135,6 +144,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     args.detector_names = [
         name.strip()
         for name in args.detectors.split(",")
+        if name.strip()
+    ]
+    args.disabled_labels = [
+        name.strip()
+        for name in args.disabled_labels.split(",")
         if name.strip()
     ]
     unknown = [

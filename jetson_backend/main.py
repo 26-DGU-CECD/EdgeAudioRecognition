@@ -90,12 +90,35 @@ def main(argv: list[str] | None = None) -> int:
         print("--input-wav와 --list-devices는 함께 사용할 수 없습니다.", file=sys.stderr)
         return 1
 
+    # BLE는 모델 로드 전에 뜬다. 그 사이 앱이 보낸 라벨 설정은 pending에 두고
+    # controller가 생기면 적용한다. 두 콜백은 GLib 루프 스레드에서 호출된다.
+    gate_link: dict = {"controller": None, "pending": None}
+
+    def on_disabled_labels(labels: list[str]) -> None:
+        controller = gate_link["controller"]
+        if controller is None:
+            gate_link["pending"] = labels
+        else:
+            controller.set_disabled_labels(labels)
+
+    def get_disabled_labels():
+        controller = gate_link["controller"]
+        if controller is None:
+            pending = gate_link["pending"]
+            return pending if pending is not None else args.disabled_labels
+        return controller.inference_engine.disabled_labels
+
     ble_server = None
     if not args.no_ble:
         try:
             from ble_inference_server import BleInferenceServer
 
-            ble_server = BleInferenceServer(args.ble_name, args.ble_chunk_bytes)
+            ble_server = BleInferenceServer(
+                args.ble_name,
+                args.ble_chunk_bytes,
+                on_disabled_labels=on_disabled_labels,
+                get_disabled_labels=get_disabled_labels,
+            )
             ble_server.start()
         except Exception as exc:
             print(
@@ -188,6 +211,13 @@ def main(argv: list[str] | None = None) -> int:
         debug=args.debug,
         max_windows_per_cycle=runtime_config.MAX_WINDOWS_PER_CYCLE,
     )
+    early = gate_link["pending"]
+    controller.set_disabled_labels(early if early is not None else args.disabled_labels)
+    gate_link["controller"] = controller
+    late = gate_link["pending"]
+    if late is not early:
+        # early를 읽은 뒤 controller 등록 전에 들어온 write.
+        controller.set_disabled_labels(late)
 
     def stop(_signum, _frame) -> None:  # noqa: ANN001
         raise KeyboardInterrupt
