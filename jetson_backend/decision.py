@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, Iterable, List
 
 
 @dataclass(frozen=True)
@@ -14,7 +14,8 @@ class Decision:
     best_label: str | None
     best_probability: float
     best_margin: float
-    nearest_label: str
+    # 평가할 라벨이 하나도 없으면(전부 꺼짐) None이다.
+    nearest_label: str | None
     nearest_probability: float
 
 
@@ -57,10 +58,25 @@ class DecisionGate:
     def threshold_for(self, class_name: str) -> float:
         return self.thresholds[class_name]
 
+    def reset_labels(self, labels: Iterable[str]) -> None:
+        """Forget debounce state so a re-enabled label fires fresh."""
+        for name in labels:
+            self._last_fired_at.pop(name, None)
+
     def evaluate(self, probabilities: Dict[str, float], now: float) -> Decision:
-        missing = [name for name in self.classes if name not in probabilities]
-        if missing:
-            raise ValueError(f"확률이 없는 클래스: {missing}")
+        # 꺼진 라벨은 engine이 빼고 보낸다. 받은 키만 평가하므로
+        # engine과 gate의 설정이 잠깐 어긋나도 예외가 나지 않는다.
+        present = [name for name in self.classes if name in probabilities]
+        if not present:
+            return Decision(
+                candidates=[],
+                new_events=[],
+                best_label=None,
+                best_probability=0.0,
+                best_margin=0.0,
+                nearest_label=None,
+                nearest_probability=0.0,
+            )
 
         ranked = sorted(
             (
@@ -69,7 +85,7 @@ class DecisionGate:
                     float(probabilities[name]),
                     float(probabilities[name]) - self.thresholds[name],
                 )
-                for name in self.classes
+                for name in present
             ),
             key=lambda item: (-item[2], item[0]),
         )

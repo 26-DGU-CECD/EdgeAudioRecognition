@@ -1,10 +1,11 @@
 """Run independent specialized detectors over the same audio window."""
 from __future__ import annotations
 
+import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
-from typing import Dict
+from typing import Dict, Iterable
 
 import numpy as np
 
@@ -16,6 +17,15 @@ class InferenceResult:
     probabilities: Dict[str, float]
     detector_latency_ms: Dict[str, float] = field(default_factory=dict)
     total_latency_ms: float = 0.0
+    skipped_detectors: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class GateSnapshot:
+    """Immutable label gate, swapped as a whole so a window never sees a half update."""
+
+    disabled: frozenset[str]
+    active_detectors: tuple[str, ...]
 
 
 class ParallelInferenceEngine:
@@ -44,6 +54,39 @@ class ParallelInferenceEngine:
                     raise ValueError(f"검출기 간 중복 클래스: {class_name}")
                 classes.append(class_name)
         self.classes = classes
+        self._gate = GateSnapshot(frozenset(), tuple(self.detectors))
+
+    @property
+    def disabled_labels(self) -> frozenset[str]:
+        return self._gate.disabled
+
+    @property
+    def active_detectors(self) -> tuple[str, ...]:
+        return self._gate.active_detectors
+
+    @property
+    def all_disabled(self) -> bool:
+        return not self._gate.active_detectors
+
+    def set_disabled_labels(self, labels: Iterable[str]) -> frozenset[str]:
+        """Replace the gate; detectors whose classes are all disabled are skipped.
+
+        Called from the BLE GLib thread. Assigning self._gate is atomic and
+        predict() reads it once per window, so no lock is needed.
+        """
+        requested = {str(label) for label in labels}
+        unknown = sorted(requested - set(self.classes))
+        if unknown:
+            print(f"경고: 알 수 없는 라벨 무시: {unknown}", file=sys.stderr, flush=True)
+        disabled = frozenset(requested & set(self.classes))
+        # 매핑 기준은 config가 아니라 로드된 checkpoint의 target_classes다.
+        active = tuple(
+            name
+            for name, detector in self.detectors.items()
+            if not set(detector.target_classes) <= disabled
+        )
+        self._gate = GateSnapshot(disabled, active)
+        return disabled
 
     def _run_one(
         self,
@@ -75,6 +118,7 @@ class ParallelInferenceEngine:
                 f"got {window.shape[0]}"
             )
 
+        gate = self._gate
         probabilities: Dict[str, float] = {}
         latency: Dict[str, float] = {}
         started = time.perf_counter()
@@ -82,22 +126,28 @@ class ParallelInferenceEngine:
         if self._pool is not None:
             futures = {
                 name: self._pool.submit(self._run_one, name, window)
-                for name in self.detectors
+                for name in gate.active_detectors
             }
             for name, future in futures.items():
                 scores, elapsed = future.result()
                 probabilities.update(scores)
                 latency[name] = elapsed
         else:
-            for name in self.detectors:
+            for name in gate.active_detectors:
                 scores, elapsed = self._run_one(name, window)
                 probabilities.update(scores)
                 latency[name] = elapsed
+
+        for label in gate.disabled:
+            probabilities.pop(label, None)
 
         return InferenceResult(
             probabilities=probabilities,
             detector_latency_ms=latency,
             total_latency_ms=(time.perf_counter() - started) * 1000.0,
+            skipped_detectors=tuple(
+                name for name in self.detectors if name not in gate.active_detectors
+            ),
         )
 
     def close(self) -> None:
