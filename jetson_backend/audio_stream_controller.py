@@ -98,6 +98,22 @@ class AudioStreamController:
             flush=True,
         )
 
+    def set_disabled_labels(self, labels) -> None:  # noqa: ANN001
+        """Apply an app/CLI label gate. Safe to call from the BLE GLib thread."""
+        previous = self.inference_engine.disabled_labels
+        applied = self.inference_engine.set_disabled_labels(labels)
+        self.decision_gate.reset_labels(previous ^ applied)
+        self._print_gate()
+
+    def _print_gate(self) -> None:
+        engine = self.inference_engine
+        skipped = [name for name in engine.detectors if name not in engine.active_detectors]
+        print(
+            f"INFO gate: active_detectors={list(engine.active_detectors)} "
+            f"skipped={skipped} disabled_labels={sorted(engine.disabled_labels)}",
+            flush=True,
+        )
+
     def run(self) -> None:
         if self.microphone is None:
             raise RuntimeError("마이크 없이 run()을 호출했습니다. run_file()을 사용하세요.")
@@ -140,6 +156,17 @@ class AudioStreamController:
         timestamp = datetime.now().strftime("%H:%M:%S")
         level_dbfs = self.level_meter.calculate_dbfs(window)
 
+        if self.inference_engine.all_disabled:
+            print(f"[{timestamp}] skip: all_disabled", flush=True)
+            payload = build_idle_packet(
+                timestamp=timestamp,
+                reason="all_disabled",
+                chunk_dbfs=level_dbfs,
+                db_offset=self.db_offset,
+            )
+            self._publish(payload)
+            return payload
+
         if self.skip_low_db and not self.threshold_gate.is_over_threshold(level_dbfs):
             line = (
                 f"[{timestamp}] skip: low_signal | "
@@ -169,7 +196,15 @@ class AudioStreamController:
                 file=sys.stderr,
                 flush=True,
             )
-            return None
+            # 예외가 나도 앱의 배터리 표시가 멈추지 않도록 idle 패킷은 보낸다.
+            payload = build_idle_packet(
+                timestamp=timestamp,
+                reason="error",
+                chunk_dbfs=level_dbfs,
+                db_offset=self.db_offset,
+            )
+            self._publish(payload)
+            return payload
 
         line = self._format_line(timestamp, level_dbfs, result, decision)
         color = "\033[32m" if decision.new_events else "\033[31m"
@@ -245,6 +280,9 @@ class AudioStreamController:
             )
             state = "감지" if decision.new_events else "감지(반복)"
             body = f"{state}: {decision.best_label} | 후보: {candidates}"
+        elif decision.nearest_label is None:
+            # set_disabled_labels가 윈도우 도중에 전부 꺼버린 경우.
+            body = "평가 대상 없음"
         else:
             body = (
                 f"무발화 | 근접: {decision.nearest_label}="
